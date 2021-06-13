@@ -19,7 +19,6 @@ import { camdoTypes } from '../types/camdo';
 import { evaluate, round } from 'mathjs';
 import { SaveTwoTone, PrinterTwoTone, ProjectOutlined } from '@ant-design/icons';
 import Keyboard from 'react-simple-keyboard';
-import { getSettings, setSettings } from '../utils/db';
 
 import {
   getLastId,
@@ -41,6 +40,7 @@ const dateFormat1 = 'DD/MM/YYYY';
 // };
 
 const defData : camdoTypes = {
+  id: 0,
   sophieu: '0000000000',
   tenkhach: '',
   dienthoai: '',
@@ -49,18 +49,16 @@ const defData : camdoTypes = {
   tongtrongluong: 0,
   trongluonghot: 0,
   trongluongthuc: 0,
-  giatoida: 0,
   tiencam: 0,
   ngayCamChuoc: [moment(moment().format(dateFormat), dateFormat), moment(moment().add(30, 'days').format(dateFormat), dateFormat)],
   ngaytinhlai: moment(),
-  ngaychuoc: '',
-  ngaycam: '',
+  ngaychuoc: moment(),
+  ngaycam: moment(),
+  ngayhethan: moment(),
   laisuat: 5,
-  gia18K: 2900000,
-  gia23K: 4900000,
-  gia9999: 4900000,
-  gianhap: 0,
-  giatinh: 0
+  tudo: '',
+  tienlai: 0,
+  tienchuoc: 0
 };
 
 function TaoPhieu() {
@@ -86,7 +84,7 @@ function TaoPhieu() {
   const genKey = () => {
     getLastId((res: any) => {
       const key = `${padDigits(res + 1, 9)}`;
-      form.setFieldsValue({ ...defData, ...{ sophieu: key, gianhap: defData.gia18K } });
+      form.setFieldsValue({ ...defData, ...{ sophieu: key } });
     });
   };
   useEffect(() => {
@@ -131,14 +129,6 @@ function TaoPhieu() {
   };
   const onGiaUpdate = (data: camdoTypes) => {
     form.setFieldsValue(data);
-    setSettings(data).then(res => {
-      console.log(res);
-      setFormData({ ...formData, ...{ gia18K: Number(data.gia18K) } });
-      const tmp = form.getFieldValue('loaivang');
-      console.log(tmp);
-      calc();
-      onClose();
-    })
   };
   const _selectGia = (e: string) => {
     switch (e) {
@@ -198,9 +188,9 @@ function TaoPhieu() {
         extra={
           [
             <Tag key="7" className="tag-gia" color="volcano" onClick={showDrawer}>Lãi suất: <b>{`${formData.laisuat}%`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Tag key="4" className="tag-gia" color="volcano" onClick={showDrawer}>Vàng 18K: <b>{`${formData.gia18K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Tag key="5" className="tag-gia" color="orange" onClick={showDrawer}>Vàng 23K: <b>{`${formData.gia23K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Tag key="6" className="tag-gia" color="gold" onClick={showDrawer}>Vàng 9999: <b>{`${formData.gia9999}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
+            <Tag key="4" className="tag-gia" color="volcano" onClick={showDrawer}>Vàng 18K: <b>{`${'formData.gia18K'}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
+            <Tag key="5" className="tag-gia" color="orange" onClick={showDrawer}>Vàng 23K: <b>{`${'formData.gia23K'}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
+            <Tag key="6" className="tag-gia" color="gold" onClick={showDrawer}>Vàng 9999: <b>{`${'formData.gia9999'}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
             <Button key="3" hidden onClick={save} ><SaveTwoTone />Lưu</Button>,
             <Button key="2" hidden onClick={print}><PrinterTwoTone /> In </Button>,
             <Button key="1" type="primary" onClick={saveAndPrint} ><ProjectOutlined />Lưu và in</Button>,

@@ -428,10 +428,10 @@ tbody tr:hover {
     top: 5px;
     width: 85px !important;
   }
-  .ant-select-selector {
+  /* .ant-select-selector {
     position: relative !important;
     top: 0;
-  }
+  } */
 
   select {
     display: inline-block;
@@ -454,4 +454,8 @@ tbody tr:hover {
   }
   .ant-input-affix-wrapper {
     border: 0 !important;
+  }
+
+  .ant-input-number-disabled {
+    color: #555 !important;
   }

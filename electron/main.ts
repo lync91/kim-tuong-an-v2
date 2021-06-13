@@ -1,7 +1,11 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import * as isDev from 'electron-is-dev';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+
+// import * as db from './db'
+
+import './db/index'
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -14,6 +18,7 @@ function createWindow() {
       enableRemoteModule: true,
       plugins: true,
       nodeIntegration: true,
+      webSecurity: false,
       preload: path.join(__dirname, 'preload.js')
     }
   })

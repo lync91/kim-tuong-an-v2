@@ -5,9 +5,6 @@ import { PageHeader, Row, Col } from 'antd';
 import ChiTiet from '../components/chitiet';
 import Phieu from './Phieu';
 
-// const dateFormat = 'DD/MM/YYYY, h:mm:ss A';
-// const dateFormat1 = 'DD/MM/YYYY';
-
 const defData = {
   sophieu: '',
   tenkhach: '',

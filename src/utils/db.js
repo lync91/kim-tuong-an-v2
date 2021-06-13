@@ -1,9 +1,6 @@
-import { remote } from 'electron';
+import { ipcRenderer } from 'electron';
 import moment from 'moment';
 import { round } from 'mathjs';
-const knex = remote.require('./db/connect').default;
-const db = remote.require('./db');
-console.log(knex);
 
 export function getLastId(fn) {
   // knex('camdo').max({ a: 'id' })
@@ -28,38 +25,17 @@ export function insertCamdo(data, fn) {
   // knex('camdo').insert(data)
   //   .then(res => fn(res));
 }
-export function updateCamDo(id, data, fn) {
-
-  if (data.ngayCamChuoc) {
-    data.ngaycam = moment(data.ngayCamChuoc[0]).format('x');
-    data.ngayhethan = moment(data.ngayCamChuoc[1]).format('x');
-  }
-  if (data.ngaychuoc) {
-    data.ngaychuoc = data.ngaychuoc.format('x')
-  }
-  delete data.size;
-  delete data.ngayCamChuoc;
-  delete data.gia18K;
-  delete data.gia24K;
-  delete data.gia9999;
-  delete data.ngayCamChuoc;
-  delete data.songay;
-  delete data.tienlaidukien;
-  delete data.ngaytinhlai;
-  delete data.tienchuocdukien;
-  delete data.id;
-  delete data.sophieu;
-  // knex('camdo')
-  //   .where('id', '=', id)
-  //   .update(data)
-  //   .then(res => fn(res))
+export function updateCamDo(data) {
+  return ipcRenderer.invoke('updateCamdo', data);
 }
 export function giahanCamDo(id, tienlai, songay, fn) {
   let data = {
+    id: id,
     ngaytinhlai: moment().format('x'),
     ngayhethan: moment().add(songay, 'days').format('x'),
     tienlai: tienlai
   };
+  return ipcRenderer.invoke('giahanCamDo', data)
   // knex('camdo')
   //   .where('id', '=', id)
   //   .update(data)
@@ -72,32 +48,28 @@ export function giahanCamDo(id, tienlai, songay, fn) {
   //   })
   //   .then((res) => console.log(res));
 }
-export function camThemTien(id, tienlai, tiencam, fn) {
+export function camThemTien(id, tienlai, tiencam) {
   let data = {
+    id: id,
     tienlai: tienlai,
-    tiencam: tiencam
+    tiencam: tiencam,
+    ngaytinhlai: moment().format('x')
   };
-  // console.log(data);
-  const newDay = moment().format('x');
-  // knex('camdo')
-  //   .where('id', '=', id)
-  //   .update({ ...data, ...{ ngaytinhlai: newDay } })
-  //   .then(res => fn(res));
+  return ipcRenderer.invoke('camThemTien', data);
 }
-export function chuocDo(id, tienlai, tienchuoc, ngaychuoc, fn) {
+export function chuocDo(id, tienlai, tienchuoc, ngaychuoc) {
   let data = {
+    id: id,
     tienlai: tienlai,
     tienchuoc: tienchuoc,
     ngaychuoc: ngaychuoc,
     dachuoc: 1
   };
-  // knex('camdo')
-  //   .where('id', '=', id)
-  //   .update(data)
-  //   .then(res => fn(res));
+  console.log(id, data);
+  return ipcRenderer.invoke('chuoc', data)
 }
 export function getCamDo(key, fn) {
-  const camdo = knex('camdo').select()
+  // const camdo = knex('camdo').select()
     // .orderBy('id', 'desc')
   // if (key === 'tatca') camdo
     // .then(res => fn(res.map((v) => {
@@ -112,7 +84,7 @@ export function getCamDo(key, fn) {
     //   v.trongluongthuc = v.trongluongthuc ? round(v.trongluongthuc, 3) : ''
     //   return v
     // })));
-    .then(res => fn(res))
+    // .then(res => fn(res))
   // if (key === 'conhan') camdo.whereRaw(
   //   'ngayhethan > ? and dachuoc <= ? and dahuy > ?',
   //   [moment().format('x'), 0, 0]
@@ -141,13 +113,8 @@ export function timPhieu(sophieu, fn) {
   //   .where('sophieu', sophieu)
   //   .then(res => fn(res));
 }
-export function timPhieubyID(id, fn) {
-  // knex('camdo')
-  //   .where('id', id)
-  //   .then(res => {
-  //     console.log(res);
-  //     fn(res[0])
-  //   });
+export function timPhieubyID(id) {
+  return ipcRenderer.invoke('phieubyId', id)
 }
 export function timKiem(text, fn) {
   // const dateNumber = moment(text, 'DD/MM/YYYY').format('X').toString().substring(0, 5);

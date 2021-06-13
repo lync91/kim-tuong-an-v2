@@ -1,4 +1,5 @@
-import { Moment } from 'moment';
+import { number, round } from 'mathjs';
+import moment, { Moment } from 'moment';
 
 export interface camdoTypes {
   id: number | undefined;
@@ -14,14 +15,18 @@ export interface camdoTypes {
   ngayCamChuoc: Moment[],
   ngaychuoc: Moment;
   ngaycam: Moment;
+  ngayhethan: Moment;
   ngaytinhlai: Moment;
   laisuat: number;
-  gia18K: number;
-  gia23K: number;
-  gia9999: number;
-  giatinh: number,
-  gianhap: number,
-  giatoida: number,
+  tudo: string;
+  tienlai: number;
+  tienchuoc: number;
+  // gia18K: number;
+  // gia23K: number;
+  // gia9999: number;
+  // giatinh: number,
+  // gianhap: number,
+  // giatoida: number,
 }
 export interface camdoDataTypes {
   id: number | undefined;
@@ -34,17 +39,14 @@ export interface camdoDataTypes {
   trongluonghot: number;
   trongluongthuc: number;
   tiencam: number;
-  ngayCamChuoc: number[],
   ngaychuoc: string;
   ngaycam: string;
-  ngaytinhlai: number;
+  ngayhethan: string;
+  ngaytinhlai: string;
   laisuat: number;
-  gia18K: number;
-  gia23K: number;
-  gia9999: number;
-  giatinh: number,
-  gianhap: number,
-  giatoida: number
+  tudo: string;
+  tienlai: number;
+  tienchuoc: number;
 }
 export class Camdo {
   id: number | undefined;
@@ -57,18 +59,25 @@ export class Camdo {
   trongluonghot: number;
   trongluongthuc: number;
   tiencam: number;
-  ngayCamChuoc: Moment[] | number[];
-  ngaychuoc: Moment | string;
-  ngaycam: Moment | string;
-  ngaytinhlai: Moment | number;
+  ngayCamChuoc: Moment[] | any[];
+  ngaychuoc: Moment | any;
+  ngaycam: Moment | any;
+  ngaytinhlai: Moment | any;
   laisuat: number;
-  gia18K: number;
-  gia23K: number;
-  gia9999: number;
-  giatinh: number;
   gianhap: number;
   giatoida: number;
-  constructor (data: camdoTypes | camdoDataTypes) {
+  songay: number;
+  tienlaidukien: number;
+  tudo: string;
+  tienchuocdukien: number;
+  tienlai: number;
+  tienchuoc: number;
+  ngayhethan: Moment | any;
+  trangthai: {
+    text: string,
+    color: string
+  }
+  constructor(data: camdoTypes) {
     this.id = data.id ? data.id : undefined
     this.sophieu = data.sophieu
     this.tenkhach = data.tenkhach
@@ -77,19 +86,73 @@ export class Camdo {
     this.loaivang = data.loaivang
     this.tongtrongluong = data.tongtrongluong
     this.trongluonghot = data.trongluonghot
-    this.trongluongthuc = data.trongluongthuc
+    this.trongluongthuc = round(data.trongluongthuc, 3)
     this.tiencam = data.tiencam
-    this.ngayCamChuoc = data.ngayCamChuoc
-    this.ngaychuoc = data.ngaychuoc
-    this.ngaycam = data.ngaycam
-    this.ngaytinhlai = data.ngaytinhlai
-    this.laisuat = data.laisuat
-    this.gia18K = data.gia18K
-    this.gia23K = data.gia23K
-    this.gia9999 = data.gia9999
-    this.giatinh = data.giatinh
-    this.gianhap = data.gianhap
-    this.giatoida = data.giatoida
+    this.ngayCamChuoc = data.ngayCamChuoc ? data.ngayCamChuoc : [moment(data.ngaycam), moment(data.ngayhethan)]
+    this.ngaychuoc = data.ngaychuoc ? moment(data.ngaychuoc): ''
+    this.ngaycam = data.ngaycam ? moment(data.ngaycam) : '';
+    this.ngaytinhlai = data.ngaytinhlai ? moment(data.ngaytinhlai) : '';
+    this.laisuat = 3;
+    this.gianhap = 0;
+    this.giatoida = 0;
+    this.songay = data.ngaytinhlai ? round((Number(moment().format('X')) - Number(moment(data.ngaytinhlai).format('X')))/(60*60*24) + 1): 0;
+    this.tienlaidukien = data.tiencam ? round((data.tiencam * (3 * this.songay/30))/100) : 0;
+    this.tudo = data.tudo;
+    this.tienchuocdukien = this.tiencam + this.tienlaidukien;
+    this.tienlai = data.tienlai;
+    this.tienchuoc = data.tienchuoc;
+    this.ngayhethan = data.ngayhethan ? moment(data.ngayhethan) : '';
+    this.trangthai = {
+      text: 'Chưa quét',
+      color: ''
+    }
+    this.setTrangThai(data)
   }
-  forData () {}
+  setTrangThai (c: any) {
+    let text = '';
+    let color = ''
+    // var start = moment(c.ngaycam).format('X');
+    var end = Number(moment(c.ngayhethan).format('X'));
+    var now = Number(moment().format('X'));
+    const han = (end - now) / (60 * 60 * 24);
+    if (han > 0) this.trangthai = {
+      text: 'Còn hạn',
+      color: '#87d068'
+    }
+    if (han <= 0) this.trangthai = {
+      text: 'Quá hạn',
+      color: '#f50'
+    }
+    if (c.ngaychuoc > 0) this.trangthai = {
+      text: 'Đã chuộc',
+      color: '#108ee9'
+    }
+    if (c.dahuy > 0) this.trangthai = {
+      text: 'Đã hủy',
+      color: '#f50'
+    }
+  }
+  toData() { 
+    const data: camdoDataTypes = {
+      id: this.id,
+      sophieu: this.sophieu,
+      tenkhach: this.tenkhach,
+      dienthoai: this.dienthoai,
+      monhang: this.monhang,
+      loaivang: this.loaivang,
+      tongtrongluong: this.tongtrongluong,
+      trongluonghot: this.trongluonghot,
+      trongluongthuc: this.trongluongthuc,
+      tiencam: this.tiencam,
+      ngaychuoc: this.ngaychuoc ? this.ngaychuoc.format('x') : null,
+      ngaycam: this.ngayCamChuoc ? this.ngayCamChuoc[0].format('x') : null,
+      ngaytinhlai: this.ngaytinhlai ? this.ngaytinhlai.format('x') : null,
+      laisuat: this.laisuat,
+      tudo: this.tudo,
+      tienlai: this.tienlai,
+      tienchuoc: this.tienchuoc,
+      ngayhethan: this.ngayCamChuoc ? this.ngayCamChuoc[1].format('x') : null,
+    }
+    return data;
+  }
 }

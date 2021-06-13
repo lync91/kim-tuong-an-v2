@@ -13,7 +13,7 @@ import {
 } from 'react-table'
 // A great library for fuzzy filtering/sorting items
 // import matchSorter from 'match-sorter'
-import { Input, Select, DatePicker, Tag } from 'antd';
+import { Input, DatePicker } from 'antd';
 import Button from 'antd-button-color';
 import {
   VerticalLeftOutlined,
@@ -25,7 +25,7 @@ import {
   MinusCircleOutlined
 } from '@ant-design/icons';
 import moment from 'moment';
-import { round, evaluate, row } from 'mathjs';
+import { round } from 'mathjs';
 const { RangePicker } = DatePicker;
 const dateFormat = 'DD/MM/YYYY';
 const Styles = styled.div`
@@ -521,10 +521,8 @@ function filterGreaterThan(rows, id, filterValue) {
 
 function trangThaiFilter(props) {
   const {
-    column: { filterValue = 'all', preFilteredRows, setFilter, id },
+    column: { filterValue = 'all', setFilter },
   } = props;
-  // attach the onChange method from props's object to element
-  const count = preFilteredRows.length;
   return (
     <select value={filterValue} onChange={e => setFilter(e.target.value || undefined)}>
       <option key="all">Tất cả</option>
@@ -536,29 +534,23 @@ function trangThaiFilter(props) {
 }
 
 function filterTrangThai(rows, id, filterValue) {
-  console.log(filterValue);
   if (filterValue === 'Tất cả') return rows;
   if (filterValue === 'Đã chuộc') {
     return rows.filter(row => {
       console.log(row.values['ngaychuoc']);
-      const rowValue = row.values[id]
       return row.values['ngaychuoc'] > 0
     })
   } else if (filterValue === 'Còn hạn') {
     return rows.filter(row => {
       var end = moment(row.values['ngayhethan']).format('X');
       var now = moment().format('X');
-      if (now < end) {
-        return row;
-      }
+      return (now < end && row.values.ngaychuoc <= 0)
     })
   } else if (filterValue === 'Hết hạn') {
     return rows.filter(row => {
       var end = moment(row.values['ngayhethan']).format('X');
       var now = moment().format('X');
-      if (now > end) {
-        return row;
-      }
+      return (end >= now && row.values.dachuoc > 0)
     })
   }
   else {
@@ -569,10 +561,8 @@ function filterTrangThai(rows, id, filterValue) {
 
 function dateRangFilter(props) {
   const {
-    column: { filterValue = [], preFilteredRows, setFilter, id },
+    column: { filterValue = [], setFilter },
   } = props;
-  // attach the onChange method from props's object to element
-  const count = preFilteredRows.length;
   return (
     <RangePicker size="small" className="dateFilter" onChange={(e) => setFilter(e)}
       format={dateFormat}
@@ -588,9 +578,7 @@ function filterDateRange(rows, id, filterValue) {
     const end = filterValue[1].endOf('Day').format('x');
     return rows.filter(row => {
       const rowValue = row.values[id];
-      if (rowValue >= start && rowValue <= end) {
-        return row
-      }
+      return (rowValue >= start && rowValue <= end)
     })
   } catch (error) {
     return []

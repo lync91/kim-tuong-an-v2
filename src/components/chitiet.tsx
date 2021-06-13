@@ -2,20 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Select, DatePicker, Modal, message, Tag, notification, InputNumber } from 'antd';
 import Button from 'antd-button-color';
 import moment from 'moment';
-// import BarcodeReader from 'react-barcode-reader';
-import { getSettings } from '../utils/db';
 import { round, evaluate } from 'mathjs';
 import { SmileOutlined, CloseCircleOutlined, CheckCircleOutlined, SaveOutlined, PrinterOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { updateCamDo, huyPhieuCam, timPhieubyID, giahanCamDo, chuocDo, camThemTien } from '../utils/db';
 import { printPreview } from '../utils/print';
-import { camdoDataTypes, camdoTypes } from '../types/camdo';
+import { camdoDataTypes, camdoTypes, Camdo } from '../types/camdo';
+import BarCodeEvent from './barCodeEvent'
 
 const { RangePicker } = DatePicker;
 
 const { Search } = Input;
-// import { set, getSync } from 'electron-settings';
-
-const dateFormat = 'DD/MM/YYYY, h:mm:ss A';
 const dateFormat1 = 'DD/MM/YYYY';
 
 export interface propsType {
@@ -29,84 +25,32 @@ function ChiTiet(props: propsType) {
   const { data, close, quetphieu, onSearched } = props;
   const [form] = Form.useForm();
   const [formCamThem] = Form.useForm();
-  const [formData, setFormData] = useState({});
   const [modalChuoc, setModalChuoc] = useState(false)
   const [modalHuy, setModalHuy] = useState(false)
   const [modalGiaHan, setModalGiaHan] = useState(false)
-  const [currentInput, setCurrentInput] = useState('');
-  // const [inputXacNhan, setInputXacNhan] = useState('');
+  const [trangthai, setTrangthai] = useState({
+    text: 'Chưa quét',
+    color: ''
+  })
   const [dataLaiSuat, setDataLaiSuat] = useState({ lai10: 3, lai20: 3, lai30: 3 });
   const [modalCamThem, setModalCamThem] = useState(false);
   const inputRef = React.useRef(null);
   const calc = () => {
-    const ngayCamChuoc = form.getFieldValue('ngayCamChuoc');
-    const gianhap = form.getFieldValue('gianhap');
-    const tongtrongluong = form.getFieldValue('tongtrongluong');
-    const trongluonghot = form.getFieldValue('trongluonghot');
-    // const trongluongthuc = round(evaluate(`${tongtrongluong} - ${trongluonghot}`), 3);
-    const trongluongthuc = 0;
-    console.log(trongluongthuc);
-    const tiencam = form.getFieldValue('tiencam') ? form.getFieldValue('tiencam') : round(trongluongthuc * gianhap);
-    let laisuat = Number(form.getFieldValue('laisuat'));
-    const songay = ngayCamChuoc ? round((Number(moment().format('x').toString()) - Number(moment(data.ngaytinhlai ? data.ngaytinhlai : data.ngaycam).format('x'))) / (1000 * 60 * 60 * 24) + 1) : 0;
-    if (songay < 10) {
-      laisuat = dataLaiSuat.lai10
-    } else if (songay > 10 && songay < 20) {
-      laisuat = dataLaiSuat.lai20
-    } else {
-      laisuat = dataLaiSuat.lai30
-    }
-    const tienlaidukien = Math.round(tiencam * ((laisuat / 30) * songay / 100) / 1000) * 1000;
-    console.log(tienlaidukien);
-    const tienchuocdukien = Number(data.tienchuoc) > 0 ? Number(data.tienchuoc) : Math.round(tiencam + tienlaidukien);
-    form.setFieldsValue({
-      trongluongthuc: trongluongthuc,
-      // tiencam: tiencam | '',
-      // tienlaidukien: tienlaidukien | '',
-      songay: songay | 0,
-      tienchuocdukien: tienchuocdukien | 0,
-      laisuat: laisuat | 0
-    });
-    setFormData({ ...formData, ...form.getFieldsValue() });
+    const values = form.getFieldsValue();
+    const trongluongthuc = round(values.tongtrongluong - values.trongluonghot, 3);
+    form.setFieldsValue({ trongluongthuc: trongluongthuc });
   };
-  const dateParser = (res: any) => {
-    const tmp = res;
-    const ngaychuoc = data.ngaychuoc ? moment(moment(tmp.ngaychuoc).format(dateFormat), dateFormat) : ''
-    const ngayCamChuoc = [moment(moment(tmp.ngaycam).format(dateFormat), dateFormat), moment(moment(tmp.ngayhethan).format(dateFormat), dateFormat)]
-    // form.setFieldsValue(res[0]);
-    return { ...res, ...{ ngayCamChuoc: ngayCamChuoc, ngaychuoc: ngaychuoc } };
-  }
   useEffect(() => {
-    const res: any = {}
-    console.log('data', data);
-    console.log('settings', res);
-    setDataLaiSuat(res);
-    const ngayCamChuoc = data.ngaycam ? [
-      moment(moment(data.ngaycam).format(dateFormat),
-        dateFormat), moment(moment(data.ngayhethan).format(dateFormat), dateFormat)
-    ] : '';
-    const ngaychuoc = data.ngaychuoc ? moment(moment(data.ngaychuoc).format(dateFormat), dateFormat) : '';
-    const ngaytinhlai = data.ngaytinhlai ? moment(moment(data.ngaytinhlai).format(dateFormat), dateFormat) : '';
-    setFormData(data);
-    if (data.ngaychuoc) {
-      form.setFieldsValue({ ...data, ...{ ngayCamChuoc: ngayCamChuoc, ngaychuoc: ngaychuoc, ngaytinhlai: ngaytinhlai } });
-    } else {
-      form.setFieldsValue({ ...data, ...{ ngayCamChuoc: ngayCamChuoc, ngaytinhlai: ngaytinhlai } });
-    }
-    calc();
+    console.log(data);
+    form.setFieldsValue(new Camdo(data));
     return () => {
-      console.log('OLL');
+
     };
   }, [data]);
   const _onValuesChange = (value: string, vs: any) => {
-    setFormData(vs);
     calc();
   };
   const onGiaUpdate = (data: any) => {
-    form.setFieldsValue(data);
-    setFormData({ ...formData, ...{ gia18K: Number(data.gia18K) } });
-    const tmp = form.getFieldValue('loaivang');
-    console.log(tmp);
     calc();
   };
   const _selectGia = (e: any) => {
@@ -127,8 +71,12 @@ function ChiTiet(props: propsType) {
   };
   const save = () => {
     const values = form.getFieldsValue();
+    console.log('values', new Camdo(values).toData());
     // data.dachuoc <= 0 ? delete values.tienchuoc : '';
-    updateCamDo(data.id, values, () => message.success('Lưu phiếu cầm thàng công'));
+    updateCamDo(new Camdo(values).toData()).then((res: any) => {
+      console.log('res', res);
+
+    });
     close(true);
   }
   const chuoc = () => {
@@ -155,10 +103,12 @@ function ChiTiet(props: propsType) {
     const tienlaidukien = form.getFieldValue('tienlaidukien');
     const ngaychuoc = values.ngaychuoc ? values.ngaychuoc.format('x') : moment().format('x');
     console.log('ngaychuoc', ngaychuoc);
-    chuocDo(data.id, tienlaidukien + tienlai, tienchuoc, ngaychuoc, () => {
-      timPhieubyID(form.getFieldValue('id'), (res: any) => {
-        onSearched(dateParser(res));
-      })
+    chuocDo(data.id, tienlaidukien + tienlai, tienchuoc, ngaychuoc).then((res: any) => {
+      timPhieubyID(data.id).then((res: any) => {
+        const data = new Camdo(res)
+        onSearched(data);
+        setTrangthai(data.trangthai)
+      });
       setModalChuoc(false)
     });
   };
@@ -175,30 +125,29 @@ function ChiTiet(props: propsType) {
     // setInputXacNhan('');
   };
   const giaHanOK = () => {
-    console.log(data.tienlai);
+    const data = form.getFieldsValue();
     const laihientai = data.tienlai | 0;
     const laidukien = form.getFieldValue('tienlaidukien');
-    giahanCamDo(data.id, laihientai + laidukien, 30, () => {
-      timPhieubyID(data.id, (res: any) => {
-        const data = dateParser(res)
+    giahanCamDo(data.id, laihientai + laidukien, 30).then(() => {
+      timPhieubyID(data.id).then((res: any) => {
+        const data = new Camdo(res)
         onSearched(data);
+        setTrangthai(data.trangthai)
       })
     })
     setModalGiaHan(false);
     // setInputXacNhan('');
   };
   const camThemOK = () => {
-    console.log(data.tienlai);
     const laihientai = data.tienlai | 0;
     const laidukien = form.getFieldValue('tienlaidukien');
     const tiencam = Number(form.getFieldValue('tiencam'));
     const tiencamthem = Number(formCamThem.getFieldValue('tiencamthem'));
-    console.log(tiencam);
-    console.log(tiencamthem);
-    camThemTien(data.id, laihientai + laidukien, tiencam + tiencamthem, () => {
-      timPhieubyID(data.id, (res: any) => {
-        const data = dateParser(res)
+    camThemTien(data.id, laihientai + laidukien, tiencam + tiencamthem).then(() => {
+      timPhieubyID(data.id).then((res: any) => {
+        const data = new Camdo(res)
         onSearched(data);
+        setTrangthai(data.trangthai)
       })
     })
     setModalCamThem(false);
@@ -231,7 +180,7 @@ function ChiTiet(props: propsType) {
       text = 'Quá hạn';
       color = '#f50'
     }
-    if (c.dachuoc > 0) {
+    if (c.ngaychuoc > 0) {
       text = 'Đã chuộc';
       color = '#108ee9'
     }
@@ -239,15 +188,10 @@ function ChiTiet(props: propsType) {
       text = 'Đã hủy';
       color = '#f50'
     }
-    // if (!formData.id) {
-    //   text = 'Chưa quét phiếu';
-    //   color = ''
-    // }
-    return (<Tag color={color} >{text}</Tag>)
   }
   const onSearch = (e: any) => {
     const id = Number(e);
-    timPhieubyID(id, (res: any) => {
+    timPhieubyID(id).then((res: any) => {
       if (res.length <= 0) {
         notification.open({
           message: 'Không tìm thấy phiếu trong cơ sở dữ liệu',
@@ -258,14 +202,15 @@ function ChiTiet(props: propsType) {
         return;
       }
       else {
-        const data = dateParser(res)
+        const data = new Camdo(res)
         onSearched(data);
+        setTrangthai(data.trangthai)
       }
     });
   }
   const print = () => {
-    timPhieubyID(form.getFieldValue('id'), (res: any) => {
-      printPreview(dateParser(res), false)
+    timPhieubyID(form.getFieldValue('id')).then((res: any) => {
+      printPreview(res, false)
     })
   }
   const handleScan = (data: any) => {
@@ -277,10 +222,10 @@ function ChiTiet(props: propsType) {
   }
   return (
     <div>
-      {/* <BarcodeReader
+      <BarCodeEvent
         onError={handleError}
         onScan={handleScan}
-      /> */}
+      />
       <Modal title="Xác nhận chuộc đồ"
         visible={modalChuoc}
         onOk={handleOk}
@@ -334,11 +279,8 @@ function ChiTiet(props: propsType) {
         okText="Xác nhận"
         onCancel={handleCancelHuy}
         cancelText="Hủy"
-      // okButtonProps={{ disabled: inputXacNhan === pass ? false : true }}
       >
         <p>{`Phiếu cầm này sẽ chuyển sang trạng thái đã hủy`}</p>
-        {/* <p>{`Gõ "${pass}" để xác nhận hủy phiếu này`}</p> */}
-        {/* <p><Input type="text" value={inputXacNhan} onKeyPress={onKeyPress} onChange={(e) => setInputXacNhan(e.target.value)} /></p> */}
       </Modal>
       <Form
         form={form}
@@ -367,19 +309,19 @@ function ChiTiet(props: propsType) {
           />
         </Form.Item>
         <Form.Item label="Tình trạng" >
-          {labelRender(data)}
+          <Tag color={trangthai.color} >{trangthai.text}</Tag>
         </Form.Item>
         <Form.Item label="Id" name="id" >
-          <Input />
+          <Input disabled />
         </Form.Item>
         <Form.Item label="Tên khách hàng" name="tenkhach" >
-          <Input className={currentInput === 'tenkhach' ? 'input-focused' : ''} ref={inputRef} disabled={quetphieu} />
+          <Input ref={inputRef} disabled={quetphieu} />
         </Form.Item>
         <Form.Item label="Điện thoại" name="dienthoai" >
-          <Input className={currentInput === 'dienthoai' ? 'input-focused' : ''} disabled={quetphieu} />
+          <Input disabled={quetphieu} />
         </Form.Item>
         <Form.Item label="Món hàng" name="monhang">
-          <Input className={currentInput === 'monhang' ? 'input-focused' : ''} disabled={quetphieu} />
+          <Input disabled={quetphieu} />
         </Form.Item>
         <Form.Item label="Loại vàng" name="loaivang" >
           <Select disabled onChange={_selectGia}>
@@ -394,8 +336,7 @@ function ChiTiet(props: propsType) {
               [{ required: true }]}
             style={
               { display: 'inline-block', width: 'calc(32% - 4px)' }}
-            className={currentInput === 'tongtrongluong' ? 'input-focused' : ''}
-             >
+          >
             <Input placeholder="Tổng" disabled={quetphieu} />
           </Form.Item>
           <Form.Item name="trongluonghot"
@@ -403,8 +344,7 @@ function ChiTiet(props: propsType) {
               [{ required: true }]}
             style={
               { display: 'inline-block', width: 'calc(32% - 4px)', margin: '0 4px' }}
-            className={currentInput === 'trongluonghot' ? 'input-focused' : ''}
-             >
+          >
             <Input placeholder="Hột" disabled={quetphieu} />
           </Form.Item>
           <Form.Item name="trongluongthuc"
@@ -412,19 +352,22 @@ function ChiTiet(props: propsType) {
               [{ required: true }]}
             style={
               { display: 'inline-block', width: 'calc(32% - 4px)', margin: '0 0px' }}
-            className={currentInput === 'truongluongthuc' ? 'input-focused' : ''}
-             >
+          >
             <Input placeholder="Thực" disabled />
           </Form.Item>
         </Form.Item>
         <Form.Item label="Tủ đồ" name="tudo">
           <Input />
         </Form.Item>
-        <Form.Item label="Giá nhập" name="gianhap" >
-          <Input className={currentInput === 'gianhap' ? 'input-focused' : ''} disabled={quetphieu} />
+        <Form.Item hidden label="Giá nhập" name="gianhap" >
+          <Input disabled={quetphieu} />
         </Form.Item>
         <Form.Item label="Tiền cầm" name="tiencam">
-          <Input disabled className={currentInput === 'tiencam' ? 'input-focused' : ''} />
+          <InputNumber
+            style={{ width: 200 }}
+            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+            parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
+            disabled />
         </Form.Item>
         <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc" >
           <RangePicker
@@ -432,7 +375,7 @@ function ChiTiet(props: propsType) {
             disabled={quetphieu}
           />
         </Form.Item>
-        <Form.Item label="Ngày tính lãi" name="ngaychuoc">
+        <Form.Item label="Ngày tính lãi" name="ngaytinhlai">
           <DatePicker format={dateFormat1} disabled={data.dachuoc ? true : false} />
         </Form.Item>
         <Form.Item hidden name="gia18K">
@@ -451,13 +394,25 @@ function ChiTiet(props: propsType) {
           <Input />
         </Form.Item>
         <Form.Item label="Tiền lãi dự kiến" name="tienlaidukien">
-          <Input disabled />
+          <InputNumber
+            style={{ width: 200 }}
+            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+            parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
+            disabled />
         </Form.Item>
         <Form.Item label="Tiền lãi" name="tienlai">
-          <Input disabled />
+          <InputNumber
+            style={{ width: 200 }}
+            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+            parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
+            disabled />
         </Form.Item>
         <Form.Item label="Tiền chuộc" name="tienchuoc">
-          <Input disabled={quetphieu} />
+          <InputNumber
+            style={{ width: 200 }}
+            // formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+            // parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
+            disabled={quetphieu} />
         </Form.Item>
         <Form.Item hidden label="Tiền chuộc dự kiến" name="tienchuocdukien">
           <Input disabled={quetphieu} />
