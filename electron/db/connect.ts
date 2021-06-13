@@ -1,10 +1,13 @@
-const path = require('path');
-const isDevelopment = process.env.NODE_ENV === 'development';
-// const filePath = isDevelopment ? path.join(__dirname, '..', 'data/database.sqlite') : path.join(__dirname, '..', '..', '/database.sqlite');
+import * as isDev from 'electron-is-dev';
+import * as path from 'path'
+// const isDevelopment = process.env.NODE_ENV === 'development';
+const filePath = isDev ? path.join(__dirname, '..', '..', '..', 'electron/data/database.sqlite') : path.join(__dirname, '..', '..', '/database.sqlite');
+console.log(filePath);
+
 const knex = require('knex')({
     client: 'sqlite3',
     connection: {
-        filename: isDevelopment ? path.join(__dirname, '..', 'data/database.sqlite') : path.join(__dirname, '..', '..', '/database.sqlite')
+        filename: filePath
     }
 });
 

@@ -1,29 +1,7 @@
-// import PropTypes from 'prop-types';
-// const { string, number } = PropTypes
-// export const camdoTypes = {
-//   data: {
-//     sophieu: string,
-//     tenkhach: string,
-//     dienthoai: string,
-//     monhang: string,
-//     loaivang: string,
-//     tongtrongluong: number,
-//     trongluonghot: number,
-//     trongluongthuc: number,
-//     tiencam: number,
-//     // ngayCamChuoc: [moment(moment().format(dateFormat), dateFormat), moment(moment().add(30, 'days').format(dateFormat), dateFormat)],
-//     ngaychuoc: string,
-//     ngaycam: string,
-//     laisuat: number,
-//     gia18K: number,
-//     gia24K: number,
-//     gia9999: number,
-//     giatinh: number
-//   }
-// }
 import { Moment } from 'moment';
 
 export interface camdoTypes {
+  id: number | undefined;
   sophieu: string;
   tenkhach: string;
   dienthoai: string;
@@ -34,8 +12,8 @@ export interface camdoTypes {
   trongluongthuc: number;
   tiencam: number;
   ngayCamChuoc: Moment[],
-  ngaychuoc: string;
-  ngaycam: string;
+  ngaychuoc: Moment;
+  ngaycam: Moment;
   ngaytinhlai: Moment;
   laisuat: number;
   gia18K: number;
@@ -46,6 +24,7 @@ export interface camdoTypes {
   giatoida: number,
 }
 export interface camdoDataTypes {
+  id: number | undefined;
   sophieu: string;
   tenkhach: string;
   dienthoai: string;
@@ -55,7 +34,7 @@ export interface camdoDataTypes {
   trongluonghot: number;
   trongluongthuc: number;
   tiencam: number;
-  ngayCamChuoc: number,
+  ngayCamChuoc: number[],
   ngaychuoc: string;
   ngaycam: string;
   ngaytinhlai: number;
@@ -66,4 +45,51 @@ export interface camdoDataTypes {
   giatinh: number,
   gianhap: number,
   giatoida: number
+}
+export class Camdo {
+  id: number | undefined;
+  sophieu: string;
+  tenkhach: string;
+  dienthoai: string;
+  monhang: string;
+  loaivang: string;
+  tongtrongluong: number;
+  trongluonghot: number;
+  trongluongthuc: number;
+  tiencam: number;
+  ngayCamChuoc: Moment[] | number[];
+  ngaychuoc: Moment | string;
+  ngaycam: Moment | string;
+  ngaytinhlai: Moment | number;
+  laisuat: number;
+  gia18K: number;
+  gia23K: number;
+  gia9999: number;
+  giatinh: number;
+  gianhap: number;
+  giatoida: number;
+  constructor (data: camdoTypes | camdoDataTypes) {
+    this.id = data.id ? data.id : undefined
+    this.sophieu = data.sophieu
+    this.tenkhach = data.tenkhach
+    this.dienthoai = data.dienthoai
+    this.monhang = data.monhang
+    this.loaivang = data.loaivang
+    this.tongtrongluong = data.tongtrongluong
+    this.trongluonghot = data.trongluonghot
+    this.trongluongthuc = data.trongluongthuc
+    this.tiencam = data.tiencam
+    this.ngayCamChuoc = data.ngayCamChuoc
+    this.ngaychuoc = data.ngaychuoc
+    this.ngaycam = data.ngaycam
+    this.ngaytinhlai = data.ngaytinhlai
+    this.laisuat = data.laisuat
+    this.gia18K = data.gia18K
+    this.gia23K = data.gia23K
+    this.gia9999 = data.gia9999
+    this.giatinh = data.giatinh
+    this.gianhap = data.gianhap
+    this.giatoida = data.giatoida
+  }
+  forData () {}
 }

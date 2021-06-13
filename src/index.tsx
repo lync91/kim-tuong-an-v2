@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
 import vi_VN from 'antd/lib/locale/vi_VN';
 
+
 ReactDOM.render(
   <ConfigProvider locale={vi_VN}>
     <App />

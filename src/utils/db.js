@@ -1,8 +1,9 @@
-// import { remote } from 'electron';
+import { remote } from 'electron';
 import moment from 'moment';
 import { round } from 'mathjs';
-// const knex = remote.require('./db/connect');
-// const db = remote.require('./db');
+const knex = remote.require('./db/connect').default;
+const db = remote.require('./db');
+console.log(knex);
 
 export function getLastId(fn) {
   // knex('camdo').max({ a: 'id' })
@@ -96,8 +97,8 @@ export function chuocDo(id, tienlai, tienchuoc, ngaychuoc, fn) {
   //   .then(res => fn(res));
 }
 export function getCamDo(key, fn) {
-  // const camdo = knex('camdo').select()
-  //   .orderBy('id', 'desc')
+  const camdo = knex('camdo').select()
+    // .orderBy('id', 'desc')
   // if (key === 'tatca') camdo
     // .then(res => fn(res.map((v) => {
     //   v.ngaycam = moment(v.ngaycam).format('DD/MM/YYYY');
@@ -111,7 +112,7 @@ export function getCamDo(key, fn) {
     //   v.trongluongthuc = v.trongluongthuc ? round(v.trongluongthuc, 3) : ''
     //   return v
     // })));
-  //   .then(res => fn(res))
+    .then(res => fn(res))
   // if (key === 'conhan') camdo.whereRaw(
   //   'ngayhethan > ? and dachuoc <= ? and dahuy > ?',
   //   [moment().format('x'), 0, 0]

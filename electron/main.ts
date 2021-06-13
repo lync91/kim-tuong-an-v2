@@ -2,17 +2,23 @@ import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as isDev from 'electron-is-dev';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
-import './db'
 
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
+    maximizable: true,
+    
     webPreferences: {
-      // contextIsolation: false,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      plugins: true,
+      nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js')
     }
   })
+
+  win.maximize()
 
   if (isDev) {
     win.loadURL('http://localhost:3000/index.html');
