@@ -35,24 +35,6 @@ const { RangePicker } = DatePicker;
 const dateFormat = 'DD/MM/YYYY, h:mm:ss A';
 const dateFormat1 = 'DD/MM/YYYY';
 const vietIME = new VietIME();
-console.log(vietIME);
-
-const keyLayourt = {
-  'default': [
-    '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
-    '{tab} Q W E R T Y U I O P { } |',
-    '{lock} A S D F G H J K L : " {enter}',
-    '{shift} Z X C V B N M < > ? {shift}',
-    '.com @ {space}'
-  ],
-  'shift': [
-    '~ ! @ # $ % ^ & * ( ) _ + {bksp}',
-    '{tab} Q W E R T Y U I O P { } |',
-    '{lock} A S D F G H J K L : " {enter}',
-    '{shift} Z X C V B N M < > ? {shift}',
-    '.com @ {space}'
-  ]
-}
 
 
 const defData: any = new Camdo({
