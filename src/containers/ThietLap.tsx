@@ -7,10 +7,10 @@ import { createSettings, getSettings, setSettings } from '../utils/db';
 function ThietLap() {
   const [form] = Form.useForm();
   useEffect(() => {
-    // getSettings()
-    // .then(res => {
-    //   form.setFieldsValue(res)
-    // })
+    getSettings()
+    .then(res => {
+      form.setFieldsValue(res)
+    })
     const res: any = {}
     form.setFieldsValue(res)
     return () => {

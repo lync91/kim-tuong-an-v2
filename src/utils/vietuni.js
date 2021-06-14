@@ -44,6 +44,7 @@ var g_arrVnVowel = new Array(
 );
 
 function GetVnVowelIndex(nCode) {
+    console.log('nCode', nCode);
     var i, j;
     i = 0;
     j = 0;
@@ -110,7 +111,7 @@ function GetKeyCode(ev) {
 
 function GetKeyChar(ev) {
     if (ev.which) return ev.which;
-        return ev.charCode;
+    return ev.charCode;
     return 0;
 }
 
@@ -151,25 +152,49 @@ VietIME.prototype.getTargetRange = function () {
     if (this.m_target == null) return null;
     var brType = getBrowserType();
     var selStart = this.m_target.selectionStart;
-        var selEnd = this.m_target.selectionEnd;
-        if (selStart != selEnd) return null;
-        var strVal = this.m_target.value;
-        var ch = 0;
-        while (selStart > 0) {
-            ch = strVal.charAt(selStart);
-            if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
-                if (selStart < selEnd) {
-                    selStart++;
-                    break;
-                }
+    var selEnd = this.m_target.selectionEnd;
+    console.log(selStart);
+    console.log(selEnd);
+    if (selStart != selEnd) return null;
+    var strVal = this.m_target.value;
+    var ch = 0;
+    while (selStart > 0) {
+        ch = strVal.charAt(selStart);
+        if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
+            if (selStart < selEnd) {
+                selStart++;
+                break;
             }
-            selStart--;
         }
-        if (selStart > selEnd) selStart = selEnd;
-        if (selEnd > selStart) {
-            return new NsTextRange(selStart, selEnd, this.m_target.value.substring(selStart, selEnd));
+        selStart--;
+    }
+    if (selStart > selEnd) selStart = selEnd;
+    if (selEnd > selStart) {
+        return new NsTextRange(selStart, selEnd, this.m_target.value.substring(selStart, selEnd));
+    }
+    return null;
+}
+VietIME.prototype.getTargetRange2 = function (value) {
+    var selStart = value.length;
+    var selEnd = value.length;
+    if (selStart != selEnd) return null;
+    var strVal = value;
+    var ch = 0;
+    while (selStart > 0) {
+        ch = strVal.charAt(selStart);
+        if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
+            if (selStart < selEnd) {
+                selStart++;
+                break;
+            }
         }
-        return null;
+        selStart--;
+    }
+    if (selStart > selEnd) selStart = selEnd;
+    if (selEnd > selStart) {
+        return new NsTextRange(selStart, selEnd, value.substring(selStart, selEnd));
+    }
+    return null;
 }
 
 VietIME.prototype.sendKeyStroke = function (nKeyCode, nCharCode) {
@@ -320,37 +345,27 @@ VietIME.prototype.processVNI678 = function (pCh, nCode, txtRange, evt) {
             break;
     }
     if (nInsertCode > 0) {
-        this.replaceStr(1, String.fromCharCode(nInsertCode), bDiscard, txtRange, evt);
-        return true;
+        return this.replaceStr2(1, String.fromCharCode(nInsertCode), bDiscard, txtRange, evt);
     }
     return false;
 }
 
 VietIME.prototype.replaceStr = function (nChars, strToInsert, bDiscardEvent, txtRange, evt) {
     var brType = getBrowserType();
-    if (brType == BR_TYPE_IE) {
-        var str = txtRange.text.substring(0, txtRange.text.length - nChars);
-        txtRange.text = str + strToInsert;
-        txtRange.collapse(false);
-        if (bDiscardEvent) window.event.returnValue = false;
-    } else {
-        if (brType == BR_TYPE_FIREFOX) {
-            for (var iC = 0; iC < nChars; iC++) {
-                this.sendKeyStroke(0x08, 0);	//backspace
-            }
-            for (var jC = 0; jC < strToInsert.length; jC++) {
-                this.sendKeyStroke(0xFF, strToInsert.charCodeAt(jC));
-            }
-            if (bDiscardEvent) evt.preventDefault();
-        } else {
-            var strVal = this.m_target.value;
-            var newStrVal = strVal.substring(0, txtRange.m_nEnd - nChars) + strToInsert + strVal.substring(txtRange.m_nEnd);
-            this.m_target.value = newStrVal;
-            if (bDiscardEvent) {
-                if (evt.preventDefault) evt.preventDefault();
-            }
-        }
+    var strVal = this.m_target.value;
+    var newStrVal = strVal.substring(0, txtRange.m_nEnd - nChars) + strToInsert + strVal.substring(txtRange.m_nEnd);
+    this.m_target.value = newStrVal;
+    if (bDiscardEvent) {
+        if (evt.preventDefault) evt.preventDefault();
     }
+}
+VietIME.prototype.replaceStr2 = function (nChars, strToInsert, bDiscardEvent, txtRange, evt) {
+    var strVal = this.m_target.value;
+    console.log('1', strVal.substring(0, txtRange.m_nEnd - nChars));
+    console.log('2', strToInsert);
+    console.log('3', strVal.substring(txtRange.m_nEnd));
+    var newStrVal = strVal.substring(0, txtRange.m_nEnd - nChars) + strToInsert + strVal.substring(txtRange.m_nEnd);
+    return newStrVal.substring(0, newStrVal.length);
 }
 VietIME.prototype.setStringValue = function (nStart, nEnd, strToInsert, evt, bIgnore) {
     var newStrVal = this.m_target.value.substring(0, nStart) + strToInsert + this.m_target.value.substring(nEnd);
@@ -413,21 +428,27 @@ VietIME.prototype.findAccentPos = function (txtRange) {
 }
 
 VietIME.prototype.processAccent = function (nAccent, txtRange, evt) {
+    console.log(nAccent);
     if (nAccent < 0) return;
     var nPos = this.findAccentPos(txtRange);
+    console.log(nPos);
     if (nPos < 0) return;
     var strEnd = txtRange.text.substring(nPos + 1);
     var nIndex = GetVnVowelIndex(txtRange.text.charCodeAt(nPos));
+    console.log('ind', nIndex);
     var nBaseIndex = parseInt(nIndex / 10);
+    console.log(nBaseIndex);
     var nCurAccent = nIndex % 10;
+    console.log(nCurAccent);
     if (nCurAccent != nAccent) {
+        console.log('OK');
         var nInsertCode = g_arrVnVowel[nBaseIndex][nAccent];
         strEnd = String.fromCharCode(nInsertCode) + strEnd;
-        this.replaceStr(txtRange.text.length - nPos, strEnd, true, txtRange, evt);
+        return this.replaceStr2(txtRange.text.length - nPos, strEnd, true, txtRange, evt);
     } else {	// delete accent
         var nInsertCode = g_arrVnVowel[nBaseIndex][0];
         strEnd = String.fromCharCode(nInsertCode) + strEnd;
-        this.replaceStr(txtRange.text.length - nPos, strEnd, false, txtRange, evt);
+        return this.replaceStr2(txtRange.text.length - nPos, strEnd, false, txtRange, evt);
     }
 }
 
@@ -486,6 +507,63 @@ VietIME.prototype.targetOnKeyPress = function (evt, target) {
     switch (this.m_nMode) {
         case this.TELEX:
             this.processAccent("zfsrxj".indexOf(chInput), rg, evt);
+            break;
+        case this.VNI:
+            this.processAccent("021345".indexOf(chInput), rg, evt);
+            break;
+        case this.VIQR:
+            this.processAccent("-`'?~.".indexOf(chInput), rg, evt);
+            break;
+        default:
+            break;
+    }
+}
+
+VietIME.prototype.targetRun = function (evt, target) {
+    var chPrev;
+    chPrev = '_';
+    console.log(target);
+    if (target) this.m_target = {value: target};
+    var nCode = evt.charCodeAt(0);
+    if (nCode == 0x0A || nCode == 0x0D || nCode == 0x09) return;
+    var rg = this.getTargetRange2(target);
+    if (rg == null) { return; }
+    if (rg.text == null) { return; }
+    if (rg.text.length == 0) {
+        if (nCode == 0x57 || nCode == 0x77) {
+            return this.replaceStr2(0, String.fromCharCode(0x1AF + ((nCode == 0x77) ? 1 : 0)), true, rg, evt);
+        }
+        // return;
+    }
+    var ch = rg.text.charCodeAt(rg.text.length - 1);
+    // d, D
+    if (ch == 0x44 || ch == 0x64) {
+        if (((this.m_nMode == this.TELEX || this.m_nMode == this.VIQR) && (nCode == 0x44 || nCode == 0x64)) ||
+            ((this.m_nMode == this.VNI) && (nCode == 0x39))) {
+            return this.replaceStr2(1, String.fromCharCode(0x110 + ((ch == 0x64) ? 1 : 0)), true, rg, evt);
+        }
+    }
+    // dd, DD
+    if (ch == 0x111 || ch == 0x110) {
+        if ((this.m_nMode == this.TELEX || this.m_nMode == this.VIQR) && (nCode == 0x44 || nCode == 0x64)) {
+            return this.replaceStr2(1, String.fromCharCode(0x44 + ((ch == 0x111) ? 0x20 : 0)), false, rg, evt);
+        }
+    }
+    // w, W
+    if ((this.m_nMode == this.TELEX) && (nCode == 0x57 || nCode == 0x77)) {
+        var nChPrevId = GetVnVowelIndex(ch);
+        chPrev = this.getBaseCharEx(nChPrevId);
+        if ((chPrev != 'o') && (chPrev != 'u') && (chPrev != 'a')) {
+            if ((ch != 0x57) && (ch != 0x77)) {
+                return this.replaceStr2(0, String.fromCharCode(0x1AF + ((nCode == 0x77) ? 1 : 0)), true, rg, evt);
+            }
+        }
+    }
+    if (this.processVNI678(ch, nCode, rg, evt)) { return this.processVNI678(ch, nCode, rg, evt) }
+    var chInput = String.fromCharCode(nCode).toLowerCase().charAt(0);
+    switch (this.m_nMode) {
+        case this.TELEX:
+            return this.processAccent("zfsrxj".indexOf(chInput), rg, evt);
             break;
         case this.VNI:
             this.processAccent("021345".indexOf(chInput), rg, evt);

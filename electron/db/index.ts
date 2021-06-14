@@ -1,6 +1,20 @@
 import knex from "./connect";
 import { ipcMain } from "electron";
 
+ipcMain.handle('getLastId', async (event) => {
+	const result = await knex('camdo').max({ a: 'id' });
+	return result[0];
+});
+ipcMain.handle('getSettings', async (event) => {
+	const result = await knex('settings').where('id', 1);
+	return result[0];
+});
+ipcMain.handle('setSettings', async (e, v) => {
+	const result = await knex('settings')
+	    .where('id', 1)
+	    .update(v)
+	return result;
+})
 ipcMain.handle('getdata', async (event) => {
 	const result = await knex('camdo').orderBy('id', 'desc').select();
 	return result;

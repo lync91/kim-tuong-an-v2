@@ -4,6 +4,8 @@ import { useBarcode } from 'react-barcodes';
 import { camdoTypes } from '../types/camdo';
 import { Col, Row } from 'antd';
 
+import BarCodeComponent from '../components/barCode';
+
 import docso from '../utils/sorachu';
 import { any } from 'prop-types';
 import moment from 'moment';
@@ -21,9 +23,6 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
 
     }
   }, [formData])
-  const { inputRef } = useBarcode({
-    value: formData.sophieu || `0`,
-  });
   return (
     <Row>
       <Col span="24">
@@ -33,7 +32,7 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
               <div className="center">
                 <div className="center"><h3>{formData.ngayCamChuoc[0] ? formData.ngayCamChuoc[0].format('h:mm A') : ''}</h3></div><br />
                 <div>
-                  <svg ref={inputRef} /><br />
+                  <BarCodeComponent value={formData.sophieu} /><br />
                 </div>
                 <b>{formData.tenkhach}</b><br />
                 <b>{formData.dienthoai}</b><br />
@@ -69,7 +68,7 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
                   <div className="qr-code">
                     <div className="phieu-time">{formData.ngayCamChuoc[0] ? formData.ngayCamChuoc[0].format('h:mm A') : ''}</div><br />
                     <div>
-                      <svg ref={inputRef} />
+                    <BarCodeComponent value={formData.sophieu} /><br />
                     </div>
                   </div>
                 </Row>

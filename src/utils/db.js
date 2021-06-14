@@ -2,12 +2,8 @@ import { ipcRenderer } from 'electron';
 import moment from 'moment';
 import { round } from 'mathjs';
 
-export function getLastId(fn) {
-  // knex('camdo').max({ a: 'id' })
-  //   .then(res => {
-  //     const id = res[0].a;
-  //     fn(id);
-  //   });
+export function getLastId() {
+  return ipcRenderer.invoke('getLastId')
 }
 export function insertCamdo(data, fn) {
   // db.test(res => console.log(res))
@@ -140,21 +136,8 @@ export function createSettings() {
   //   })
 }
 export function getSettings() {
-  // const a = new Promise((res, rej) => {
-  //   knex('settings')
-  //     .where('id', 1)
-  //     .then(r => res(r[0]))
-  //     .catch(e => rej(e))
-  // });
-  // return a;
+  return ipcRenderer.invoke('getSettings')
 }
 export function setSettings(values) {
-  const a = new Promise((res, rej) => {
-    // knex('settings')
-    //   .where('id', 1)
-    //   .update(values)
-    //   .then(r => res(r))
-    //   .catch(e => rej(e));
-  })
-  return a;
+  return ipcRenderer.invoke('setSettings', values)
 }
