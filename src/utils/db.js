@@ -5,7 +5,8 @@ import { round } from 'mathjs';
 export function getLastId() {
   return ipcRenderer.invoke('getLastId')
 }
-export function insertCamdo(data, fn) {
+export function insertCamdo(data) {
+  return ipcRenderer.invoke('insertCamdo', data);
   // db.test(res => console.log(res))
   // data.ngaycam = data.ngayCamChuoc[0].format('x');
   // data.ngayhethan = data.ngayCamChuoc[1].format('x');

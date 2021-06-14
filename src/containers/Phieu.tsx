@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
-// import Barcode from 'react-barcode';
-import { useBarcode } from 'react-barcodes';
 import { camdoTypes } from '../types/camdo';
 import { Col, Row } from 'antd';
 
 import BarCodeComponent from '../components/barCode';
-
 import docso from '../utils/sorachu';
-import { any } from 'prop-types';
 import moment from 'moment';
 
 function Phieu(props: { formData: any, hideCuong: boolean }) {
@@ -106,5 +102,4 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
     </Row>
   );
 }
-Phieu.propTypes = any;
 export default Phieu;

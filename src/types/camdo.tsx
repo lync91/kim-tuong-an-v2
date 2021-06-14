@@ -48,7 +48,7 @@ export interface camdoDataTypes {
   tudo: string;
   tienlai: number;
   tienchuoc: number;
-  
+
 }
 export class Camdo {
   id: number | undefined;
@@ -83,7 +83,7 @@ export class Camdo {
   gia23K: number;
   gia9999: number;
   giatinh: number;
-  
+
   constructor(data: camdoTypes) {
     this.id = data.id ? data.id : undefined
     this.sophieu = data.sophieu
@@ -117,6 +117,13 @@ export class Camdo {
     this.gia23K = 4200000;
     this.gia9999 = 4500000;
     this.giatinh = 2500000;
+    this.giatoida = 0;
+    getSettings().then(res => {
+      this.gia18K = res.gia18K;
+      this.gia23K = res.gia23K;
+      this.gia9999 = res.gia9999
+      this.giatinh = res.gia18K
+    })
     this.setTrangThai(data)
   }
   update(data: any) {
@@ -151,10 +158,21 @@ export class Camdo {
     this.setTrangThai(data);
     return this;
   }
+  setGiaTinh(value: number) {
+    this.giatinh = value;
+    return this;
+  }
+  setGia(value: any) {
+    this.gia18K = value.gia18K;
+    this.gia23K = value.gia23K;
+    this.gia9999 = value.gia9999;
+    return this;
+  }
+  setSophieu(value: string) {
+    this.sophieu = value;
+    return this;
+  }
   setTrangThai(c: any) {
-    let text = '';
-    let color = ''
-    // var start = moment(c.ngaycam).format('X');
     var end = Number(moment(c.ngayhethan).format('X'));
     var now = Number(moment().format('X'));
     const han = (end - now) / (60 * 60 * 24);
@@ -201,6 +219,7 @@ export class Camdo {
   }
   calc() {
     this.trongluongthuc = round(this.tongtrongluong - this.trongluonghot, 3);
+    this.giatoida = round(this.trongluongthuc * this.giatinh);
     return this;
   }
 }

@@ -83,8 +83,8 @@ function TaoPhieu() {
     getLastId()
       .then(e => {
         const sp = padDigits(e.a + 1, 9)
-        form.setFieldsValue({ ...defData, ...{ sophieu: sp } });
-        setFormData({ ...defData, ...{ sophieu: sp } })
+        form.setFieldsValue(defData.setSophieu(sp));
+        setFormData(defData.setSophieu(sp))
       });
   };
   useEffect(() => {
@@ -108,50 +108,53 @@ function TaoPhieu() {
     setVisible(false);
   };
   const onGiaUpdate = (data: camdoTypes) => {
-    console.log(data);
     setSettings(data)
     .then(e => {
       console.log(e);
       message.success('Lưu giá vàng thành công');
       setVisible(false);
       getSettings()
-      .then(res => setSettingData(res));
+      .then(res => {
+        setSettingData(res);
+        _selectGia(form.getFieldValue('loaivang'))
+      });
     })
   };
   const _selectGia = (e: string) => {
     switch (e) {
       default:
       case '18K':
-        onGiaUpdate({ ...formData, ...{ gianhap: Number(form.getFieldValue('gia18K')) } });
+        form.setFieldsValue(defData.setGia(settingData).setGiaTinh(settingData.gia18K).calc());
         return;
       case '23K':
-        onGiaUpdate({ ...formData, ...{ gianhap: Number(form.getFieldValue('gia23K')) } });
+        form.setFieldsValue(defData.setGia(settingData).setGiaTinh(settingData.gia23K).calc());
         return;
       case '9999':
-        onGiaUpdate({ ...formData, ...{ gianhap: Number(form.getFieldValue('gia9999')) } });
+        form.setFieldsValue(defData.setGia(settingData).setGiaTinh(settingData.gia9999).calc());
     }
   };
   const save = () => {
-    insertCamdo(form.getFieldsValue(), () => {
-      message.success('Thêm thành công phiếu cầm đồ')
-    });
+    insertCamdo(defData.forData());
   };
   const print = () => {
     printPreview(form.getFieldsValue(), false);
   }
   const saveAndPrint = () => {
-    insertCamdo(form.getFieldsValue(), async () => {
-      message.success('Thêm thành công phiếu cầm đồ');
-      printPreview(form.getFieldsValue(), false);
-      genKey();
-      // const giavang = await settings.get('giavang');
-      // console.log(giavang);
-      const newNgaycamChuoc = [moment(moment().format(dateFormat), dateFormat), moment(moment().add(30, 'days').format(dateFormat), dateFormat)];
-      // form.setFieldsValue(giavang);
-      form.setFieldsValue({ ngayCamChuoc: newNgaycamChuoc })
-      setFormData({ ...formData, ngayCamChuoc: newNgaycamChuoc });
-      calc();
-    });
+    console.log(defData.toData());
+    
+    insertCamdo(defData.toData());
+    // insertCamdo(form.getFieldsValue(), async () => {
+    //   message.success('Thêm thành công phiếu cầm đồ');
+    //   printPreview(form.getFieldsValue(), false);
+    //   genKey();
+    //   // const giavang = await settings.get('giavang');
+    //   // console.log(giavang);
+    //   const newNgaycamChuoc = [moment(moment().format(dateFormat), dateFormat), moment(moment().add(30, 'days').format(dateFormat), dateFormat)];
+    //   // form.setFieldsValue(giavang);
+    //   form.setFieldsValue({ ngayCamChuoc: newNgaycamChuoc })
+    //   setFormData({ ...formData, ngayCamChuoc: newNgaycamChuoc });
+    //   calc();
+    // });
   }
   const _setCurrentInput = (e: string) => {
     setCurrentInput(e);

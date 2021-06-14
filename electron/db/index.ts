@@ -48,3 +48,7 @@ ipcMain.handle('camThemTien', async (event, data) => {
     .update(data);
 	return result;
 });
+ipcMain.handle('insertCamdo', async (event, data) => {
+	const result = await knex('camdo').insert(data);
+	return result;
+});
