@@ -22,10 +22,7 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
     }
   }, [formData])
   const { inputRef } = useBarcode({
-    value: formData.sophie || `0`,
-    // options: {
-    //   background: '#ccffff',
-    // }
+    value: formData.sophieu || `0`,
   });
   return (
     <Row>

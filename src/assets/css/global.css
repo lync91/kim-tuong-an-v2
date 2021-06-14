@@ -459,3 +459,6 @@ tbody tr:hover {
   .ant-input-number-disabled {
     color: #555 !important;
   }
+  .numeric-theme {
+    width: 300px !important;
+  }

@@ -3,10 +3,12 @@ import { Form, Input, Select, DatePicker, Modal, message, Tag, notification, Inp
 import Button from 'antd-button-color';
 import moment from 'moment';
 import { round, evaluate } from 'mathjs';
+import Keyboard from "react-simple-keyboard";
 import { SmileOutlined, CloseCircleOutlined, CheckCircleOutlined, SaveOutlined, PrinterOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { updateCamDo, huyPhieuCam, timPhieubyID, giahanCamDo, chuocDo, camThemTien } from '../utils/db';
 import { printPreview } from '../utils/print';
 import { camdoDataTypes, camdoTypes, Camdo } from '../types/camdo';
+import ModalCamThem from './modalCamThem';
 import BarCodeEvent from './barCodeEvent'
 
 const { RangePicker } = DatePicker;
@@ -120,10 +122,6 @@ function ChiTiet(props: propsType) {
     setModalGiaHan(false);
     // setInputXacNhan('');
   };
-  const camThemCancel = () => {
-    setModalCamThem(false);
-    // setInputXacNhan('');
-  };
   const giaHanOK = () => {
     const data = form.getFieldsValue();
     const laihientai = data.tienlai | 0;
@@ -136,22 +134,6 @@ function ChiTiet(props: propsType) {
       })
     })
     setModalGiaHan(false);
-    // setInputXacNhan('');
-  };
-  const camThemOK = () => {
-    const laihientai = data.tienlai | 0;
-    const laidukien = form.getFieldValue('tienlaidukien');
-    const tiencam = Number(form.getFieldValue('tiencam'));
-    const tiencamthem = Number(formCamThem.getFieldValue('tiencamthem'));
-    camThemTien(data.id, laihientai + laidukien, tiencam + tiencamthem).then(() => {
-      timPhieubyID(data.id).then((res: any) => {
-        const data = new Camdo(res)
-        onSearched(data);
-        setTrangthai(data.trangthai)
-      })
-    })
-    setModalCamThem(false);
-    formCamThem.setFieldsValue({ tiencamthem: '' })
     // setInputXacNhan('');
   };
   const handleOkHuy = () => {
@@ -220,6 +202,10 @@ function ChiTiet(props: propsType) {
   const handleError = (err: any) => {
     console.error(err)
   }
+  const camthemNumpad = (e: any) => {
+    console.log(e);
+    form.setFieldsValue({ tiencamthem: e })
+  }
   return (
     <div>
       <BarCodeEvent
@@ -253,25 +239,16 @@ function ChiTiet(props: propsType) {
         {/* <p>Tiền chuộc: <b>{`${form.getFieldValue('tienchuoc')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p> */}
         Số ngày gia hạn: <b></b><InputNumber defaultValue={30} />
       </Modal>
-      <Modal title="Cầm thêm tiền"
-        visible={modalCamThem}
-        onOk={camThemOK}
-        okText="Xác nhận"
-        cancelText="Hủy"
-        onCancel={camThemCancel}
-      >
-        <p>Số ngày cầm: <b>{form.getFieldValue('songay')}</b></p>
-        <p>lãi suất: <b>{form.getFieldValue('laisuat')}%</b></p>
-        <p>Tiền cầm: <b>{`${form.getFieldValue('tiencam')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
-        <p>Tiền lãi: <b>{`${form.getFieldValue('tienlaidukien')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
-        {/* <p>Tiền chuộc: <b>{`${form.getFieldValue('tienchuoc')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p> */}
-        Số tiền cầm thêm: <b></b>
-        <Form form={formCamThem}>
-          <Form.Item name="tiencamthem">
-            <Input></Input>
-          </Form.Item>
-        </Form>
-      </Modal>
+        <ModalCamThem
+          visible={modalCamThem}
+          onSubmit={(e: any) => console.log(e)}
+          onCancel={(e: any) => setModalCamThem(false)}
+          songay={form.getFieldValue('songay')}
+          laisuat={form.getFieldValue('laisuat')}
+          tiencam={form.getFieldValue('tiencam')}
+          tienlaidukien={form.getFieldValue('tienlaidukien')}
+          onChange={(e: string) => form.setFieldsValue({tiencamthem: e})}
+          change={moment().format('x')} />
       <Modal
         title="Xác nhận hủy phiếu"
         visible={modalHuy}

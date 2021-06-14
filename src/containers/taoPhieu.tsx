@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   PageHeader,
   Layout,
@@ -20,6 +20,8 @@ import { evaluate, round } from 'mathjs';
 import { SaveTwoTone, PrinterTwoTone, ProjectOutlined } from '@ant-design/icons';
 import Keyboard from 'react-simple-keyboard';
 
+import VietIME from '../utils/vietuni';
+
 import {
   getLastId,
   insertCamdo,
@@ -34,10 +36,13 @@ const { RangePicker } = DatePicker;
 
 const dateFormat = 'DD/MM/YYYY, h:mm:ss A';
 const dateFormat1 = 'DD/MM/YYYY';
-
 // const genkey = (key) => {
 //     return `${crc16('1999009090909')}${generate(4)}`;
 // };
+
+const vietIME = new VietIME();
+console.log(vietIME);
+
 
 const defData : camdoTypes = {
   id: 0,
@@ -67,7 +72,7 @@ function TaoPhieu() {
   const [formData, setFormData] = useState(defData);
   const [currentInput, setCurrentInput] = useState('tenkhach');
   const [visible, setVisible] = useState(false);
-
+  const tenKhachRef = useRef();
   const calc = () => {
     console.log(form.getFieldsValue())
     const gianhap = Number(form.getFieldValue(`gia${form.getFieldValue('loaivang')}`));
@@ -88,6 +93,7 @@ function TaoPhieu() {
     });
   };
   useEffect(() => {
+    
     genKey();
     const res = {}
     form.setFieldsValue(res)
@@ -102,6 +108,12 @@ function TaoPhieu() {
     //     calc();
     //   })
   }, []);
+  const tenkhachKey = (e: any) => {
+    console.log('test', vietIME.targetOnKeyPress(e));
+    
+    
+    // vietUni.vietTyping(e, vietUni, e.target)
+  }
   const _onValuesChange = (value: any, vs: any) => {
     setFormData(vs);
     calc();
@@ -172,12 +184,13 @@ function TaoPhieu() {
   //   console.log(e)
   //   console.log(v);
   // }
-  // const onkeyboardChange = (e) => {
-  //   console.log(e);
-  // }
-  // const onkeyboardKeyPress = (e) => {
-  //   console.log(e);
-  // }
+  const onkeyboardChange = (e: any) => {
+    console.log(e);
+  }
+  const onkeyboardKeyPress = (e: string) => {
+    vietIME.targetOnKeyPress({charCode: e.charCodeAt(0)})
+    vietIME.m_target.value += e;
+  }
   return (
     <div >
       <PageHeader className="site-page-header"
@@ -230,7 +243,15 @@ function TaoPhieu() {
                 <Input disabled />
               </Form.Item>
               <Form.Item label="Tên khách hàng" name="tenkhach" >
-                <Input className={currentInput === 'tenkhach' ? 'input-focused' : ''} onClick={(e: any) => setCurrentInput('tenkhach')} ref={inputRef} />
+                <Input 
+                onKeyPress={tenkhachKey}
+                className={currentInput === 'tenkhach' ? 'input-focused' : ''} 
+                onClick={(e: any) => {
+                  setCurrentInput('tenkhach');
+                  console.log(e.target);
+                  vietIME.setTarget(e.target);
+                }} 
+                ref={(r: any) => inputRef.current = r} />
               </Form.Item>
               <Form.Item label="Điện thoại" name="dienthoai" >
                 <Input className={currentInput === 'dienthoai' ? 'input-focused' : ''} onClick={() => setCurrentInput('dienthoai')}/>
@@ -342,11 +363,11 @@ function TaoPhieu() {
             <Phieu formData={formData} hideCuong={false} />
           </Col>
         </Row>
-        <Row hidden>
+        <Row>
           <Keyboard
-            // onChange={onkeyboardChange}
-            // onKeyPress={onkeyboardKeyPress}
-            layoutName="shift"
+            onChange={onkeyboardChange}
+            onKeyPress={onkeyboardKeyPress}
+            layoutName="default"
           />
         </Row>
       </Layout>
