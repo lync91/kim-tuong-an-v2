@@ -16,8 +16,6 @@ import Button from 'antd-button-color';
 import moment from 'moment';
 import { camdoTypes, settingsTypes, Camdo } from '../types/camdo';
 import { SaveTwoTone, PrinterTwoTone, ProjectOutlined } from '@ant-design/icons';
-import Keyboard from 'react-simple-keyboard';
-import VietIME from '../utils/vietuni';
 import {
   getLastId,
   insertCamdo,
@@ -27,37 +25,14 @@ import {
 import { padDigits } from '../utils/tools';
 
 import { printPreview } from '../utils/print'
+import KeyBoard1 from '../components/keyBoard'
 import Phieu from './Phieu';
 import GiaVang from '../components/giaVang';
-import { NamePath } from 'antd/lib/form/interface';
 const { RangePicker } = DatePicker;
 
 const dateFormat = 'DD/MM/YYYY, h:mm:ss A';
 const dateFormat1 = 'DD/MM/YYYY';
-const vietIME = new VietIME();
-
-
-const defData: any = new Camdo({
-  id: 0,
-  sophieu: '0000000000',
-  tenkhach: '',
-  dienthoai: '',
-  monhang: '',
-  loaivang: '18K',
-  tongtrongluong: 0,
-  trongluonghot: 0,
-  trongluongthuc: 0,
-  tiencam: 0,
-  ngayCamChuoc: [moment(moment().format(dateFormat), dateFormat), moment(moment().add(30, 'days').format(dateFormat), dateFormat)],
-  ngaytinhlai: moment(),
-  ngaychuoc: moment(),
-  ngaycam: moment(),
-  ngayhethan: moment(),
-  laisuat: 5,
-  tudo: '',
-  tienlai: 0,
-  tienchuoc: 0
-});
+let defData: any = new Camdo();
 
 const settings: settingsTypes = {
   gia18K: 2500000,
@@ -74,9 +49,9 @@ function TaoPhieu() {
   const inputRef = React.useRef(null);
   const [formData, setFormData] = useState(defData);
   const [settingData, setSettingData] = useState(settings)
-  const [currentInput, setCurrentInput] = useState('tenkhach');
   const [visible, setVisible] = useState(false);
-  const keyboard = useRef(null);
+  const [inputName, setInputName] = useState("tenkhach");
+  const [input, setInput] = useState({tenkhach: ''});
   const calc = () => {
   };
   const genKey = () => {
@@ -96,9 +71,10 @@ function TaoPhieu() {
     calc();
   }, []);
   const _onValuesChange = (value: any, vs: any) => {
-    const newForm = defData.update(vs).calc()
-    form.setFieldsValue(newForm)
-    setFormData(newForm);
+    const newForm = defData.update(vs).calc().calcObj();
+    setFormData({...vs, ...newForm});
+    setInput({...vs, ...newForm});
+    form.setFieldsValue(newForm);
   };
   const showDrawer = () => {
     setVisible(true);
@@ -134,104 +110,37 @@ function TaoPhieu() {
     }
   };
   const save = () => {
-    insertCamdo(defData.forData());
+    defData.save()
+    .then((res: any) => {
+      console.log(res);
+      
+    })
   };
   const print = () => {
     printPreview(form.getFieldsValue(), false);
   }
   const saveAndPrint = () => {
-    console.log(defData.toData());
-    
-    insertCamdo(defData.toData());
-    // insertCamdo(form.getFieldsValue(), async () => {
-    //   message.success('Thêm thành công phiếu cầm đồ');
-    //   printPreview(form.getFieldsValue(), false);
-    //   genKey();
-    //   // const giavang = await settings.get('giavang');
-    //   // console.log(giavang);
-    //   const newNgaycamChuoc = [moment(moment().format(dateFormat), dateFormat), moment(moment().add(30, 'days').format(dateFormat), dateFormat)];
-    //   // form.setFieldsValue(giavang);
-    //   form.setFieldsValue({ ngayCamChuoc: newNgaycamChuoc })
-    //   setFormData({ ...formData, ngayCamChuoc: newNgaycamChuoc });
-    //   calc();
-    // });
+    defData.save()
+    .then((res: any) => {
+      // console.log(res);
+      defData = new Camdo();
+      genKey();
+      setInput({tenkhach: ''})
+    })
   }
-  const _setCurrentInput = (e: string) => {
-    setCurrentInput(e);
-    const val = form.getFieldValue(e);
-    const k: any = keyboard.current;
-    k.setInput(val)
-
+  const onChangeAll = (inputObj: any) => {
+    setInput(inputObj);
+    const calc = defData.update({...form.getFieldsValue(), ...inputObj}).calc();
+    const _data = form.getFieldsValue();
+    form.setFieldsValue({..._data, ...calc});
+    setFormData({..._data, ...calc});
   }
-
-  const commonKeyboardOptions = {
-    onKeyPress: (button: any) => onkeyboardKeyPress(button),
-    theme: "simple-keyboard hg-theme-default hg-layout-default",
-    physicalKeyboardHighlight: true,
-    syncInstanceInputs: true,
-    mergeDisplay: true,
-    debug: true
+  const onKeyPress = (button: any) => {
+    console.log("Button pressed", button);
   };
-
-  const keyboardOptions = {
-    ...commonKeyboardOptions,
-    layout: {
-      default: [
-        "` 1 2 3 4 5 6 7 8 9 0 - = {backspace}",
-        "{tab} Q W E R T Y U I O P { } |",
-        '{capslock} A S D F G H J K L : " {enter}',
-        "{shiftleft} Z X C V B N M < > ? {shiftright}",
-        "{controlleft} {altleft} {metaleft} {space} {metaright} {altright}"
-      ],
-      shift: [
-        "~ ! @ # $ % ^ & * ( ) _ + {backspace}",
-        "{tab} Q W E R T Y U I O P { } |",
-        '{capslock} A S D F G H J K L : " {enter}',
-        "{shiftleft} Z X C V B N M < > ? {shiftright}",
-        "{controlleft} {altleft} {metaleft} {space} {metaright} {altright}"
-      ]
-    },
-    display: {
-      "{escape}": "esc ⎋",
-      "{tab}": "tab ⇥",
-      "{backspace}": "backspace ⌫",
-      "{enter}": "enter ↵",
-      "{capslock}": "caps lock ⇪",
-      "{shiftleft}": "shift ⇧",
-      "{shiftright}": "shift ⇧",
-      "{controlleft}": "ctrl ⌃",
-      "{controlright}": "ctrl ⌃",
-      "{altleft}": "alt ⌥",
-      "{altright}": "alt ⌥",
-      "{metaleft}": "cmd ⌘",
-      "{metaright}": "cmd ⌘"
-    }
-  };
-
-  const keyboardNumPadOptions = {
-    ...commonKeyboardOptions,
-    layout: {
-      default: [
-        "1 2 3 L N",
-        "4 5 6 K V",
-        "7 8 9 B D",
-        "000 0 . M T",
-        "{space}"
-      ]
-    }
-  };
-  const onkeyboardKeyPress = async (e: string) => {
-    const k: any = keyboard.current;
-    const val = await vietIME.targetRun(e, k.getInput());
-    k.setInput(val ? val : k.getInput());
-    // form.setFieldsValue({ tenkhach: k.getInput() })
-    const tmp: any = {};
-    tmp[currentInput] = k.getInput();
-    form.setFieldsValue(tmp);
-    setFormData(form.getFieldsValue());
-    form.setFieldsValue(defData.update(form.getFieldsValue()).calc())
+  const _setinputName = (e: string) => {
+    setInputName(e);
   }
-  const layoutName = "default";
   return (
     <div >
       <PageHeader className="site-page-header"
@@ -285,15 +194,16 @@ function TaoPhieu() {
               </Form.Item>
               <Form.Item label="Tên khách hàng" name="tenkhach" >
                 <Input
-                  className={currentInput === '' ? 'input-focused' : ''}
-                  onClick={(e: any) => _setCurrentInput('tenkhach')}
+                  value={input['tenkhach']}
+                  className={inputName === '' ? 'input-focused' : ''}
+                  onFocus={(e: any) => _setinputName('tenkhach')}
                   ref={(r: any) => inputRef.current = r} />
               </Form.Item>
               <Form.Item label="Điện thoại" name="dienthoai" >
-                <Input className={currentInput === 'dienthoai' ? 'input-focused' : ''} onClick={() => _setCurrentInput('dienthoai')} />
+                <Input className={inputName === 'dienthoai' ? 'input-focused' : ''} onFocus={() => _setinputName('dienthoai')} />
               </Form.Item>
               <Form.Item label="Món hàng" name="monhang">
-                <Input className={currentInput === 'monhang' ? 'input-focused' : ''} onClick={() => _setCurrentInput('monhang')} />
+                <Input className={inputName === 'monhang' ? 'input-focused' : ''} onFocus={() => _setinputName('monhang')} />
               </Form.Item>
               <Form.Item label="Loại vàng" name="loaivang" >
                 <Select onChange={_selectGia}>
@@ -308,37 +218,37 @@ function TaoPhieu() {
                     [{ required: true }]}
                   style={
                     { display: 'inline-block', width: 'calc(32% - 4px)' }}
-                  className={currentInput === 'tongtrongluong' ? 'input-focused' : ''}
+                  className={inputName === 'tongtrongluong' ? 'input-focused' : ''}
                 >
-                  <Input placeholder="Tổng" onClick={() => _setCurrentInput('tongtrongluong')} />
+                  <Input placeholder="Tổng" onFocus={() => _setinputName('tongtrongluong')} />
                 </Form.Item>
                 <Form.Item name="trongluonghot"
                   rules={
                     [{ required: true }]}
                   style={
                     { display: 'inline-block', width: 'calc(32% - 4px)', margin: '0 4px' }}
-                  className={currentInput === 'trongluonghot' ? 'input-focused' : ''}
+                  className={inputName === 'trongluonghot' ? 'input-focused' : ''}
                 >
-                  <Input placeholder="Hột" onClick={() => _setCurrentInput('trongluonghot')} />
+                  <Input placeholder="Hột" onFocus={() => _setinputName('trongluonghot')} />
                 </Form.Item>
                 <Form.Item name="trongluongthuc"
                   rules={
                     [{ required: true }]}
                   style={
                     { display: 'inline-block', width: 'calc(32% - 4px)', margin: '0 0px' }}
-                  className={currentInput === 'truongluongthuc' ? 'input-focused' : ''}
+                  className={inputName === 'truongluongthuc' ? 'input-focused' : ''}
                 >
-                  <Input placeholder="Thực" disabled onClick={() => _setCurrentInput('trongluongthuc')} />
+                  <Input placeholder="Thực" disabled onFocus={() => _setinputName('trongluongthuc')} />
                 </Form.Item>
               </Form.Item>
               <Form.Item label="Giá nhập" name="gianhap">
-                <Input disabled className={currentInput === 'gianhap' ? 'input-focused' : ''} />
+                <Input disabled className={inputName === 'gianhap' ? 'input-focused' : ''} />
               </Form.Item>
               <Form.Item label="Giá tối đa" name="giatoida">
-                <Input disabled onClick={() => _setCurrentInput('giatoida')} className={currentInput === 'giatoida' ? 'input-focused' : ''} />
+                <Input disabled onFocus={() => _setinputName('giatoida')} className={inputName === 'giatoida' ? 'input-focused' : ''} />
               </Form.Item>
               <Form.Item label="Tiền cầm" name="tiencam">
-                <Input onClick={() => _setCurrentInput('tiencam')} className={currentInput === 'tiencam' ? 'input-focused' : ''} />
+                <Input onFocus={() => _setinputName('tiencam')} className={inputName === 'tiencam' ? 'input-focused' : ''} />
               </Form.Item>
               <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc" >
                 <RangePicker
@@ -370,22 +280,12 @@ function TaoPhieu() {
           </Col>
         </Row>
         <Row>
-          <div style={{ paddingLeft: 50 }}>
-            <div className={"keyboardContainer"}>
-              <div className="numPad">
-                <Keyboard
-                  baseClass={"simple-keyboard-numpad"}
-                  {...keyboardNumPadOptions}
-                />
-              </div>
-              <Keyboard
-                baseClass={"simple-keyboard-main"}
-                keyboardRef={(r: any) => (keyboard.current = r)}
-                layoutName={layoutName}
-                {...keyboardOptions}
-              />
-            </div>
-          </div>
+          <KeyBoard1
+        inputName={inputName}
+        onChangeAll={onChangeAll}
+        onKeyPress={onKeyPress}
+        input={input}
+      />
         </Row>
       </Layout>
     </div>
