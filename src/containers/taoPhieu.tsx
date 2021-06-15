@@ -44,6 +44,16 @@ const settings: settingsTypes = {
   tienToiThieu: 5000
 }
 
+const defInput = {
+  tenkhach: "",
+  dienthoai: "",
+  monhang: "",
+  loaivang: "",
+  tongtrongluong: "",
+  trongluonghot: "",
+  tiencam: ""
+}
+
 function TaoPhieu() {
   const [form] = Form.useForm();
   const inputRef = React.useRef(null);
@@ -51,7 +61,7 @@ function TaoPhieu() {
   const [settingData, setSettingData] = useState(settings)
   const [visible, setVisible] = useState(false);
   const [inputName, setInputName] = useState("tenkhach");
-  const [input, setInput] = useState({tenkhach: ''});
+  const [input, setInput] = useState(defInput);
   const calc = () => {
   };
   const genKey = () => {
@@ -64,16 +74,17 @@ function TaoPhieu() {
   };
   useEffect(() => {
     genKey();
+    setInput(defInput)
     getSettings()
       .then(res => {
-        setSettingData(res)
+        setSettingData(res);
       });
     calc();
   }, []);
   const _onValuesChange = (value: any, vs: any) => {
     const newForm = defData.update(vs).calc().calcObj();
     setFormData({...vs, ...newForm});
-    setInput({...vs, ...newForm});
+    setInput({...input, [inputName]: value});
     form.setFieldsValue(newForm);
   };
   const showDrawer = () => {
@@ -125,15 +136,19 @@ function TaoPhieu() {
       // console.log(res);
       defData = new Camdo();
       genKey();
-      setInput({tenkhach: ''})
+      setInput(defInput)
     })
   }
   const onChangeAll = (inputObj: any) => {
+    console.log(inputObj);
+    
     // setInput(inputObj);
     // const calc = defData.update({...form.getFieldsValue(), ...inputObj}).calc();
     // const _data = form.getFieldsValue();
     const data = defData.update(inputObj);
     const calc = data.calc().calcObj();
+    console.log(calc);
+    
     form.setFieldsValue({...inputObj, ...calc});
     // setFormData({..._data, ...inputObj,...calc.calcObj()});
   }
@@ -142,6 +157,7 @@ function TaoPhieu() {
   };
   const _setinputName = (e: string) => {
     setInputName(e);
+    
   }
   return (
     <div >
