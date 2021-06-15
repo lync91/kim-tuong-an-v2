@@ -174,7 +174,7 @@ VietIME.prototype.getTargetRange = function () {
     }
     return null;
 }
-VietIME.prototype.getTargetRange2 = function (value) {
+VietIME.prototype.getTargetRange2 = function (value = '') {
     var selStart = value.length;
     var selEnd = value.length;
     if (selStart != selEnd) return null;

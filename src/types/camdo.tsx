@@ -157,29 +157,29 @@ export class Camdo {
   }
   update(data: any) {
     this.id = data.id ? data.id : undefined
-    this.sophieu = data.sophieu
-    this.tenkhach = data.tenkhach
-    this.dienthoai = data.dienthoai
-    this.monhang = data.monhang
-    this.loaivang = data.loaivang
-    this.tongtrongluong = data.tongtrongluong
-    this.trongluonghot = data.trongluonghot
-    this.trongluongthuc = round(data.trongluongthuc, 3)
-    this.tiencam = data.tiencam
+    this.sophieu = data.sophieu ? data.sophieu : this.sophieu;
+    this.tenkhach = data.tenkhach ? data.tenkhach : this.tenkhach;
+    this.dienthoai = data.dienthoai ? data.dienthoai : this.dienthoai;
+    this.monhang = data.monhang ? data.monhang : this.monhang;
+    this.loaivang = data.loaivang ? data.loaivang : this.loaivang;
+    this.tongtrongluong = data.tongtrongluong ? data.tongtrongluong : this.tongtrongluong;
+    this.trongluonghot = data.trongluonghot ? data.trongluonghot : this.trongluonghot;
+    this.trongluongthuc = data.trongluongthuc ? round(data.trongluongthuc, 3) : this.trongluongthuc;
+    this.tiencam = data.tiencam ? data.tiencam : this.tiencam;
     this.ngayCamChuoc = data.ngayCamChuoc ? data.ngayCamChuoc : [moment(data.ngaycam), moment(data.ngayhethan)]
-    this.ngaychuoc = data.ngaychuoc ? moment(data.ngaychuoc) : ''
-    this.ngaycam = data.ngaycam ? moment(data.ngaycam) : '';
-    this.ngaytinhlai = data.ngaytinhlai ? moment(data.ngaytinhlai) : '';
-    this.laisuat = 3;
-    this.gianhap = 0;
-    this.giatoida = 0;
+    this.ngaychuoc = data.ngaychuoc ? moment(data.ngaychuoc) : this.ngaychuoc
+    this.ngaycam = data.ngaycam ? moment(data.ngaycam) : this.ngaycam;
+    this.ngaytinhlai = data.ngaytinhlai ? moment(data.ngaytinhlai) : this.ngaytinhlai;
+    this.laisuat = data.laisuat ? data.laisuat : this.laisuat;
+    this.gianhap = data.gianhap ? data.gianhap : this.gianhap;
+    this.giatoida = data.giatoida ? data.giatoida : this.giatoida;
     this.songay = data.ngaytinhlai ? round((Number(moment().format('X')) - Number(moment(data.ngaytinhlai).format('X'))) / (60 * 60 * 24) + 1) : 0;
     this.tienlaidukien = data.tiencam ? round((data.tiencam * (3 * this.songay / 30)) / 100) : 0;
-    this.tudo = data.tudo;
+    this.tudo = data.tudo ? data.sophieu : this.sophieu;
     this.tienchuocdukien = this.tiencam + this.tienlaidukien;
-    this.tienlai = data.tienlai;
-    this.tienchuoc = data.tienchuoc;
-    this.ngayhethan = data.ngayhethan ? moment(data.ngayhethan) : '';
+    this.tienlai = data.tienlai ? data.sophieu : this.sophieu;
+    this.tienchuoc = data.tienchuoc  ? data.sophieu : this.sophieu;
+    this.ngayhethan = data.ngayhethan ? moment(data.ngayhethan) : this.ngayhethan;
     this.trangthai = {
       text: 'Chưa quét',
       color: ''

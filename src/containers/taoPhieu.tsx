@@ -129,11 +129,13 @@ function TaoPhieu() {
     })
   }
   const onChangeAll = (inputObj: any) => {
-    setInput(inputObj);
-    const calc = defData.update({...form.getFieldsValue(), ...inputObj}).calc();
-    const _data = form.getFieldsValue();
-    form.setFieldsValue({..._data, ...calc});
-    setFormData({..._data, ...calc});
+    // setInput(inputObj);
+    // const calc = defData.update({...form.getFieldsValue(), ...inputObj}).calc();
+    // const _data = form.getFieldsValue();
+    const data = defData.update(inputObj);
+    const calc = data.calc().calcObj();
+    form.setFieldsValue({...inputObj, ...calc});
+    // setFormData({..._data, ...inputObj,...calc.calcObj()});
   }
   const onKeyPress = (button: any) => {
     console.log("Button pressed", button);
