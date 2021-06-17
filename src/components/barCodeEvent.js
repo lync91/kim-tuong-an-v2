@@ -4,8 +4,8 @@ export default function BarCodeEvent(props) {
     const {handleError, handleScan} = props;
     return (
         <BarcodeReader
-        onError={handleError}
-        onScan={handleScan}
+        onError={(e) => handleError(e)}
+        onScan={(e) => handleScan(e)}
       />
     )
 

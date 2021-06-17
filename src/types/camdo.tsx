@@ -70,7 +70,7 @@ const defData = {
   ngaytinhlai: moment(),
   ngaychuoc: moment(),
   ngaycam: moment(),
-  ngayhethan: moment(),
+  ngayhethan: moment().add(30),
   laisuat: 5,
   tudo: '',
   tienlai: 0,
@@ -148,12 +148,6 @@ export class Camdo {
     this.gia9999 = 4500000;
     this.giatinh = 2500000;
     this.giatoida = 0;
-    // getSettings().then(res => {
-    //   this.gia18K = res.gia18K;
-    //   this.gia23K = res.gia23K;
-    //   this.gia9999 = res.gia9999
-    //   this.giatinh = res.gia18K
-    // })
     this.setTrangThai(data)
   }
   update(data: any) {
@@ -280,6 +274,14 @@ export class Camdo {
       giatoida: this.giatoida,
       trongluongthuc: this.trongluongthuc
     }
+  }
+  getSettings() {
+    getSettings().then(res => {
+      this.gia18K = res.gia18K;
+      this.gia23K = res.gia23K;
+      this.gia9999 = res.gia9999
+      this.giatinh = res.gia18K
+    })
   }
 }
 export interface settingsTypes {

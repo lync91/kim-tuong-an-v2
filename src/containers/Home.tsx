@@ -1,5 +1,7 @@
 import React from 'react';
 import { Card, Col, Row, Form, PageHeader } from 'antd';
+import { ipcRenderer } from 'electron'
+ipcRenderer.invoke('getdataPath').then((res:string) => console.log(res));
 
 function Home() {
   // const {form} = Form.useForm();

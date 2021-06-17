@@ -3,7 +3,6 @@ import { Form, Input, Select, DatePicker, Modal, message, Tag, notification, Inp
 import Button from 'antd-button-color';
 import moment from 'moment';
 import { round, evaluate } from 'mathjs';
-import Keyboard from "react-simple-keyboard";
 import { SmileOutlined, CloseCircleOutlined, CheckCircleOutlined, SaveOutlined, PrinterOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { updateCamDo, huyPhieuCam, timPhieubyID, giahanCamDo, chuocDo, camThemTien } from '../utils/db';
 import { printPreview } from '../utils/print';
@@ -210,6 +209,7 @@ function ChiTiet(props: propsType) {
     })
   }
   const handleScan = (data: any) => {
+    console.log(data);
     form.setFieldsValue({ sophieu: data });
     onSearch(data);
   }
@@ -223,8 +223,8 @@ function ChiTiet(props: propsType) {
   return (
     <div>
       <BarCodeEvent
-        onError={handleError}
-        onScan={handleScan}
+        handleError={handleError}
+        handleScan={handleScan}
       />
       <Modal title="Xác nhận chuộc đồ"
         visible={modalChuoc}

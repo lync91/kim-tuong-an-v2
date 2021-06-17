@@ -38,8 +38,8 @@ const settings: settingsTypes = {
   gia18K: 2500000,
   gia23K: 4200000,
   gia9999: 4500000,
-  lai10: 5,
-  lai20: 4,
+  lai10: 3,
+  lai20: 3,
   lai30: 3,
   tienToiThieu: 5000
 }
@@ -75,6 +75,7 @@ function TaoPhieu() {
       });
   };
   useEffect(() => {
+    defData = new Camdo();
     genKey();
     setInput(defInput)
     getSettings()
@@ -174,7 +175,7 @@ function TaoPhieu() {
         subTitle=""
         extra={
           [
-            <Tag key="7" className="tag-gia" color="volcano" onClick={showDrawer}>Lãi suất: <b>{`${formData.laisuat}%`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
+            <Tag key="7" className="tag-gia" color="volcano" onClick={showDrawer}>Lãi suất: <b>{`${settingData.lai10}%`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
             <Tag key="4" className="tag-gia" color="volcano" onClick={showDrawer}>Vàng 18K: <b>{`${settingData.gia18K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
             <Tag key="5" className="tag-gia" color="orange" onClick={showDrawer}>Vàng 23K: <b>{`${settingData.gia23K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
             <Tag key="6" className="tag-gia" color="gold" onClick={showDrawer}>Vàng 9999: <b>{`${settingData.gia9999}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,

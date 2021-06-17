@@ -22,9 +22,9 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js')
     }
   })
-
+  win.setMenuBarVisibility(false)
   win.maximize()
-
+  win.setTitle('Kim Tường An')
   if (isDev) {
     win.loadURL('http://localhost:3000/index.html');
   } else {

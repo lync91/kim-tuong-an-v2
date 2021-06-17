@@ -1,6 +1,12 @@
+import * as isDev from 'electron-is-dev';
+import * as path from 'path';
 import knex from "./connect";
 import { ipcMain } from "electron";
 
+ipcMain.handle('getdataPath', async(e) => {
+	const filePath = isDev ? path.join(__dirname, '..', '..', '..', 'data/database.sqlite') : path.join(__dirname, '..', '..', '..', '..', '/data/database.sqlite');
+	return filePath
+})
 ipcMain.handle('getLastId', async (event) => {
 	const result = await knex('camdo').max({ a: 'id' });
 	return result[0];

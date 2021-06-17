@@ -1,8 +1,8 @@
 {
-  "name": "my-app",
+  "name": "kim-tuong-an",
   "version": "0.2.0",
-  "author": "Your Name",
-  "description": "React-TypeScript-Electron sample with Create React App and Electron Builder",
+  "author": "Lync",
+  "description": "Kim Tường An",
   "homepage": ".",
   "main": "build/electron/main.js",
   "private": true,
@@ -58,8 +58,9 @@
       "build/**/*"
     ],
     "directories": {
-      "buildResources": "assets"
-    }
+      "buildResources": "./assets"
+    },
+    "extraResources": "./data/database.sqlite"
   },
   "eslintConfig": {
     "extends": [

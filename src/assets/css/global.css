@@ -589,3 +589,7 @@ tbody tr:hover {
     width: 350px;
   }
   
+  .hg-button {
+    /* width: 50px !important; */
+    height: 60px !important;
+  }
