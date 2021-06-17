@@ -6,7 +6,7 @@ import VietIME from '../utils/vietuni';
 const vietIME = new VietIME();
 
 export default function KeyBoard(props) {
-    const { inputName, onChangeAll, input } = props;
+    const { inputName, onChangeAll, input, rowId } = props;
     const keyboard = useRef(null);
     const layoutName = "default";
 
@@ -18,6 +18,25 @@ export default function KeyBoard(props) {
       // keyboard.setInput(input);
 
     }, [input])
+    useMemo(() => {
+      console.log('RTTRTTTRRT');
+      const k = keyboard.current;
+      if (k) {
+        // k.clearInput('tenkhach');
+        // k.clearInput('dienthoai');
+        // k.clearInput('monhang');
+        // k.clearInput('loaivang');
+        // k.clearInput('tongtrongluong');
+        // k.clearInput('trongluonghot');
+        // k.clearInput('tiencam');
+        for (let key in k.input) {
+          k.clearInput(key);
+          // Use `key` and `value`
+      }
+
+      };
+      console.log(k);
+    }, [rowId])
     
     const commonKeyboardOptions = {
         onChange: (input) => onChange(input),

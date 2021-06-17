@@ -47,7 +47,7 @@ export function printPreview(data, preview) {
       const htmlString = renderToString(<TemplatePhieu data={{ ...data, ...{ src: src } }} />);
 
       const finalHtml = html.replace('{body}', htmlString);
-
+      console.log(finalHtml);
       let list = win.webContents.getPrinters();
       console.log("All printer available are ", list);
 

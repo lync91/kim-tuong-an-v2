@@ -26,7 +26,6 @@ export interface propsType {
 function ChiTiet(props: propsType) {
   const { data, close, quetphieu, onSearched } = props;
   const [form] = Form.useForm();
-  const [formCamThem] = Form.useForm();
   const [modalChuoc, setModalChuoc] = useState(false)
   const [modalHuy, setModalHuy] = useState(false)
   const [modalGiaHan, setModalGiaHan] = useState(false)
@@ -93,6 +92,20 @@ function ChiTiet(props: propsType) {
     calc();
     setModalCamThem(true);
   };
+
+  const camthemSubmit = (e: string) => {
+    const data = form.getFieldsValue();
+    camThemTien(data.id, round(data.tienlai + data.tienlaidukien), data.tiencam + e)
+    .then((res: any) => {
+      timPhieubyID(data.id).then((res: any) => {
+        const data = new Camdo(res)
+        onSearched(data);
+        setTrangthai(data.trangthai);
+        setModalCamThem(false)
+      });
+    })
+
+  }
 
   const huyphieu = () => {
     setModalHuy(true);
@@ -171,10 +184,11 @@ function ChiTiet(props: propsType) {
       color = '#f50'
     }
   }
-  const onSearch = (e: any) => {
+  const onSearch = (e: string) => {
+    if (e === "") return;
     const id = Number(e);
     timPhieubyID(id).then((res: any) => {
-      if (res.length <= 0) {
+      if (!res) {
         notification.open({
           message: 'Không tìm thấy phiếu trong cơ sở dữ liệu',
           description:
@@ -192,7 +206,7 @@ function ChiTiet(props: propsType) {
   }
   const print = () => {
     timPhieubyID(form.getFieldValue('id')).then((res: any) => {
-      printPreview(res, false)
+      printPreview(new Camdo(res), false)
     })
   }
   const handleScan = (data: any) => {
@@ -241,7 +255,7 @@ function ChiTiet(props: propsType) {
       </Modal>
         <ModalCamThem
           visible={modalCamThem}
-          onSubmit={(e: any) => console.log(e)}
+          onSubmit={camthemSubmit}
           onCancel={(e: any) => setModalCamThem(false)}
           songay={form.getFieldValue('songay')}
           laisuat={form.getFieldValue('laisuat')}

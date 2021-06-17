@@ -62,6 +62,7 @@ function TaoPhieu() {
   const [visible, setVisible] = useState(false);
   const [inputName, setInputName] = useState("tenkhach");
   const [input, setInput] = useState(defInput);
+  const [rowID, setRowID] = useState(0);
   const calc = () => {
   };
   const genKey = () => {
@@ -69,7 +70,8 @@ function TaoPhieu() {
       .then(e => {
         const sp = padDigits(e.a + 1, 9)
         form.setFieldsValue(defData.setSophieu(sp));
-        setFormData(defData.setSophieu(sp))
+        setFormData(defData.setSophieu(sp));
+        setRowID(0)
       });
   };
   useEffect(() => {
@@ -84,7 +86,7 @@ function TaoPhieu() {
   const _onValuesChange = (value: any, vs: any) => {
     const newForm = defData.update(vs).calc().calcObj();
     setFormData({...vs, ...newForm});
-    setInput({...input, [inputName]: value});
+    setInput({...input, ...value});
     form.setFieldsValue(newForm);
   };
   const showDrawer = () => {
@@ -101,9 +103,13 @@ function TaoPhieu() {
       message.success('Lưu giá vàng thành công');
       setVisible(false);
       getSettings()
-      .then(res => {
+      .then(async(res) => {
         setSettingData(res);
-        _selectGia(form.getFieldValue('loaivang'))
+        const giatinh = res;
+        console.log('res', res[form.getFieldValue('loaivang')]);
+        
+        form.setFieldsValue(defData.setGia(res).setGiaTinh(res[`gia${form.getFieldValue('loaivang')}`]).calc());
+        // _selectGia(form.getFieldValue('loaivang'))
       });
     })
   };
@@ -133,24 +139,24 @@ function TaoPhieu() {
   const saveAndPrint = () => {
     defData.save()
     .then((res: any) => {
-      // console.log(res);
+      defData.print();
+      setRowID(res);
       defData = new Camdo();
       genKey();
-      setInput(defInput)
     })
   }
-  const onChangeAll = (inputObj: any) => {
+  const onChangeAll = async (inputObj: any) => {
     console.log(inputObj);
     
     // setInput(inputObj);
     // const calc = defData.update({...form.getFieldsValue(), ...inputObj}).calc();
-    // const _data = form.getFieldsValue();
+    const _data = await form.getFieldsValue();
     const data = defData.update(inputObj);
     const calc = data.calc().calcObj();
     console.log(calc);
     
     form.setFieldsValue({...inputObj, ...calc});
-    // setFormData({..._data, ...inputObj,...calc.calcObj()});
+    setFormData({..._data, ...inputObj,...calc});
   }
   const onKeyPress = (button: any) => {
     console.log("Button pressed", button);
@@ -303,6 +309,7 @@ function TaoPhieu() {
         onChangeAll={onChangeAll}
         onKeyPress={onKeyPress}
         input={input}
+        rowId={rowID}
       />
         </Row>
       </Layout>

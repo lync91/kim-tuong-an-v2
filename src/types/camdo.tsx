@@ -1,6 +1,7 @@
 import { number, round } from 'mathjs';
 import moment, { Moment } from 'moment';
 import { getSettings, insertCamdo } from '../utils/db';
+import { printPreview } from '../utils/print';
 
 export interface camdoTypes {
   id: number | undefined;
@@ -56,7 +57,7 @@ const dateFormat1 = 'DD/MM/YYYY';
 
 const defData = {
   id: 0,
-  sophieu: '0000000000',
+  sophieu: '',
   tenkhach: '',
   dienthoai: '',
   monhang: '',
@@ -147,12 +148,12 @@ export class Camdo {
     this.gia9999 = 4500000;
     this.giatinh = 2500000;
     this.giatoida = 0;
-    getSettings().then(res => {
-      this.gia18K = res.gia18K;
-      this.gia23K = res.gia23K;
-      this.gia9999 = res.gia9999
-      this.giatinh = res.gia18K
-    })
+    // getSettings().then(res => {
+    //   this.gia18K = res.gia18K;
+    //   this.gia23K = res.gia23K;
+    //   this.gia9999 = res.gia9999
+    //   this.giatinh = res.gia18K
+    // })
     this.setTrangThai(data)
   }
   update(data: any) {
@@ -264,9 +265,12 @@ export class Camdo {
     }
     return insertCamdo(data);
   } 
+  print() {
+    printPreview(this);
+  }
   calc() {
     const trongluongthuc = round(this.tongtrongluong - this.trongluonghot, 3);
-    const giatoida = round(this.trongluongthuc * this.giatinh);
+    const giatoida = round(trongluongthuc * this.giatinh);
     this.trongluongthuc = trongluongthuc;
     this.giatoida = giatoida;
     return this;
