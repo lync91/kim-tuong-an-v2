@@ -23,16 +23,9 @@
     "antd-button-color": "^1.0.4",
     "babel-loader": "8.1.0",
     "bwip-js": "^3.0.0",
-    "electron-better-ipc": "^2.0.0",
     "electron-devtools-installer": "^3.2.0",
-    "electron-ipc-socket": "^3.0.0",
     "electron-is-dev": "^2.0.0",
-    "electron-print": "^1.0.2",
-    "electron-promise-ipc": "^2.2.4",
     "electron-reload": "^1.5.0",
-    "fs-promise": "^2.0.3",
-    "ipc-promise": "^0.1.4",
-    "jquery": "^3.6.0",
     "knex": "^0.95.6",
     "mathjs": "^9.4.2",
     "moment": "^2.29.1",
@@ -89,9 +82,8 @@
   "devDependencies": {
     "concurrently": "^6.2.0",
     "cross-env": "^7.0.3",
-    "electron": "^13.0.1",
-    "electron-builder": "^22.10.5",
-    "react-app-rewired": "^2.1.8",
+    "electron": "^13.1.2",
+    "electron-builder": "^22.11.7",
     "wait-on": "^5.3.0"
   }
 }
