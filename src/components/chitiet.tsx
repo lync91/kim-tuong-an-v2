@@ -68,13 +68,19 @@ function ChiTiet(props: propsType) {
     }
   };
   const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
+    wrapperCol: { offset: 6, span: 18 },
   };
   const save = () => {
     const values = form.getFieldsValue();
-    console.log('values', new Camdo(values).toData());
+    const {ngayCamChuoc} = form.getFieldsValue()
+    console.log(ngayCamChuoc);
+    
+    console.log(values);
+    
+    const data = new Camdo(values)
+    console.log('values', data);
     // data.dachuoc <= 0 ? delete values.tienchuoc : '';
-    updateCamDo(new Camdo(values).toData()).then((res: any) => {
+    updateCamDo(data.toData()).then((res: any) => {
       close(true);
     });
     close(true);
@@ -278,12 +284,12 @@ function ChiTiet(props: propsType) {
         form={form}
         labelCol={
           {
-            span: 8,
+            span: 6,
           }
         }
         wrapperCol={
           {
-            span: 16,
+            span: 14,
           }
         }
         layout="horizontal"
@@ -361,11 +367,18 @@ function ChiTiet(props: propsType) {
             parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
             disabled />
         </Form.Item>
-        <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc" >
+        {/* <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc" >
           <RangePicker
+            onChange={e => console.log(e)}
             format={dateFormat1}
             disabled={quetphieu}
           />
+        </Form.Item> */}
+        <Form.Item label="Ngày cầm" name="ngaycam">
+          <DatePicker format={dateFormat1} disabled={data.dachuoc ? true : false} />
+        </Form.Item>
+        <Form.Item label="Ngày hết hạn" name="ngayhethan">
+          <DatePicker format={dateFormat1} disabled={data.dachuoc ? true : false} />
         </Form.Item>
         <Form.Item label="Ngày tính lãi" name="ngaytinhlai">
           <DatePicker format={dateFormat1} disabled={data.dachuoc ? true : false} />
@@ -415,9 +428,9 @@ function ChiTiet(props: propsType) {
         <Form.Item className="chitiet-btn" label="" {...tailLayout} >
           <Button type="danger" disabled={data.dachuoc ? true : false} hidden={quetphieu} onClick={huyphieu} ><CloseCircleOutlined /> Hủy phiếu </Button>
           <Button type="info" disabled={data.dachuoc ? true : false} onClick={chuoc} ><CheckCircleOutlined /> Chuộc </Button>
-          <Button type="success" hidden={quetphieu} disabled={data.dachuoc ? true : false} onClick={save}><SaveOutlined /> Lưu </Button>
           <Button type="warning" hidden={!quetphieu} disabled={data.dachuoc ? true : false} onClick={giahan}><PlusCircleOutlined /> Đóng lãi </Button>
           <Button type="info" disabled={data.dachuoc ? true : false} onClick={camthem}><PlusCircleOutlined /> Cầm thêm </Button>
+          <Button type="success" disabled={data.dachuoc ? true : false} onClick={save}><SaveOutlined /> Lưu </Button>
           <Button disabled={data.dachuoc ? true : false} onClick={print}><PrinterOutlined /> In phiếu </Button>
         </Form.Item>
       </Form>

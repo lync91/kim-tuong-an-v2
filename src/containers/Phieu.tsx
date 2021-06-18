@@ -84,7 +84,7 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
                 Viết bằng chữ: <div className="bangchu"><i>{docso(formData.tiencam)} đồng</i></div>
                 <Row>
                   <Col span={12}>
-                    Ngày cầm: <b>{ngaycam}</b><br />
+                    Ngày cầm: <b>{formData.ngayCamChuoc[0] ? formData.ngayCamChuoc[0].format('DD/MM/YYYY') : ''}</b><br />
                     <p style={{ paddingLeft: 85 }} hidden={ngaycam === ngaytinhlai ? true : false}><b>({ngaytinhlai})</b></p>
                   </Col>
                   <Col> Ngày chuộc: <b>{formData.ngayCamChuoc[1] ? formData.ngayCamChuoc[1].format('DD/MM/YYYY').toString() : ''}</b></Col><br />

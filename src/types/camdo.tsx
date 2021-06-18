@@ -125,7 +125,7 @@ export class Camdo {
     this.trongluonghot = data.trongluonghot ? data.trongluonghot : defData.trongluonghot
     this.trongluongthuc = data.trongluongthuc ? round(data.trongluongthuc, 3) : defData.trongluongthuc;
     this.tiencam = data.tiencam ? data.tiencam : defData.tiencam
-    this.ngayCamChuoc = data.ngayCamChuoc ? data.ngayCamChuoc : defData.ngayCamChuoc
+    this.ngayCamChuoc = data.ngaycam ? [moment(moment(data.ngaycam).format(dateFormat), dateFormat), moment(moment(data.ngayhethan).format(dateFormat), dateFormat)] : defData.ngayCamChuoc
     this.ngaychuoc = data.ngaychuoc ? moment(data.ngaychuoc) : ""
     this.ngaycam = data.ngaycam ? moment(data.ngaycam) : defData.ngaycam;
     this.ngaytinhlai = data.ngaytinhlai ? moment(data.ngaytinhlai) : defData.ngaytinhlai;
@@ -218,6 +218,11 @@ export class Camdo {
     }
     return this;
   }
+  setngayCamChuoc(data: any[]) {
+    this.ngaycam = data[0]
+    this.ngayhethan = data[1]
+    return this;
+  }
   toData() {
     const data: camdoDataTypes = {
       id: this.id,
@@ -231,7 +236,7 @@ export class Camdo {
       trongluongthuc: this.trongluongthuc,
       tiencam: this.tiencam,
       ngaychuoc: this.ngaychuoc ? this.ngaychuoc.format('x') : null,
-      ngaycam: this.ngayCamChuoc ? this.ngayCamChuoc[0].format('x') : null,
+      ngaycam: this.ngaycam ? this.ngaycam.format('x') : null,
       ngaytinhlai: this.ngaytinhlai ? this.ngaytinhlai.format('x') : null,
       laisuat: this.laisuat,
       tudo: this.tudo,

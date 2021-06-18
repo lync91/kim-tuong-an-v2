@@ -23,7 +23,8 @@ function createWindow() {
   })
   win.setMenuBarVisibility(false)
   win.maximize()
-  win.setTitle('Kim Tường An')
+  win.setTitle('Kim Tường An');
+  win.webContents.setZoomFactor(1.0);
   if (isDev) {
     win.loadURL('http://localhost:3000/index.html');
   } else {

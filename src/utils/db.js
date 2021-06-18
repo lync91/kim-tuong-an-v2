@@ -12,10 +12,11 @@ export function updateCamDo(data) {
   return ipcRenderer.invoke('updateCamdo', data);
 }
 export function giahanCamDo(id, tienlai, ngaytinhlai, songay) {
+  const newNgaytinhlai = ngaytinhlai.add(31, 'days')
   let data = {
     id: id,
-    ngaytinhlai: ngaytinhlai.add(31, 'days').format('x'),
-    ngayhethan: ngaytinhlai.add(31, 'days').format('x'),
+    ngaytinhlai: newNgaytinhlai.format('x'),
+    ngayhethan: newNgaytinhlai.add(30, 'days').format('x'),
     tienlai: tienlai
   };
   console.log(data);
@@ -37,7 +38,8 @@ export function camThemTien(id, tienlai, tiencam) {
     id: id,
     tienlai: tienlai,
     tiencam: tiencam,
-    ngaytinhlai: moment().format('x')
+    ngaytinhlai: moment().format('x'),
+    ngayhethan: moment().add(30, 'days').format('x')
   };
   return ipcRenderer.invoke('camThemTien', data);
 }
