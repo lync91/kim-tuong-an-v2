@@ -21,10 +21,11 @@ function ThongKe() {
     await setCurRow(r);
     setVisible(true);
   }
-  const onClose = () => {
+  const onClose = (isSave: boolean) => {
     // timPhieubyID(curRow.id, (res: any) => {
     //   setCurKey(res)
     // })
+    if (isSave) getData('all');
     setVisible(false);
   };
   const onSearched = (data: any) => {
@@ -37,7 +38,7 @@ function ThongKe() {
         placement="right"
         closable={true}
         visible={visible}
-        onClose={onClose}
+        onClose={() => onClose(false)}
         width={720}
       >
         <ChiTiet data={curRow} close={onClose} quetphieu={false} onSearched={onSearched} />

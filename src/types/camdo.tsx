@@ -126,7 +126,7 @@ export class Camdo {
     this.trongluongthuc = data.trongluongthuc ? round(data.trongluongthuc, 3) : defData.trongluongthuc;
     this.tiencam = data.tiencam ? data.tiencam : defData.tiencam
     this.ngayCamChuoc = data.ngayCamChuoc ? data.ngayCamChuoc : defData.ngayCamChuoc
-    this.ngaychuoc = data.ngaychuoc ? moment(data.ngaychuoc) : defData.ngaychuoc
+    this.ngaychuoc = data.ngaychuoc ? moment(data.ngaychuoc) : ""
     this.ngaycam = data.ngaycam ? moment(data.ngaycam) : defData.ngaycam;
     this.ngaytinhlai = data.ngaytinhlai ? moment(data.ngaytinhlai) : defData.ngaytinhlai;
     this.laisuat = data.laisuat ? data.laisuat : defData.laisuat;

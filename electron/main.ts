@@ -9,8 +9,8 @@ import './db/index'
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1920,
+    height: 1080,
     maximizable: true,
     
     webPreferences: {
@@ -18,7 +18,6 @@ function createWindow() {
       enableRemoteModule: true,
       plugins: true,
       nodeIntegration: true,
-      webSecurity: false,
       preload: path.join(__dirname, 'preload.js')
     }
   })

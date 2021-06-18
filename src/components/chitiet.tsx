@@ -75,8 +75,7 @@ function ChiTiet(props: propsType) {
     console.log('values', new Camdo(values).toData());
     // data.dachuoc <= 0 ? delete values.tienchuoc : '';
     updateCamDo(new Camdo(values).toData()).then((res: any) => {
-      console.log('res', res);
-
+      close(true);
     });
     close(true);
   }
@@ -418,7 +417,7 @@ function ChiTiet(props: propsType) {
           <Button type="info" disabled={data.dachuoc ? true : false} onClick={chuoc} ><CheckCircleOutlined /> Chuộc </Button>
           <Button type="success" hidden={quetphieu} disabled={data.dachuoc ? true : false} onClick={save}><SaveOutlined /> Lưu </Button>
           <Button type="warning" hidden={!quetphieu} disabled={data.dachuoc ? true : false} onClick={giahan}><PlusCircleOutlined /> Đóng lãi </Button>
-          <Button type="info" hidden={!quetphieu} disabled={data.dachuoc ? true : false} onClick={camthem}><PlusCircleOutlined /> Cầm thêm </Button>
+          <Button type="info" disabled={data.dachuoc ? true : false} onClick={camthem}><PlusCircleOutlined /> Cầm thêm </Button>
           <Button disabled={data.dachuoc ? true : false} onClick={print}><PrinterOutlined /> In phiếu </Button>
         </Form.Item>
       </Form>
