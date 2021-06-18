@@ -28,6 +28,7 @@ function ChiTiet(props: propsType) {
   const [modalChuoc, setModalChuoc] = useState(false)
   const [modalHuy, setModalHuy] = useState(false)
   const [modalGiaHan, setModalGiaHan] = useState(false)
+  const [ngayGiaHan, setNgayGiaHan] = useState(30)
   const [trangthai, setTrangthai] = useState({
     text: 'Chưa quét',
     color: ''
@@ -138,7 +139,8 @@ function ChiTiet(props: propsType) {
     const data = form.getFieldsValue();
     const laihientai = data.tienlai | 0;
     const laidukien = form.getFieldValue('tienlaidukien');
-    giahanCamDo(data.id, laihientai + laidukien, 30).then(() => {
+    const { ngaytinhlai } = form.getFieldsValue();
+    giahanCamDo(data.id, laihientai + laidukien, ngaytinhlai, ngayGiaHan).then(() => {
       timPhieubyID(data.id).then((res: any) => {
         const data = new Camdo(res)
         onSearched(data);
@@ -251,7 +253,7 @@ function ChiTiet(props: propsType) {
         <p>Tiền cầm: <b>{`${form.getFieldValue('tiencam')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
         <p>Tiền lãi: <b>{`${form.getFieldValue('tienlaidukien')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
         {/* <p>Tiền chuộc: <b>{`${form.getFieldValue('tienchuoc')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p> */}
-        Số ngày gia hạn: <b></b><InputNumber defaultValue={30} />
+        Số ngày gia hạn: <b></b><InputNumber defaultValue={30} onChange={((e: number) => setNgayGiaHan(e))} />
       </Modal>
         <ModalCamThem
           visible={modalCamThem}

@@ -70,7 +70,7 @@ const defData = {
   ngaytinhlai: moment(),
   ngaychuoc: moment(),
   ngaycam: moment(),
-  ngayhethan: moment().add(30),
+  ngayhethan: moment().add(30, 'days'),
   laisuat: 5,
   tudo: '',
   tienlai: 0,
@@ -254,7 +254,7 @@ export class Camdo {
       tiencam: this.tiencam,
       ngaycam: this.ngayCamChuoc ? this.ngayCamChuoc[0].format('x') : null,
       ngaytinhlai: this.ngaytinhlai ? this.ngaytinhlai.format('x') : null,
-      ngayhethan: this.ngayCamChuoc ? this.ngayCamChuoc[1].format('x') : null,
+      ngayhethan: this.ngayCamChuoc ? this.ngayhethan.format('x') : null,
       laisuat: this.laisuat,
     }
     return insertCamdo(data);

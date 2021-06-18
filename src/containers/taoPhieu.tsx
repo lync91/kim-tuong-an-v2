@@ -20,7 +20,8 @@ import {
   getLastId,
   insertCamdo,
   getSettings,
-  setSettings
+  setSettings,
+  timPhieubyID
 } from '../utils/db';
 import { padDigits } from '../utils/tools';
 
@@ -81,6 +82,7 @@ function TaoPhieu() {
     getSettings()
       .then(res => {
         setSettingData(res);
+        defData.getSettings();
       });
     calc();
   }, []);
@@ -108,7 +110,7 @@ function TaoPhieu() {
         setSettingData(res);
         const giatinh = res;
         console.log('res', res[form.getFieldValue('loaivang')]);
-        
+        defData.getSettings()
         form.setFieldsValue(defData.setGia(res).setGiaTinh(res[`gia${form.getFieldValue('loaivang')}`]).calc());
         // _selectGia(form.getFieldValue('loaivang'))
       });
@@ -140,7 +142,9 @@ function TaoPhieu() {
   const saveAndPrint = () => {
     defData.save()
     .then((res: any) => {
-      defData.print();
+      timPhieubyID(res).then((e: any) => {
+        printPreview(new Camdo(e), false)
+      })
       setRowID(res);
       defData = new Camdo();
       genKey();

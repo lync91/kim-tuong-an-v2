@@ -43,11 +43,11 @@ export function TemplatePhieu(props) {
         <p><div style={{paddingLeft: 28, marginBottom: 0, marginTop: 8}} className="bangchu"><i>{`    ${docso(data.tiencam)}`} đồng</i></div></p>
         <p style={{marginTop: 0}}>
           <div style={{position: 'absolute', left: 320}}>
-            <b>{data.ngayCamChuoc[0].format('DD/MM/YYYY')}</b>
-            <p style={{margin: 2}} hidden={data.ngayCamChuoc[0].format('DD/MM/YYYY') === moment(data.ngaytinhlai).format('DD/MM/YYYY') ? true : false} ><b>({moment(data.ngaytinhlai).format('DD/MM/YYYY')})</b></p>
+            <b>{data.ngaycam.format('DD/MM/YYYY')}</b>
+            <p style={{margin: 2}} hidden={data.ngaycam.format('DD/MM/YYYY') === moment(data.ngaytinhlai).format('DD/MM/YYYY') ? true : false} ><b>({moment(data.ngaytinhlai).format('DD/MM/YYYY')})</b></p>
           </div>
           <div style={{position: 'absolute', right: 50}}>
-          <b>{data.ngayCamChuoc[1].format('DD/MM/YYYY')}</b>
+          <b>{data.ngayhethan.format('DD/MM/YYYY')}</b>
           </div>
           </p>
       </div>
