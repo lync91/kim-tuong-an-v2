@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as isDev from 'electron-is-dev';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
@@ -12,7 +12,6 @@ function createWindow() {
     width: 1920,
     height: 1080,
     maximizable: true,
-    
     webPreferences: {
       contextIsolation: false,
       enableRemoteModule: true,
@@ -24,7 +23,11 @@ function createWindow() {
   win.setMenuBarVisibility(false)
   win.maximize()
   win.setTitle('Kim Tường An');
-  win.webContents.setZoomFactor(1.0);
+  let webContents = win.webContents
+  webContents.on('did-finish-load', () => {
+    webContents.setZoomFactor(1)
+    webContents.setVisualZoomLevelLimits(1, 1)
+  })
   if (isDev) {
     win.loadURL('http://localhost:3000/index.html');
   } else {
@@ -62,7 +65,7 @@ app.whenReady().then(() => {
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+      // createWindow();
     }
   });
 
