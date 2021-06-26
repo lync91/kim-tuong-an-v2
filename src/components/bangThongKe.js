@@ -189,6 +189,7 @@ function SelectColumnFilter({
   // Render a multi-select box
   return (
     <select
+    className="selectFilter"
       value={filterValue}
       onChange={e => {
         setFilter(e.target.value || undefined)
@@ -417,7 +418,7 @@ function Table({ columns, data, onRowClicked }) {
               {headerGroup.headers.map(column => (
                 <div {...column.getHeaderProps()} className="th">
                   {column.render('Header')}
-                  <span {...column.getSortByToggleProps()}>{` `}
+                  <span className="sortButton" {...column.getSortByToggleProps()}>{` `}
                     {column.isSorted
                       ? column.isSortedDesc
                         ? (<SortDescendingOutlined />)
@@ -524,7 +525,7 @@ function trangThaiFilter(props) {
     column: { filterValue = 'all', setFilter },
   } = props;
   return (
-    <select value={filterValue} onChange={e => setFilter(e.target.value || undefined)}>
+    <select className="selectFilter" value={filterValue} onChange={e => setFilter(e.target.value || undefined)}>
       <option key="all">Tất cả</option>
       <option key="conhan">Còn hạn</option>
       <option key="hethan">Hết hạn</option>
@@ -819,7 +820,7 @@ function BangThongKe(props) {
 
   return (
     <Styles>
-      <Table onRowClicked={(row) => onSelectRow(row)} filterable defaultFilterMethod={(filter, row) =>
+      <Table className="camdoTable" onRowClicked={(row) => onSelectRow(row)} filterable defaultFilterMethod={(filter, row) =>
         String(row[filter.id]) === filter.value} columns={columns} data={data} />
     </Styles>
   )

@@ -55,6 +55,8 @@ function createWindow() {
   }
 }
 
+app.commandLine.appendSwitch('disable-pinch');
+
 app.whenReady().then(() => {
   // DevTools
   installExtension(REACT_DEVELOPER_TOOLS)

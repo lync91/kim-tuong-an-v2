@@ -15,9 +15,9 @@
 }
 
 .ant-layout-sider {
-  position: absolute !important;
+  position        : absolute !important;
   background-color: rgb(216, 216, 216) !important;
-  height: 100%;
+  height          : 100%;
 }
 
 .ant-layout-content {
@@ -25,11 +25,11 @@
 }
 
 #components-layout-demo-custom-trigger .trigger {
-  padding: 0 24px;
-  font-size: 18px;
+  padding    : 0 24px;
+  font-size  : 18px;
   line-height: 64px;
-  cursor: pointer;
-  transition: color 0.3s;
+  cursor     : pointer;
+  transition : color 0.3s;
 }
 
 #components-layout-demo-custom-trigger .trigger:hover {
@@ -37,8 +37,8 @@
 }
 
 #components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  margin: 16px;
+  height    : 32px;
+  margin    : 16px;
   background: rgba(255, 255, 255, 0.3);
 }
 
@@ -51,10 +51,10 @@
 }
 
 .num-pad button {
-  margin: 3px;
-  width: 70px;
-  height: 50px;
-  font-size: 14pt;
+  margin     : 3px;
+  width      : 70px;
+  height     : 50px;
+  font-size  : 14pt;
   font-weight: bold;
 }
 
@@ -64,51 +64,51 @@
 
 .panel2 {
   font-family: 'Times New Roman', Times, serif;
-  padding: 10px;
-  width: calc(100% - 520px);
+  padding    : 10px;
+  width      : calc(100% - 520px);
 }
 
 .tag-gia {
-  height: 24px !important;
+  height   : 24px !important;
   font-size: 12pt !important;
 }
 
 .phieu-tam {
   background-color: #fff;
-  padding: 15px;
+  padding         : 15px;
 }
 
 .phieu-cuong {
   background-color: #fff;
-  padding: 15px;
+  padding         : 15px;
 }
 
 .phieu-header-row {
   font-weight: bold;
-  text-align: center;
+  text-align : center;
 }
 
 .center {
-  margin: auto;
+  margin    : auto;
   text-align: center;
 }
 
 .phieu-logo {
   font-size: 24pt;
-  color: red;
+  color    : red;
 }
 
 .phieu-title {
-  font-size: 20pt;
-  color: red;
+  font-size  : 20pt;
+  color      : red;
   font-weight: bold;
 }
 
 .qr-code {
-  padding: 10px;
-  position: absolute;
-  top: 100px;
-  right: 0;
+  padding  : 10px;
+  position : absolute;
+  top      : 100px;
+  right    : 0;
   font-size: 18px;
 }
 
@@ -118,8 +118,8 @@
 
 .phieu-time {
   position: absolute;
-  top: auto;
-  right: 20px;
+  top     : auto;
+  right   : 20px;
 }
 
 .ant-table-cell {
@@ -127,10 +127,10 @@
 }
 
 .input-focused {
-  border-color: #008cff;
+  border-color      : #008cff;
   border-right-width: 1px !important;
-  outline: 1;
-  box-shadow: 0 0 0 2px rgba(0, 132, 255, 0.404);
+  outline           : 1;
+  box-shadow        : 0 0 0 2px rgba(0, 132, 255, 0.404);
 }
 
 .phieu-cuong {
@@ -142,7 +142,7 @@
 }
 
 .site-card-wrapper {
-  padding: 30px;
+  padding   : 30px;
   background: #ececec;
 }
 
@@ -168,27 +168,28 @@
 
 
 table {
-  border-spacing: 1;
+  border-spacing : 1;
   border-collapse: collapse;
-  background: #fff;
-  overflow: hidden;
-  width: 100%;
-  margin: 0 auto;
-  position: relative
+  background     : #fff;
+  overflow       : hidden;
+  width          : 100%;
+  margin         : 0 auto;
+  position       : relative
 }
 
 table * {
   position: relative
 }
 
-table td, table th {
+table td,
+table th {
   padding-left: 8px
 }
 
 table thead tr {
-  height: 60px;
+  height       : 60px;
   /* background: #36304a; */
-  /* color: #ececec; */
+  /* color     : #ececec; */
 }
 
 table tbody tr {
@@ -199,7 +200,8 @@ table tbody tr:last-child {
   border: 0
 }
 
-table td, table th {
+table td,
+table th {
   text-align: left
 }
 
@@ -211,21 +213,24 @@ table th div {
   margin-top: 5px;
 }
 
-table td.l, table th.l {
+table td.l,
+table th.l {
   text-align: right;
 }
 
-table td.c, table th.c {
+table td.c,
+table th.c {
   text-align: center
 }
 
-table td.r, table th.r {
+table td.r,
+table th.r {
   text-align: center
 }
 
 .table100-head th {
-  font-size: 18px;
-  color: #fff;
+  font-size  : 18px;
+  color      : #fff;
   line-height: 1.2;
   font-weight: unset
 }
@@ -235,20 +240,20 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr {
-  font-size: 15px;
-  color: rgb(100, 100, 100);
+  font-size  : 15px;
+  color      : rgb(100, 100, 100);
   line-height: 1.2;
   font-weight: unset
 }
 
 tbody tr:hover {
-  color: #555;
+  color           : #555;
   background-color: #f5f5f5;
-  cursor: pointer
+  cursor          : pointer
 }
 
 .column1 {
-  width: 260px;
+  width       : 260px;
   padding-left: 40px
 }
 
@@ -261,18 +266,18 @@ tbody tr:hover {
 }
 
 .column4 {
-  width: 110px;
+  width     : 110px;
   text-align: right
 }
 
 .column5 {
-  width: 170px;
+  width     : 170px;
   text-align: right
 }
 
 .column6 {
-  width: 222px;
-  text-align: right;
+  width        : 222px;
+  text-align   : right;
   padding-right: 62px
 }
 
@@ -280,55 +285,79 @@ tbody tr:hover {
   table {
     display: block
   }
-  table>*, table tr, table td, table th {
+
+  table>*,
+  table tr,
+  table td,
+  table th {
     display: block
   }
+
   table thead {
     display: none
   }
+
   table tbody tr {
-    height: auto;
+    height : auto;
     padding: 37px 0
   }
+
   table tbody tr td {
-    padding-left: 40%!important;
+    padding-left : 40% !important;
     margin-bottom: 24px
   }
+
   table tbody tr td:last-child {
     margin-bottom: 0
   }
+
   table tbody tr td:before {
-    font-size: 14px;
-    color: rgb(0, 0, 0);
+    font-size  : 14px;
+    color      : rgb(0, 0, 0);
     line-height: 1.2;
     font-weight: unset;
-    position: absolute;
-    width: 40%;
-    left: 30px;
-    top: 0
+    position   : absolute;
+    width      : 40%;
+    left       : 30px;
+    top        : 0
   }
+
   table tbody tr td:nth-child(1):before {
     content: "Date"
   }
+
   table tbody tr td:nth-child(2):before {
     content: "Order ID"
   }
+
   table tbody tr td:nth-child(3):before {
     content: "Name"
   }
+
   table tbody tr td:nth-child(4):before {
     content: "Price"
   }
+
   table tbody tr td:nth-child(5):before {
     content: "Quantity"
   }
+
   table tbody tr td:nth-child(6):before {
     content: "Total"
   }
-  .column4, .column5, .column6 {
+
+  .column4,
+  .column5,
+  .column6 {
     text-align: left
   }
-  .column4, .column5, .column6, .column1, .column2, .column3 {
+
+  .column4,
+  .column5,
+  .column6,
+  .column1,
+  .column2,
+  .column3 {
     width: 100%
   }
 }
@@ -338,258 +367,302 @@ tbody tr:hover {
 }
 
 .table .thp {
-  padding-right: 17px !important;
+  padding-right   : 17px !important;
   background-color: #d7e6f3;
 }
+
 .table .tft {
-  padding-right: 17px !important;
+  padding-right   : 17px !important;
   background-color: #f3e5d7;
 }
+
 .table .tft .th {
   font-weight: 700;
 }
+
 .table .th {
-  display: block !important;
+  display    : block !important;
   font-weight: 600;
-  text-align: center;
-  padding: 5px 0 0 0 !important;
+  text-align : center;
+  padding    : 5px 0 0 0 !important;
 }
+
 .table .th input {
   font-size: 9pt;
 }
-.table .th .ant-input-suffix, span {
-  margin: 0 !important;
+
+.table .th .ant-input-suffix,
+span {
+  /* margin: 0 !important; */
 }
+
 .table .th .ant-input-clear-icon {
-  margin: 0 !important;
+  /* margin: 0 !important; */
 }
-.table .th span, .ant-picker {
-  margin-top: 5px !important;
+
+.table .th span,
+.ant-picker {
+  /* margin-top: 5px !important; */
 }
+
 .table .th .ant-picker {
-  margin-top: 5px !important;
-  font-size: 5pt;
+  /* margin-top: 5px !important;
+  font-size: 5pt; */
 }
+
 .table .th .ant-picker-range-separator {
-  overflow-y: hidden;
-  width: 1px;
+  /* overflow-y: hidden;
+  width: 1px; */
 }
-.table .th .ant-picker-range input {
-  overflow-y: hidden;
-  font-size: 7pt;
+
+.table div {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
-.table .th .ant-picker-range .ant-picker-clear {
+
+.dateFilter {
+  border: 0px !important;
+}
+
+.table .th .dateFilter input {
+  border    : 0px !important;
+  height    : 22px;
+  overflow-y: hidden;
+  font-size : 7pt;
+}
+
+/* .table .th .ant-picker-range .ant-picker-clear {
   overflow-y: hidden;
   font-size: 9pt;
   top: 3px;
   right: 2px;
+} */
+.sortButton {
+  position        : absolute;
+  right           : 2px;
+  top: 4px;
+  background-color: #d7e6f3;
+  padding         : 0px 2px;
 }
+
 .table .tr:hover {
-  color: #555;
+  color           : #555;
   background-color: #daeaec;
-  cursor: pointer
+  cursor          : pointer
 }
+
+.selectFilter {}
 
 .pagination {
   margin-top: 5px;
 }
 
 .layout-thongke div {
-  padding: 0;
+  padding   : 0;
   overflow-x: hidden;
 }
 
 .styled-select {
-  background: transparent;
-  width: 268px;
-  padding: 5px;
-  font-size: 16px;
-  line-height: 1;
-  border: 0;
-  border-radius: 0;
-  height: 34px;
+  background        : transparent;
+  width             : 268px;
+  padding           : 5px;
+  font-size         : 16px;
+  line-height       : 1;
+  border            : 0;
+  border-radius     : 0;
+  height            : 34px;
   -webkit-appearance: none;
-  }
+}
 
-  .dateFilter {
-    overflow-y: hidden;
-    /* font-size: 5pt; */
-    border: 0;
-  }
-  .dateFilter .ant-picker-suffix {
-    display: none;
-  }
-  .trangthaiTag {
-    padding: 1 !important;
-  }
+.dateFilter {
+  overflow-y  : hidden;
+  /* font-size: 5pt; */
+  border      : 0;
+}
 
-  .selectFilter {
-    position: relative !important;
-    top: 5px;
-    width: 85px !important;
-  }
-  /* .ant-select-selector {
+.dateFilter .ant-picker-suffix {
+  display: none;
+}
+
+.trangthaiTag {
+  padding: 1 !important;
+}
+
+.selectFilter {
+  position: relative !important;
+  top     : 5px;
+  /* width   : 85px !important; */
+  margin  : 0 !important;
+  border  : 0px;
+  top     : 0px !important;
+  height  : 22px;
+}
+
+/* .ant-select-selector {
     position: relative !important;
     top: 0;
   } */
 
-  select {
-    display: inline-block;
-    width: -webkit-fill-available;
-    margin-top: 5px !important;
-    box-sizing: border-box;
-    padding: 0.1em 0.2em 0.1em 0.2em;
-    border: 1px solid #eee;
-    font: inherit;
-    font-size: 9pt !important;
-    line-height: inherit;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    appearance: none;
-    background-repeat: no-repeat;
-    /* background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); */
-    background-position: right 15px top 1em, right 10px top 1em;
-    background-size: 5px 5px, 5px 5px;
-  }
-  .ant-input-affix-wrapper {
-    border: 0 !important;
-  }
+select {
+  display            : inline-block;
+  width              : -webkit-fill-available;
+  margin-top         : 5px !important;
+  box-sizing         : border-box;
+  padding            : 0.1em 0.2em 0.1em 0.2em;
+  border             : 1px solid #eee;
+  font               : inherit;
+  font-size          : 9pt !important;
+  line-height        : inherit;
+  -webkit-appearance : none;
+  -moz-appearance    : none;
+  -ms-appearance     : none;
+  appearance         : none;
+  background-repeat  : no-repeat;
+  /* background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); */
+  background-position: right 15px top 1em, right 10px top 1em;
+  background-size    : 5px 5px, 5px 5px;
+}
 
-  .ant-input-number-disabled {
-    color: #555 !important;
-  }
-  .numeric-theme {
-    width: 300px !important;
-  }
+.table .th .ant-input-affix-wrapper {
+  border: 0 !important;
+}
 
-  .keyboardContainer {
-    margin-left: 50px;
-    display: flex;
-    background-color: rgba(0, 0, 0, 0.1);
-    justify-content: center;
-    width: 1250px;
-    margin: 0 auto;
-    border-radius: 5px;
-  }
-  
-  .simple-keyboard.hg-theme-default {
-    display: inline-block;
-  }
-  
-  .simple-keyboard-main.simple-keyboard {
-    width: 640px;
-    min-width: 640px;
-    background: none;
-  }
-  
-  .simple-keyboard-main.simple-keyboard .hg-row:first-child {
-    margin-bottom: 10px;
-  }
-  
-  .simple-keyboard-arrows.simple-keyboard {
-    align-self: flex-end;
-    background: none;
-  }
-  
-  .simple-keyboard .hg-button.selectedButton {
-    background: rgba(5, 25, 70, 0.53);
-    color: white;
-  }
-  
-  .simple-keyboard .hg-button.emptySpace {
-    pointer-events: none;
-    background: none;
-    border: none;
-    box-shadow: none;
-  }
-  
-  .simple-keyboard-arrows .hg-row {
-    justify-content: center;
-  }
-  
-  .simple-keyboard-arrows .hg-button {
-    width: 50px;
-    flex-grow: 0;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-  }
-  
-  .controlArrows {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-flow: column;
-  }
-  
-  .simple-keyboard-control.simple-keyboard {
-    background: none;
-  }
-  
-  .simple-keyboard-control.simple-keyboard .hg-row:first-child {
-    margin-bottom: 10px;
-  }
-  
-  .simple-keyboard-control .hg-button {
-    width: 50px;
-    flex-grow: 0;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-  }
-  
-  .numPad {
-    display: flex;
-    width: 400px;
-  }
-  
-  .simple-keyboard-numpad.simple-keyboard {
-    background: none;
-  }
-  
-  .simple-keyboard-numpad.simple-keyboard {
-    width: 160px;
-  }
-  
-  .simple-keyboard-numpad.simple-keyboard .hg-button {
-    width: 50px;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-  }
-  
-  .simple-keyboard-numpadEnd.simple-keyboard {
-    width: 50px;
-    background: none;
-    margin: 0;
-    padding: 5px 5px 5px 0;
-  }
-  
-  .simple-keyboard-numpadEnd.simple-keyboard .hg-button {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-  }
-  
-  .simple-keyboard-numpadEnd .hg-button.hg-standardBtn.hg-button-plus {
-    height: 85px;
-  }
-  
-  .simple-keyboard-numpadEnd.simple-keyboard .hg-button.hg-button-enter {
-    height: 85px;
-  }
-  
-  .simple-keyboard.hg-theme-default .hg-button.hg-selectedButton {
-    background: rgba(5, 25, 70, 0.53);
-    color: white;
-  }
-  
-  .hg-button.hg-functionBtn.hg-button-space {
-    width: 350px;
-  }
-  
-  .hg-button {
-    /* width: 50px !important; */
-    height: 60px !important;
-  }
+.ant-input-number-disabled {
+  color: #555 !important;
+}
+
+.numeric-theme {
+  width: 300px !important;
+}
+
+.keyboardContainer {
+  margin-left     : 50px;
+  display         : flex;
+  background-color: rgba(0, 0, 0, 0.1);
+  justify-content : center;
+  width           : 1250px;
+  margin          : 0 auto;
+  border-radius   : 5px;
+}
+
+.simple-keyboard.hg-theme-default {
+  display: inline-block;
+}
+
+.simple-keyboard-main.simple-keyboard {
+  width     : 640px;
+  min-width : 640px;
+  background: none;
+}
+
+.simple-keyboard-main.simple-keyboard .hg-row:first-child {
+  margin-bottom: 10px;
+}
+
+.simple-keyboard-arrows.simple-keyboard {
+  align-self: flex-end;
+  background: none;
+}
+
+.simple-keyboard .hg-button.selectedButton {
+  background: rgba(5, 25, 70, 0.53);
+  color     : white;
+}
+
+.simple-keyboard .hg-button.emptySpace {
+  pointer-events: none;
+  background    : none;
+  border        : none;
+  box-shadow    : none;
+}
+
+.simple-keyboard-arrows .hg-row {
+  justify-content: center;
+}
+
+.simple-keyboard-arrows .hg-button {
+  width          : 50px;
+  flex-grow      : 0;
+  justify-content: center;
+  display        : flex;
+  align-items    : center;
+}
+
+.controlArrows {
+  display        : flex;
+  align-items    : center;
+  justify-content: space-between;
+  flex-flow      : column;
+}
+
+.simple-keyboard-control.simple-keyboard {
+  background: none;
+}
+
+.simple-keyboard-control.simple-keyboard .hg-row:first-child {
+  margin-bottom: 10px;
+}
+
+.simple-keyboard-control .hg-button {
+  width          : 50px;
+  flex-grow      : 0;
+  justify-content: center;
+  display        : flex;
+  align-items    : center;
+}
+
+.numPad {
+  display: flex;
+  width  : 400px;
+}
+
+.simple-keyboard-numpad.simple-keyboard {
+  background: none;
+}
+
+.simple-keyboard-numpad.simple-keyboard {
+  width: 160px;
+}
+
+.simple-keyboard-numpad.simple-keyboard .hg-button {
+  width          : 50px;
+  justify-content: center;
+  display        : flex;
+  align-items    : center;
+}
+
+.simple-keyboard-numpadEnd.simple-keyboard {
+  width     : 50px;
+  background: none;
+  margin    : 0;
+  padding   : 5px 5px 5px 0;
+}
+
+.simple-keyboard-numpadEnd.simple-keyboard .hg-button {
+  align-items    : center;
+  justify-content: center;
+  display        : flex;
+}
+
+.simple-keyboard-numpadEnd .hg-button.hg-standardBtn.hg-button-plus {
+  height: 85px;
+}
+
+.simple-keyboard-numpadEnd.simple-keyboard .hg-button.hg-button-enter {
+  height: 85px;
+}
+
+.simple-keyboard.hg-theme-default .hg-button.hg-selectedButton {
+  background: rgba(5, 25, 70, 0.53);
+  color     : white;
+}
+
+.hg-button.hg-functionBtn.hg-button-space {
+  width: 350px;
+}
+
+.hg-button {
+  /* width: 50px !important; */
+  height: 60px !important;
+}

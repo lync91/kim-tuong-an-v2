@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
-import { viVn } from './locale.js';
+// import { vi_Vn } from './locale.js';
+import vi_Vn from 'antd/lib/locale-provider/vi_VN'
+
 
 
 ReactDOM.render(
-  <ConfigProvider locale={viVn}>
+  <ConfigProvider locale={vi_Vn}>
     <App />
   </ConfigProvider>,
   document.getElementById('root')

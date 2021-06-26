@@ -40,7 +40,6 @@ var g_arrVnVowel = new Array(
     new Array(0x1B0, 0x1EEB, 0x1EE9, 0x1EED, 0x1EEF, 0x1EF1),      //  uw   21
     new Array(0x59, 0x1EF2, 0xDD, 0x1EF6, 0x1EF8, 0x1EF4),         //  Y    22
     new Array(0x79, 0x1EF3, 0xFD, 0x1EF7, 0x1EF9, 0x1EF5)         //  y    23
-
 );
 
 function GetVnVowelIndex(nCode) {
@@ -51,7 +50,7 @@ function GetVnVowelIndex(nCode) {
     for (var ii in g_arrVnVowel) {
         j = 0;
         for (var jj in g_arrVnVowel[ii]) {
-            if (g_arrVnVowel[ii][jj] == nCode) {
+            if (g_arrVnVowel[ii][jj] === nCode) {
                 return i * 10 + j;
             }
             j++;
@@ -62,57 +61,56 @@ function GetVnVowelIndex(nCode) {
 }
 
 
-var KEY_ESC = 27;
-var KEY_UP_ARROW = 38;
-var KEY_DOWN_ARROW = 40;
-var KEY_RETURN = 13;
-var KEY_LEFT_ARROW = 37;
-var KEY_RIGHT_ARROW = 39;
+// var KEY_ESC = 27;
+// var KEY_UP_ARROW = 38;
+// var KEY_DOWN_ARROW = 40;
+// var KEY_RETURN = 13;
+// var KEY_LEFT_ARROW = 37;
+// var KEY_RIGHT_ARROW = 39;
 
-var BR_TYPE_IE = 0;
-var BR_TYPE_NETSCAPE = 1;
-var BR_TYPE_FIREFOX = 2;
-var BR_TYPE_OPERA = 3;
-var BR_TYPE_SAFARI = 4;
-
-
-function getBrowserType() {
-    if (navigator.appName.indexOf("Netscape") != -1) {
-        if (navigator.userAgent.indexOf("Firefox") != -1) {
-            return BR_TYPE_FIREFOX;
-        }
-        if (navigator.userAgent.indexOf("Opera") != -1) {
-            return BR_TYPE_OPERA;
-        }
-        if (navigator.userAgent.indexOf("Safari") != -1) {
-            return BR_TYPE_SAFARI;
-        }
-        return BR_TYPE_NETSCAPE;
-    } else {
-        if (navigator.appName.indexOf("Microsoft") != -1) {
-            return BR_TYPE_IE;
-        }
-    }
-    return BR_TYPE_NETSCAPE;
-}
+// var BR_TYPE_IE = 0;
+// var BR_TYPE_NETSCAPE = 1;
+// var BR_TYPE_FIREFOX = 2;
+// var BR_TYPE_OPERA = 3;
+// var BR_TYPE_SAFARI = 4;
 
 
-function GetKeyCode(ev) {
-    var brType = getBrowserType();
-    if (brType == BR_TYPE_IE) {
-        return window.event.keyCode;
-    }
-    if (ev) {
-        if (ev.which) return ev.which;
-        return ev.keyCode;
-    }
-    return 0;
-}
+// function getBrowserType() {
+//     if (navigator.appName.indexOf("Netscape") !== -1) {
+//         if (navigator.userAgent.indexOf("Firefox") !== -1) {
+//             return BR_TYPE_FIREFOX;
+//         }
+//         if (navigator.userAgent.indexOf("Opera") !== -1) {
+//             return BR_TYPE_OPERA;
+//         }
+//         if (navigator.userAgent.indexOf("Safari") !== -1) {
+//             return BR_TYPE_SAFARI;
+//         }
+//         return BR_TYPE_NETSCAPE;
+//     } else {
+//         if (navigator.appName.indexOf("Microsoft") !== -1) {
+//             return BR_TYPE_IE;
+//         }
+//     }
+//     return BR_TYPE_NETSCAPE;
+// }
+
+
+// function GetKeyCode(ev) {
+//     var brType = getBrowserType();
+//     if (brType === BR_TYPE_IE) {
+//         return window.event.keyCode;
+//     }
+//     if (ev) {
+//         if (ev.which) return ev.which;
+//         return ev.keyCode;
+//     }
+//     return 0;
+// }
 
 function GetKeyChar(ev) {
     if (ev.which) return ev.which;
     return ev.charCode;
-    return 0;
 }
 
 // class TextRange
@@ -149,18 +147,18 @@ VietIME.prototype.setVIQRMode = function () {
 }
 
 VietIME.prototype.getTargetRange = function () {
-    if (this.m_target == null) return null;
-    var brType = getBrowserType();
+    if (this.m_target === null) return null;
+    // var brType = getBrowserType();
     var selStart = this.m_target.selectionStart;
     var selEnd = this.m_target.selectionEnd;
     console.log(selStart);
     console.log(selEnd);
-    if (selStart != selEnd) return null;
+    if (selStart !== selEnd) return null;
     var strVal = this.m_target.value;
     var ch = 0;
     while (selStart > 0) {
         ch = strVal.charAt(selStart);
-        if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
+        if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r') {
             if (selStart < selEnd) {
                 selStart++;
                 break;
@@ -177,12 +175,12 @@ VietIME.prototype.getTargetRange = function () {
 VietIME.prototype.getTargetRange2 = function (value = '') {
     var selStart = value.length;
     var selEnd = value.length;
-    if (selStart != selEnd) return null;
+    if (selStart !== selEnd) return null;
     var strVal = value;
     var ch = 0;
     while (selStart > 0) {
         ch = strVal.charAt(selStart);
-        if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
+        if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r') {
             if (selStart < selEnd) {
                 selStart++;
                 break;
@@ -200,7 +198,7 @@ VietIME.prototype.getTargetRange2 = function (value = '') {
 VietIME.prototype.sendKeyStroke = function (nKeyCode, nCharCode) {
     var evKey = document.createEvent("KeyboardEvent");
     evKey.initKeyEvent('keypress', true, true, window, false, false, false, false, nKeyCode, nCharCode);
-    if (this.m_target == null) {
+    if (this.m_target === null) {
         //alert( "null" );
         return;
     }
@@ -209,7 +207,7 @@ VietIME.prototype.sendKeyStroke = function (nKeyCode, nCharCode) {
 
 
 VietIME.prototype.getBaseChar = function (nIndex) {
-    if ((nIndex % 10) != 0) return '_';
+    if ((nIndex % 10) !== 0) return '_';
     nIndex = parseInt(nIndex / 10);
     if (nIndex > 17 && nIndex <= 21) return 'u';
     if (nIndex > 9 && nIndex <= 17) return 'o';
@@ -229,7 +227,7 @@ VietIME.prototype.getBaseCharEx = function (nIndex) {
 
 }
 VietIME.prototype.getPrimitiveIndex = function (nIndex) {
-    if ((nIndex % 10) != 0) return 0;
+    if ((nIndex % 10) !== 0) return 0;
     nIndex = parseInt(nIndex / 10);
     if (nIndex > 17 && nIndex <= 21) return 20;
     if (nIndex > 9 && nIndex <= 17) return 15;
@@ -245,16 +243,16 @@ VietIME.prototype.processVNI678 = function (pCh, nCode, txtRange, evt) {
     var chval = ("" + chVal).toLowerCase().charAt(0);
     nIndex = GetVnVowelIndex(pCh);
     if (nIndex < -1) return false;
-    if ((nIndex % 10) != 0) return false;
+    if ((nIndex % 10) !== 0) return false;
     var nBaseIndex = parseInt(nIndex / 10);
-    if (nBaseIndex == 10 || nBaseIndex == 11 || nBaseIndex == 22 || nBaseIndex == 23) return false;
+    if (nBaseIndex === 10 || nBaseIndex === 11 || nBaseIndex === 22 || nBaseIndex === 23) return false;
     var pBaseChval = this.getBaseChar(nIndex);
 
     switch (this.m_nMode) {
         case this.TELEX:
-            if (pBaseChval == chval) {
-                if (nBaseIndex == 2 || nBaseIndex == 5 || nBaseIndex == 14 || nBaseIndex == 17) break;
-                if (pBaseChval == 'a' || pBaseChval == 'o') {
+            if (pBaseChval === chval) {
+                if (nBaseIndex === 2 || nBaseIndex === 5 || nBaseIndex === 14 || nBaseIndex === 17) break;
+                if (pBaseChval === 'a' || pBaseChval === 'o') {
                     if (pCh <= 0x7A) {
                         nInsertCode = g_arrVnVowel[nBaseIndex + 1][0];
                         bDiscard = true;
@@ -262,18 +260,18 @@ VietIME.prototype.processVNI678 = function (pCh, nCode, txtRange, evt) {
                         nInsertCode = g_arrVnVowel[nBaseIndex - 1][0];
                     }
                 }
-                if (pBaseChval == 'e') {
+                if (pBaseChval === 'e') {
                     if (pCh <= 0x7A) {
                         nInsertCode = g_arrVnVowel[nBaseIndex + 1][0];
                         bDiscard = true;
                     } else nInsertCode = g_arrVnVowel[nBaseIndex - 1][0];
                 }
             } else {
-                if (chval == 'w') {
-                    if (pBaseChval == 'a' || pBaseChval == 'o') {
-                        if (nBaseIndex == 1 || nBaseIndex == 4 || nBaseIndex == 13 || nBaseIndex == 16) break;
+                if (chval === 'w') {
+                    if (pBaseChval === 'a' || pBaseChval === 'o') {
+                        if (nBaseIndex === 1 || nBaseIndex === 4 || nBaseIndex === 13 || nBaseIndex === 16) break;
                         nShift = 2;
-                    } else if (pBaseChval == 'u') nShift = 1;
+                    } else if (pBaseChval === 'u') nShift = 1;
                     if (nShift > 0) {
                         if (pCh <= 0x7A) {
                             nInsertCode = g_arrVnVowel[nBaseIndex + nShift][0];
@@ -284,22 +282,22 @@ VietIME.prototype.processVNI678 = function (pCh, nCode, txtRange, evt) {
             }
             break;
         case this.VNI:
-            if (chval == '6') {
-                if (nBaseIndex == 2 || nBaseIndex == 5 || nBaseIndex == 14 || nBaseIndex == 17) break;
-                if (pBaseChval == 'a' || pBaseChval == 'o' || pBaseChval == 'e') {
+            if (chval === '6') {
+                if (nBaseIndex === 2 || nBaseIndex === 5 || nBaseIndex === 14 || nBaseIndex === 17) break;
+                if (pBaseChval === 'a' || pBaseChval === 'o' || pBaseChval === 'e') {
                     nShift = 1;
                 }
             }
-            if (chval == '7') {
-                if (pBaseChval == 'o') {
-                    if (nBaseIndex == 13 || nBaseIndex == 16) break;
+            if (chval === '7') {
+                if (pBaseChval === 'o') {
+                    if (nBaseIndex === 13 || nBaseIndex === 16) break;
                     nShift = 2;
                 }
-                if (pBaseChval == 'u') nShift = 1;
+                if (pBaseChval === 'u') nShift = 1;
             }
-            if (chval == '8') {
-                if (pBaseChval == 'a') {
-                    if (nBaseIndex == 1 || nBaseIndex == 4) break;
+            if (chval === '8') {
+                if (pBaseChval === 'a') {
+                    if (nBaseIndex === 1 || nBaseIndex === 4) break;
                     nShift = 2;
                 }
             }
@@ -313,22 +311,22 @@ VietIME.prototype.processVNI678 = function (pCh, nCode, txtRange, evt) {
             }
             break;
         case this.VIQR:
-            if (chval == '^') {
-                if (pBaseChval == 'a' || pBaseChval == 'o' || pBaseChval == 'e') {
-                    if (nBaseIndex == 2 || nBaseIndex == 5 || nBaseIndex == 14 || nBaseIndex == 17) break;
+            if (chval === '^') {
+                if (pBaseChval === 'a' || pBaseChval === 'o' || pBaseChval === 'e') {
+                    if (nBaseIndex === 2 || nBaseIndex === 5 || nBaseIndex === 14 || nBaseIndex === 17) break;
                     nShift = 1;
                 }
             }
-            if (chval == '+') {
-                if (pBaseChval == 'o') {
-                    if (nBaseIndex == 13 || nBaseIndex == 16) break;
+            if (chval === '+') {
+                if (pBaseChval === 'o') {
+                    if (nBaseIndex === 13 || nBaseIndex === 16) break;
                     nShift = 2;
                 }
-                if (pBaseChval == 'u') nShift = 1;
+                if (pBaseChval === 'u') nShift = 1;
             }
-            if (chval == '(') {
-                if (pBaseChval == 'a') {
-                    if (nBaseIndex == 1 || nBaseIndex == 4) break;
+            if (chval === '(') {
+                if (pBaseChval === 'a') {
+                    if (nBaseIndex === 1 || nBaseIndex === 4) break;
                     nShift = 2;
                 }
             }
@@ -351,7 +349,7 @@ VietIME.prototype.processVNI678 = function (pCh, nCode, txtRange, evt) {
 }
 
 VietIME.prototype.replaceStr = function (nChars, strToInsert, bDiscardEvent, txtRange, evt) {
-    var brType = getBrowserType();
+    // var brType = getBrowserType();
     var strVal = this.m_target.value;
     var newStrVal = strVal.substring(0, txtRange.m_nEnd - nChars) + strToInsert + strVal.substring(txtRange.m_nEnd);
     this.m_target.value = newStrVal;
@@ -402,28 +400,28 @@ VietIME.prototype.findAccentPos = function (txtRange) {
                 nIndex2 = nCount;
                 if (nIndex2 >= 0) {
                     var chPrevPrev = '_';
-                    if (chVowel1 == 'e') return nIndex;
+                    if (chVowel1 === 'e') return nIndex;
                     if (nIndex2 > 0) chPrevPrev = txtRange.text.charAt(nIndex2 - 1);
-                    if (((chVowel2 == 'o' || chVowel2 == 'O') && (chVowel1 == 'a' || chVowel1 == 'A')) ||
-                        ((chPrevPrev == 'q' || chPrevPrev == 'Q') && (chVowel2 == 'u' || chVowel2 == 'U')) ||
-                        ((chPrevPrev == 'g' || chPrevPrev == 'G') && (chVowel2 == 'i' || chVowel2 == 'I')) ||
-                        ((chVowel2 == 'u' || chPrevPrev == 'U') && (chVowel1 == 'o' || chVowel1 == 'O')) ||
-                        ((chVowel2 == 'u' || chVowel2 == 'U') && (chVowel1 == 'y' || chVowel1 == 'Y'))) {
+                    if (((chVowel2 === 'o' || chVowel2 === 'O') && (chVowel1 === 'a' || chVowel1 === 'A')) ||
+                        ((chPrevPrev === 'q' || chPrevPrev === 'Q') && (chVowel2 === 'u' || chVowel2 === 'U')) ||
+                        ((chPrevPrev === 'g' || chPrevPrev === 'G') && (chVowel2 === 'i' || chVowel2 === 'I')) ||
+                        ((chVowel2 === 'u' || chPrevPrev === 'U') && (chVowel1 === 'o' || chVowel1 === 'O')) ||
+                        ((chVowel2 === 'u' || chVowel2 === 'U') && (chVowel1 === 'y' || chVowel1 === 'Y'))) {
                         return nIndex;
                     }
-                    //if( (chVowel2 == 'y' || chVowel2 == 'Y') && (nVowel1 <= 9 && nVowel1 >= 6) ) return nIndex;
+                    //if( (chVowel2 === 'y' || chVowel2 === 'Y') && (nVowel1 <= 9 && nVowel1 >= 6) ) return nIndex;
                     if (nIndex < txtRange.text.length - 1) {
                         if (nIndex2 >= 0) return nIndex;
                     } else {
                         if (nIndex2 >= 0) return nIndex2;
                     }
-                    //if( (chVowel2 == 'i' || chVowel2 == 'I') && (chVowel1 == 'a' || chVowel1 == 'A') ) return nIndex2;
+                    //if( (chVowel2 === 'i' || chVowel2 === 'I') && (chVowel1 === 'a' || chVowel1 === 'A') ) return nIndex2;
                     //if( txtRange.text.length >= 4 ) return nIndex2;
                 } else return nIndex2;
             }
         }
     }
-    if (nIndex2 != -1) return nIndex2;
+    if (nIndex2 !== -1) return nIndex2;
     return nIndex;
 }
 
@@ -440,13 +438,13 @@ VietIME.prototype.processAccent = function (nAccent, txtRange, evt) {
     console.log(nBaseIndex);
     var nCurAccent = nIndex % 10;
     console.log(nCurAccent);
-    if (nCurAccent != nAccent) {
+    if (nCurAccent !== nAccent) {
         console.log('OK');
         var nInsertCode = g_arrVnVowel[nBaseIndex][nAccent];
         strEnd = String.fromCharCode(nInsertCode) + strEnd;
         return this.replaceStr2(txtRange.text.length - nPos, strEnd, true, txtRange, evt);
     } else {	// delete accent
-        var nInsertCode = g_arrVnVowel[nBaseIndex][0];
+        nInsertCode = g_arrVnVowel[nBaseIndex][0];
         strEnd = String.fromCharCode(nInsertCode) + strEnd;
         return this.replaceStr2(txtRange.text.length - nPos, strEnd, false, txtRange, evt);
     }
@@ -459,45 +457,45 @@ VietIME.prototype.setTarget = function (target) {
 VietIME.prototype.targetOnKeyPress = function (evt, target) {
     var chPrev;
     chPrev = '_';
-    if (this.m_nMode == this.OFF) return;
+    if (this.m_nMode === this.OFF) return;
     if (target) this.m_target = target;
-    if (this.m_target == null) return;
+    if (this.m_target === null) return;
     var nCode = GetKeyChar(evt);
-    if (nCode == 0x0A || nCode == 0x0D || nCode == 0x09) return;
+    if (nCode === 0x0A || nCode === 0x0D || nCode === 0x09) return;
     var rg = this.getTargetRange();
     console.log('rg', rg);
-    if (rg == null) { return; }
-    if (rg.text == null) { return; }
-    if (rg.text.length == 0) {
-        if (nCode == 0x57 || nCode == 0x77) {
-            this.replaceStr(0, String.fromCharCode(0x1AF + ((nCode == 0x77) ? 1 : 0)), true, rg, evt);
+    if (rg === null) { return; }
+    if (rg.text === null) { return; }
+    if (rg.text.length === 0) {
+        if (nCode === 0x57 || nCode === 0x77) {
+            this.replaceStr(0, String.fromCharCode(0x1AF + ((nCode === 0x77) ? 1 : 0)), true, rg, evt);
         }
         return;
     }
     var ch = rg.text.charCodeAt(rg.text.length - 1);
 
     // d, D
-    if (ch == 0x44 || ch == 0x64) {
-        if (((this.m_nMode == this.TELEX || this.m_nMode == this.VIQR) && (nCode == 0x44 || nCode == 0x64)) ||
-            ((this.m_nMode == this.VNI) && (nCode == 0x39))) {
-            this.replaceStr(1, String.fromCharCode(0x110 + ((ch == 0x64) ? 1 : 0)), true, rg, evt);
+    if (ch === 0x44 || ch === 0x64) {
+        if (((this.m_nMode === this.TELEX || this.m_nMode === this.VIQR) && (nCode === 0x44 || nCode === 0x64)) ||
+            ((this.m_nMode === this.VNI) && (nCode === 0x39))) {
+            this.replaceStr(1, String.fromCharCode(0x110 + ((ch === 0x64) ? 1 : 0)), true, rg, evt);
             return;
         }
     }
     // dd, DD
-    if (ch == 0x111 || ch == 0x110) {
-        if ((this.m_nMode == this.TELEX || this.m_nMode == this.VIQR) && (nCode == 0x44 || nCode == 0x64)) {
-            this.replaceStr(1, String.fromCharCode(0x44 + ((ch == 0x111) ? 0x20 : 0)), false, rg, evt);
+    if (ch === 0x111 || ch === 0x110) {
+        if ((this.m_nMode === this.TELEX || this.m_nMode === this.VIQR) && (nCode === 0x44 || nCode === 0x64)) {
+            this.replaceStr(1, String.fromCharCode(0x44 + ((ch === 0x111) ? 0x20 : 0)), false, rg, evt);
             return;
         }
     }
     // w, W
-    if ((this.m_nMode == this.TELEX) && (nCode == 0x57 || nCode == 0x77)) {
+    if ((this.m_nMode === this.TELEX) && (nCode === 0x57 || nCode === 0x77)) {
         var nChPrevId = GetVnVowelIndex(ch);
         chPrev = this.getBaseCharEx(nChPrevId);
-        if ((chPrev != 'o') && (chPrev != 'u') && (chPrev != 'a')) {
-            if ((ch != 0x57) && (ch != 0x77)) {
-                this.replaceStr(0, String.fromCharCode(0x1AF + ((nCode == 0x77) ? 1 : 0)), true, rg, evt);
+        if ((chPrev !== 'o') && (chPrev !== 'u') && (chPrev !== 'a')) {
+            if ((ch !== 0x57) && (ch !== 0x77)) {
+                this.replaceStr(0, String.fromCharCode(0x1AF + ((nCode === 0x77) ? 1 : 0)), true, rg, evt);
                 return;
             }
         }
@@ -525,37 +523,37 @@ VietIME.prototype.targetRun = function (evt, target) {
     console.log(target);
     if (target) this.m_target = {value: target};
     var nCode = evt.charCodeAt(0);
-    if (nCode == 0x0A || nCode == 0x0D || nCode == 0x09) return;
+    if (nCode === 0x0A || nCode === 0x0D || nCode === 0x09) return;
     var rg = this.getTargetRange2(target);
-    if (rg == null) { return; }
-    if (rg.text == null) { return; }
-    if (rg.text.length == 0) {
-        if (nCode == 0x57 || nCode == 0x77) {
-            return this.replaceStr2(0, String.fromCharCode(0x1AF + ((nCode == 0x77) ? 1 : 0)), true, rg, evt);
+    if (rg === null) { return; }
+    if (rg.text === null) { return; }
+    if (rg.text.length === 0) {
+        if (nCode === 0x57 || nCode === 0x77) {
+            return this.replaceStr2(0, String.fromCharCode(0x1AF + ((nCode === 0x77) ? 1 : 0)), true, rg, evt);
         }
         // return;
     }
     var ch = rg.text.charCodeAt(rg.text.length - 1);
     // d, D
-    if (ch == 0x44 || ch == 0x64) {
-        if (((this.m_nMode == this.TELEX || this.m_nMode == this.VIQR) && (nCode == 0x44 || nCode == 0x64)) ||
-            ((this.m_nMode == this.VNI) && (nCode == 0x39))) {
-            return this.replaceStr2(1, String.fromCharCode(0x110 + ((ch == 0x64) ? 1 : 0)), true, rg, evt);
+    if (ch === 0x44 || ch === 0x64) {
+        if (((this.m_nMode === this.TELEX || this.m_nMode === this.VIQR) && (nCode === 0x44 || nCode === 0x64)) ||
+            ((this.m_nMode === this.VNI) && (nCode === 0x39))) {
+            return this.replaceStr2(1, String.fromCharCode(0x110 + ((ch === 0x64) ? 1 : 0)), true, rg, evt);
         }
     }
     // dd, DD
-    if (ch == 0x111 || ch == 0x110) {
-        if ((this.m_nMode == this.TELEX || this.m_nMode == this.VIQR) && (nCode == 0x44 || nCode == 0x64)) {
-            return this.replaceStr2(1, String.fromCharCode(0x44 + ((ch == 0x111) ? 0x20 : 0)), false, rg, evt);
+    if (ch === 0x111 || ch === 0x110) {
+        if ((this.m_nMode === this.TELEX || this.m_nMode === this.VIQR) && (nCode === 0x44 || nCode === 0x64)) {
+            return this.replaceStr2(1, String.fromCharCode(0x44 + ((ch === 0x111) ? 0x20 : 0)), false, rg, evt);
         }
     }
     // w, W
-    if ((this.m_nMode == this.TELEX) && (nCode == 0x57 || nCode == 0x77)) {
+    if ((this.m_nMode === this.TELEX) && (nCode === 0x57 || nCode === 0x77)) {
         var nChPrevId = GetVnVowelIndex(ch);
         chPrev = this.getBaseCharEx(nChPrevId);
-        if ((chPrev != 'o') && (chPrev != 'u') && (chPrev != 'a')) {
-            if ((ch != 0x57) && (ch != 0x77)) {
-                return this.replaceStr2(0, String.fromCharCode(0x1AF + ((nCode == 0x77) ? 1 : 0)), true, rg, evt);
+        if ((chPrev !== 'o') && (chPrev !== 'u') && (chPrev !== 'a')) {
+            if ((ch !== 0x57) && (ch !== 0x77)) {
+                return this.replaceStr2(0, String.fromCharCode(0x1AF + ((nCode === 0x77) ? 1 : 0)), true, rg, evt);
             }
         }
     }
@@ -564,7 +562,6 @@ VietIME.prototype.targetRun = function (evt, target) {
     switch (this.m_nMode) {
         case this.TELEX:
             return this.processAccent("zfsrxj".indexOf(chInput), rg, evt);
-            break;
         case this.VNI:
             this.processAccent("021345".indexOf(chInput), rg, evt);
             break;
@@ -577,6 +574,6 @@ VietIME.prototype.targetRun = function (evt, target) {
 }
 
 VietIME.prototype.resetTarget = function (nCode) {
-    if (nCode == 0x08 || nCode == 0xFF) return;
+    if (nCode === 0x08 || nCode === 0xFF) return;
     this.m_target = null;
 }
