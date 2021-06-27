@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Select, DatePicker, Modal, message, Tag, notification, InputNumber } from 'antd';
+import { Form, Input, Select, DatePicker, Modal, message, Tag, notification, InputNumber, Switch } from 'antd';
 import Button from 'antd-button-color';
 import moment from 'moment';
 import { round, evaluate } from 'mathjs';
 import { SmileOutlined, CloseCircleOutlined, CheckCircleOutlined, SaveOutlined, PrinterOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { updateCamDo, huyPhieuCam, timPhieubyID, giahanCamDo, chuocDo, camThemTien } from '../utils/db';
 import { printPreview } from '../utils/print';
-import { camdoDataTypes, camdoTypes, Camdo } from '../types/camdo';
+import { Camdo } from '../types/camdo';
 import ModalCamThem from './modalCamThem';
-import BarCodeEvent from './barCodeEvent'
+import ModalGiaHan from './modalGiahan'
+import BarCodeEvent from './barCodeEvent';
+import NumPad from './numpad';
 
-const { RangePicker } = DatePicker;
+// const { RangePicker } = DatePicker;
 
 const { Search } = Input;
 const dateFormat1 = 'DD/MM/YYYY';
@@ -33,6 +35,7 @@ function ChiTiet(props: propsType) {
     text: 'Chưa quét',
     color: ''
   })
+
   const [dataLaiSuat, setDataLaiSuat] = useState({ lai10: 3, lai20: 3, lai30: 3 });
   const [modalCamThem, setModalCamThem] = useState(false);
   const inputRef = React.useRef(null);
@@ -72,11 +75,11 @@ function ChiTiet(props: propsType) {
   };
   const save = () => {
     const values = form.getFieldsValue();
-    const {ngayCamChuoc} = form.getFieldsValue()
+    const { ngayCamChuoc } = form.getFieldsValue()
     console.log(ngayCamChuoc);
-    
+
     console.log(values);
-    
+
     const data = new Camdo(values)
     console.log('values', data);
     // data.dachuoc <= 0 ? delete values.tienchuoc : '';
@@ -101,14 +104,14 @@ function ChiTiet(props: propsType) {
   const camthemSubmit = (e: string) => {
     const data = form.getFieldsValue();
     camThemTien(data.id, round(data.tienlai + data.tienlaidukien), data.tiencam + e)
-    .then((res: any) => {
-      timPhieubyID(data.id).then((res: any) => {
-        const data = new Camdo(res)
-        onSearched(data);
-        setTrangthai(data.trangthai);
-        setModalCamThem(false)
-      });
-    })
+      .then((res: any) => {
+        timPhieubyID(data.id).then((res: any) => {
+          const data = new Camdo(res)
+          onSearched(data);
+          setTrangthai(data.trangthai);
+          setModalCamThem(false)
+        });
+      })
 
   }
 
@@ -166,30 +169,30 @@ function ChiTiet(props: propsType) {
   const handleCancelHuy = () => {
     setModalHuy(false);
   };
-  const labelRender = (c: any) => {
-    let text = '';
-    let color = ''
-    // var start = moment(c.ngaycam).format('X');
-    var end = Number(moment(c.ngayhethan).format('X'));
-    var now = Number(moment().format('X'));
-    const han = (end - now) / (60 * 60 * 24);
-    if (han > 0) {
-      text = 'Còn hạn';
-      color = '#87d068'
-    }
-    if (han <= 0) {
-      text = 'Quá hạn';
-      color = '#f50'
-    }
-    if (c.ngaychuoc > 0) {
-      text = 'Đã chuộc';
-      color = '#108ee9'
-    }
-    if (c.dahuy > 0) {
-      text = 'Đã hủy';
-      color = '#f50'
-    }
-  }
+  // const labelRender = (c: any) => {
+  //   let text = '';
+  //   let color = ''
+  //   // var start = moment(c.ngaycam).format('X');
+  //   var end = Number(moment(c.ngayhethan).format('X'));
+  //   var now = Number(moment().format('X'));
+  //   const han = (end - now) / (60 * 60 * 24);
+  //   if (han > 0) {
+  //     text = 'Còn hạn';
+  //     color = '#87d068'
+  //   }
+  //   if (han <= 0) {
+  //     text = 'Quá hạn';
+  //     color = '#f50'
+  //   }
+  //   if (c.ngaychuoc > 0) {
+  //     text = 'Đã chuộc';
+  //     color = '#108ee9'
+  //   }
+  //   if (c.dahuy > 0) {
+  //     text = 'Đã hủy';
+  //     color = '#f50'
+  //   }
+  // }
   const onSearch = (e: string) => {
     if (e === "") return;
     const id = Number(e);
@@ -246,30 +249,25 @@ function ChiTiet(props: propsType) {
         <p>Tiền lãi: <b>{`${form.getFieldValue('tienlaidukien')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
         <p>Tiền chuộc: <b>{`${form.getFieldValue('tienchuocdukien')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
       </Modal>
-      <Modal title="Gia hạn phiếu chuộc"
+      <ModalGiaHan
         visible={modalGiaHan}
-        onOk={giaHanOK}
-        okText="Xác nhận"
-        cancelText="Hủy"
-        onCancel={giaHanCancel}
-      >
-        <p>Số ngày cầm: <b>{form.getFieldValue('songay')}</b></p>
-        <p>lãi suất: <b>{form.getFieldValue('laisuat')}%</b></p>
-        <p>Tiền cầm: <b>{`${form.getFieldValue('tiencam')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
-        <p>Tiền lãi: <b>{`${form.getFieldValue('tienlaidukien')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
-        {/* <p>Tiền chuộc: <b>{`${form.getFieldValue('tienchuoc')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p> */}
-        Số ngày gia hạn: <b></b><InputNumber defaultValue={30} onChange={((e: number) => setNgayGiaHan(e))} />
-      </Modal>
-        <ModalCamThem
-          visible={modalCamThem}
-          onSubmit={camthemSubmit}
-          onCancel={(e: any) => setModalCamThem(false)}
-          songay={form.getFieldValue('songay')}
-          laisuat={form.getFieldValue('laisuat')}
-          tiencam={form.getFieldValue('tiencam')}
-          tienlaidukien={form.getFieldValue('tienlaidukien')}
-          onChange={(e: string) => form.setFieldsValue({tiencamthem: e})}
-          change={moment().format('x')} />
+        onCancel={(e: any) => setModalGiaHan(false)}
+        tiencam={form.getFieldValue('tiencam')}
+        songay={form.getFieldValue('songay')}
+        laisuat={form.getFieldValue('laisuat')}
+        tienlaidukien={form.getFieldValue('tienlaidukien')}
+        change={moment().format('x')}
+      />
+      <ModalCamThem
+        visible={modalCamThem}
+        onSubmit={camthemSubmit}
+        onCancel={(e: any) => setModalCamThem(false)}
+        songay={form.getFieldValue('songay')}
+        laisuat={form.getFieldValue('laisuat')}
+        tiencam={form.getFieldValue('tiencam')}
+        tienlaidukien={form.getFieldValue('tienlaidukien')}
+        onChange={(e: string) => form.setFieldsValue({ tiencamthem: e })}
+        change={moment().format('x')} />
       <Modal
         title="Xác nhận hủy phiếu"
         visible={modalHuy}

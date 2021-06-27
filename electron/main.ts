@@ -25,7 +25,11 @@ function createWindow() {
   win.setTitle('Kim Tường An');
   let webContents = win.webContents
   webContents.on('did-finish-load', () => {
-    webContents.setZoomFactor(1)
+    if (isDev) {
+      webContents.setZoomFactor(0.575)
+    } else {
+      webContents.setZoomFactor(1)
+    }
     webContents.setVisualZoomLevelLimits(1, 1)
   })
   if (isDev) {
@@ -52,6 +56,7 @@ function createWindow() {
 
   if (isDev) {
     win.webContents.openDevTools();
+    win.webContents.setZoomFactor(0.2)
   }
 }
 

@@ -545,6 +545,15 @@ select {
   margin          : 0 auto;
   border-radius   : 5px;
 }
+.numpadContainer {
+  margin-left     : 10px;
+  display         : flex;
+  background-color: rgba(0, 0, 0, 0.1);
+  justify-content : center;
+  width           : 400px;
+  margin          : 0 auto;
+  border-radius   : 5px;
+}
 
 .simple-keyboard.hg-theme-default {
   display: inline-block;
@@ -665,4 +674,8 @@ select {
 .hg-button {
   /* width: 50px !important; */
   height: 60px !important;
+}
+
+.single-numpad .hg-button {
+  width: 50px !important;
 }

@@ -528,7 +528,7 @@ function trangThaiFilter(props) {
     <select className="selectFilter" value={filterValue} onChange={e => setFilter(e.target.value || undefined)}>
       <option key="all">Tất cả</option>
       <option key="conhan">Còn hạn</option>
-      <option key="hethan">Hết hạn</option>
+      <option key="quahan">Quá hạn</option>
       <option key="dachuoc">Đã chuộc</option>
     </select>
   )
@@ -547,11 +547,12 @@ function filterTrangThai(rows, id, filterValue) {
       var now = moment().format('X');
       return (now < end && row.values.ngaychuoc <= 0)
     })
-  } else if (filterValue === 'Hết hạn') {
+  } else if (filterValue === 'Quá hạn') {
+    console.log('OK');
     return rows.filter(row => {
       var end = moment(row.values['ngayhethan']).format('X');
       var now = moment().format('X');
-      return (end >= now && row.values.dachuoc > 0)
+      return (end <= now && row.values['ngaychuoc'] <= 0)
     })
   }
   else {
