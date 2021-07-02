@@ -731,8 +731,8 @@ function BangThongKe(props) {
         accessor: 'ngaytinhlai',
         Filter: dateRangFilter,
         filter: filterDateRange,
-        Cell: dateCell,
-        width: 90
+        Cell: dateHourCell,
+        width: 110
       },
       {
         Header: 'Ngày hết hạn',
