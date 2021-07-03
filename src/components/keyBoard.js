@@ -82,7 +82,8 @@ export default function KeyBoard(props) {
           "{altright}": "alt ⌥",
           "{metaleft}": "cmd ⌘",
           "{metaright}": "cmd ⌘"
-        }
+        },
+        theme: "hg-theme-default myTheme1"
       };
     
       const keyboardNumPadOptions = {
@@ -95,7 +96,17 @@ export default function KeyBoard(props) {
             "000 0 . M T",
             "{space}"
           ]
-        }
+        },
+        buttonTheme: [
+          {
+            class: "hg-green",
+            buttons: "L N K V B M D T"
+          },
+          {
+            class: "hg-highlight",
+            buttons: "Q q"
+          }
+        ]
       };
 
     const onChange = (input) => {

@@ -26,9 +26,9 @@ function createWindow() {
   let webContents = win.webContents
   webContents.on('did-finish-load', () => {
     if (isDev) {
-      webContents.setZoomFactor(0.575)
+      // webContents.setZoomFactor(0.575)
     } else {
-      webContents.setZoomFactor(1)
+      // webContents.setZoomFactor(1)
     }
     webContents.setVisualZoomLevelLimits(1, 1)
   })
@@ -56,7 +56,6 @@ function createWindow() {
 
   if (isDev) {
     win.webContents.openDevTools();
-    win.webContents.setZoomFactor(0.2)
   }
 }
 

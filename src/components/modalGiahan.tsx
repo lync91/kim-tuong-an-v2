@@ -1,72 +1,64 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Form, InputNumber, Modal, Switch } from 'antd';
+import React, { useRef, useEffect, useState, useMemo } from "react";
+import { Form, InputNumber, Input, Modal, Switch } from 'antd';
 import { Camdo } from "../types/camdo";
 import NumPad from "./numpad";
+import { round } from "mathjs";
+import moment from "moment";
 
 const defInput = {
-    tenkhach: "",
-    dienthoai: "",
-    monhang: "",
-    loaivang: "",
-    tongtrongluong: "",
-    trongluonghot: "",
-    tiencam: ""
+    ngayTinhLai: "30",
+    thangTinhLai: "1",
+    songay: "30",
 }
 
 export default function ModalGiaHan(props: any) {
-    const { songay, laisuat, tiencam, tienlaidukien, change, onChange, visible, onSubmit, onCancel } = props;
+    const { songay, laisuat, tiencam, tienlaidukien, ngayTinhLai, rowId, visible, onCancel, onOK } = props;
     const [form] = Form.useForm();
-    const keyboard: any = useRef();
     const [tinhlaiTheoThang, setTinhLaiTheoThang] = useState(false);
-    const [soThangTinhLai, setSoThangTinhLai] = useState(1);
-    const [ngayGiaHan, setNgayGiaHan] = useState(30);
-    const [inputName, setInputName] = useState("soThangTinhLai");
+    const [inputName, setInputName] = useState("");
     const [input, setInput] = useState(defInput);
-    const [rowID, setRowID] = useState(0);
+    const [curInput, setCurInput] = useState("")
+    // const [rowID, setRowID] = useState(0);
+    useMemo(() => {
+        // setInputName('ngayTinhLai');
+        // console.log('OKKKKKK');
+        form.setFieldsValue({tienlaidukien: tienlaidukien});
+        // setInput(defInput);
+    }, [tienlaidukien])
     useEffect(() => {
-        form.setFieldsValue({ tiencamthem: '' });
-        if (keyboard.current) keyboard.current.setInput('');
-    }, [change]);
-    const keyBoardChange = (e: string) => {
-        form.setFieldsValue({ tiencamthem: e })
-        onChange(e);
-    }
-    const formChange = (e: any) => onChange(e.tiencamthem);
-    const camThemOK = () => {
-        const tiencamthem = Number(form.getFieldValue('tiencamthem'));
-        onSubmit(tiencamthem);
-    };
-    const giaHanOK = () => {
-        
-    }
+        const _ngaytinhlai = `${ngayTinhLai ? round((Number(moment().format('X')) - ngayTinhLai.format('X')) / (60 * 60     * 24)) + 1 : 0}`;
+        form.setFieldsValue({...defInput,...{ngayTinhLai: _ngaytinhlai}});
+        setCurInput('');
+        setInputName('')
+    }, [rowId]);
 
-    const onChangeAll = async (inputObj: any) => {
-        console.log(inputObj);
-
-        setInput(inputObj);
-        // const calc = defData.update({...form.getFieldsValue(), ...inputObj}).calc();
-        // const _data = await form.getFieldsValue();
-        // const data = defData.update(inputObj);
-        // const calc = data.calc().calcObj();
-        // console.log(calc);
-        console.log('values', form.getFieldsValue());
-
+    const onChangeAll = (inputObj: any) => {
+        setInput({ ...inputObj });
+        if (inputName === 'ngayTinhLai') inputObj.tienlaidukien = tiencam * 3 * inputObj.ngayTinhLai / (100 * 30) > 0 ? tiencam * 3 * inputObj.ngayTinhLai / (100 * 30) : 0
         form.setFieldsValue(inputObj);
-        // setFormData({..._data, ...inputObj,...calc});
     }
 
     const _setInput = (e: any) => {
-        setInputName(e.target.id)
+        console.log({...input, [e.target.id]: form.getFieldValue(e.target.id)});
+        
+        setInput({...input, [e.target.id]: form.getFieldValue(e.target.id)})
+        setInputName(e.target.id);
+        setCurInput(form.getFieldValue(e.target.id));
     }
 
     const onKeyPress = (button: any) => {
         console.log("Button pressed", button);
     };
+
+    const _onOK = () => {
+        const data = form.getFieldsValue();
+        onOK(data);
+    }
     return (
         <>
             <Modal title="Gia hạn phiếu chuộc"
                 visible={visible}
-                onOk={giaHanOK}
+                onOk={_onOK}
                 okText="Xác nhận"
                 cancelText="Hủy"
                 onCancel={onCancel}
@@ -74,21 +66,21 @@ export default function ModalGiaHan(props: any) {
                 <p>Số ngày cầm: <b>{songay}</b></p>
                 <p>lãi suất: <b>{laisuat}%</b></p>
                 <p>Tiền cầm: <b>{`${tiencam}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
-                <Form form={form}>
-                    <Form.Item label="Tính lãi theo" name="tinhlaiTheoThang" >
+                <Form form={form} initialValues={defInput}>
+                    <Form.Item hidden label="Tính lãi theo" name="tinhlaiTheoThang" >
                         <Switch checkedChildren="Tháng" unCheckedChildren="Ngày" onChange={(e: boolean) => setTinhLaiTheoThang(e)}></Switch>
                     </Form.Item>
                     <Form.Item hidden={tinhlaiTheoThang} label="Số ngày tính lãi" name="ngayTinhLai">
-                        <InputNumber defaultValue={30} disabled />
+                        <InputNumber style={{ width: 160 }} onFocus={_setInput} />
                     </Form.Item>
                     <Form.Item hidden={!tinhlaiTheoThang} label="Số tháng tính lãi" name="thangTinhLai">
-                        <InputNumber defaultValue={soThangTinhLai} onFocus={_setInput} />
+                        <InputNumber style={{ width: 160 }} onFocus={_setInput} />
                     </Form.Item>
                     <Form.Item label="Tiền lãi" name="tienlaidukien">
-                        <InputNumber defaultValue={tienlaidukien} formatter={value => `${value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ`} disabled></InputNumber>
+                        <InputNumber style={{ width: 160 }} defaultValue={tienlaidukien} formatter={value => `${value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ`} disabled></InputNumber>
                     </Form.Item>
                     <Form.Item label="Số ngày gia hạn" name="songay">
-                        <InputNumber defaultValue={30} onFocus={_setInput} />
+                        <InputNumber style={{ width: 160 }} onFocus={_setInput} />
                     </Form.Item>
                 </Form>
                 <div>
@@ -97,7 +89,8 @@ export default function ModalGiaHan(props: any) {
                         onChangeAll={onChangeAll}
                         onKeyPress={onKeyPress}
                         input={input}
-                        rowId={rowID}
+                        rowId={rowId}
+                        curInput={curInput}
                     ></NumPad>
                 </div>
             </Modal>

@@ -2,18 +2,15 @@ import React, { useRef, useMemo } from "react";
 import Keyboard from "react-simple-keyboard";
 
 export default function NumPad(props) {
-  const { inputName, onChangeAll, input, rowId } = props;
+  const { inputName, onChangeAll, input, curInput, rowId } = props;
   const keyboard = useRef(null);
   const layoutName = "default";
 
   useMemo(() => {
-    // const k = keyboard.current;
-    // delete input.ngaycamchuoc;
-    // if (k) k.setInput(input[inputName]);
-    // console.log('inputt', input);
-    // keyboard.setInput(input);
+    const k = keyboard.current;
+    if (k) k.setInput(curInput, inputName);
 
-  }, [input])
+  }, [curInput, inputName])
   useMemo(() => {
     const k = keyboard.current;
     if (k) {
@@ -27,7 +24,6 @@ export default function NumPad(props) {
   }, [rowId])
 
   const commonKeyboardOptions = {
-    onChange: (input) => onChange(input),
     onKeyPress: (button) => _onKeyPress(button),
     onChangeAll: (inputObj) => onChangeAll(inputObj),
     inputName: inputName,

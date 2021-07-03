@@ -50,10 +50,10 @@ function QuetPhieu() {
         // extra={}
       />
       <Row>
-        <Col span={10}>
+        <Col span={12}>
             <ChiTiet data={formData} close={() => {}} quetphieu={true} onSearched={onRefresh} />
         </Col>
-        <Col span={14} style={{paddingLeft: 16}}>
+        <Col span={12} style={{paddingLeft: 16}}>
             <Phieu formData={formData} hideCuong={true} />
         </Col>
       </Row>

@@ -10,9 +10,6 @@ import { Camdo } from '../types/camdo';
 import ModalCamThem from './modalCamThem';
 import ModalGiaHan from './modalGiahan'
 import BarCodeEvent from './barCodeEvent';
-import NumPad from './numpad';
-
-// const { RangePicker } = DatePicker;
 
 const { Search } = Input;
 const dateFormat1 = 'DD/MM/YYYY';
@@ -30,13 +27,12 @@ function ChiTiet(props: propsType) {
   const [modalChuoc, setModalChuoc] = useState(false)
   const [modalHuy, setModalHuy] = useState(false)
   const [modalGiaHan, setModalGiaHan] = useState(false)
-  const [ngayGiaHan, setNgayGiaHan] = useState(30)
   const [trangthai, setTrangthai] = useState({
     text: 'Chưa quét',
     color: ''
   })
 
-  const [dataLaiSuat, setDataLaiSuat] = useState({ lai10: 3, lai20: 3, lai30: 3 });
+  // const [dataLaiSuat, setDataLaiSuat] = useState({ lai10: 3, lai20: 3, lai30: 3 });
   const [modalCamThem, setModalCamThem] = useState(false);
   const inputRef = React.useRef(null);
   const calc = () => {
@@ -112,7 +108,6 @@ function ChiTiet(props: propsType) {
           setModalCamThem(false)
         });
       })
-
   }
 
   const huyphieu = () => {
@@ -143,12 +138,13 @@ function ChiTiet(props: propsType) {
     setModalGiaHan(false);
     // setInputXacNhan('');
   };
-  const giaHanOK = () => {
-    const data = form.getFieldsValue();
-    const laihientai = data.tienlai | 0;
-    const laidukien = form.getFieldValue('tienlaidukien');
+  const giaHanOK = ({ ngayTinhLai, tienlaidukien, songay, thangTinhLai}: any) => {
+    const {id, tienlai} = form.getFieldsValue();
+    console.log(ngayTinhLai);
+    
     const { ngaytinhlai } = form.getFieldsValue();
-    giahanCamDo(data.id, laihientai + laidukien, ngaytinhlai, ngayGiaHan).then(() => {
+    giahanCamDo(id, tienlaidukien + tienlai, ngaytinhlai.add(Number(ngayTinhLai) + 1, 'days'), songay).then(() => {
+      onSearched(new Camdo({id: 0})) //Tạm thời dùng để reset form
       timPhieubyID(data.id).then((res: any) => {
         const data = new Camdo(res)
         onSearched(data);
@@ -251,12 +247,15 @@ function ChiTiet(props: propsType) {
       </Modal>
       <ModalGiaHan
         visible={modalGiaHan}
+        onOK={giaHanOK}
         onCancel={(e: any) => setModalGiaHan(false)}
+        ngayTinhLai={data.ngaytinhlai}
         tiencam={form.getFieldValue('tiencam')}
         songay={form.getFieldValue('songay')}
         laisuat={form.getFieldValue('laisuat')}
         tienlaidukien={form.getFieldValue('tienlaidukien')}
         change={moment().format('x')}
+        rowId={data.id}
       />
       <ModalCamThem
         visible={modalCamThem}
@@ -282,7 +281,7 @@ function ChiTiet(props: propsType) {
         form={form}
         labelCol={
           {
-            span: 6,
+            span: 8,
           }
         }
         wrapperCol={

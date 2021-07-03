@@ -12,11 +12,10 @@ export function updateCamDo(data) {
   return ipcRenderer.invoke('updateCamdo', data);
 }
 export function giahanCamDo(id, tienlai, ngaytinhlai, songay) {
-  const newNgaytinhlai = ngaytinhlai.add(31, 'days')
   let data = {
     id: id,
-    ngaytinhlai: newNgaytinhlai.format('x'),
-    ngayhethan: newNgaytinhlai.add(30, 'days').format('x'),
+    ngaytinhlai: ngaytinhlai.format('x'),
+    ngayhethan: ngaytinhlai.add(Number(songay) + 1, 'days').format('x'),
     tienlai: tienlai
   };
   console.log(data);

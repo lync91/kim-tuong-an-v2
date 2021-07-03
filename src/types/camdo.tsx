@@ -133,7 +133,7 @@ export class Camdo {
     this.gianhap = data.gianhap ? data.gianhap : defData.gianhap;
     this.giatoida = data.giatoida ? data.giatoida : defData.giatoida;
     this.songay = data.ngaytinhlai ? round((Number(moment().format('X')) - Number(moment(data.ngaytinhlai).format('X'))) / (60 * 60 * 24) + 1) : 0;
-    this.tienlaidukien = data.tiencam ? round((data.tiencam * (3 * this.songay / 30)) / 100) : 0;
+    this.tienlaidukien = data.tiencam ? round((data.tiencam * (3 * this.songay / 30)) / 100) > 0 ? round((data.tiencam * (3 * this.songay / 30)) / 100) : 0 : 0;
     this.tudo = data.tudo ? data.tudo : defData.tudo;
     this.tienchuocdukien = this.tiencam + this.tienlaidukien;
     this.tienlai = data.tienlai ? data.tienlai : defData.tienlai;
