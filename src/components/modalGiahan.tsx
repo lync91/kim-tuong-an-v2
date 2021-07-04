@@ -22,12 +22,13 @@ export default function ModalGiaHan(props: any) {
     useMemo(() => {
         // setInputName('ngayTinhLai');
         // console.log('OKKKKKK');
-        form.setFieldsValue({tienlaidukien: tienlaidukien});
+        form.setFieldsValue({tienlaidukien: tiencam * 3 * 30 / (100 * 30)});
         // setInput(defInput);
     }, [tienlaidukien])
     useEffect(() => {
-        const _ngaytinhlai = `${ngayTinhLai ? round((Number(moment().format('X')) - ngayTinhLai.format('X')) / (60 * 60     * 24)) + 1 : 0}`;
-        form.setFieldsValue({...defInput,...{ngayTinhLai: _ngaytinhlai}});
+        // const _ngaytinhlai = `${ngayTinhLai ? round((Number(moment().format('X')) - ngayTinhLai.format('X')) / (60 * 60     * 24)) + 1 : 0}`;
+        const _ngaytinhlai = '30';
+        form.setFieldsValue({...defInput,...{ngayTinhLai: _ngaytinhlai, tienlaidukien: tiencam * 3 * 30 / (100 * 30)}});
         setCurInput('');
         setInputName('')
     }, [rowId]);

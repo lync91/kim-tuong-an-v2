@@ -15,7 +15,7 @@ export function giahanCamDo(id, tienlai, ngaytinhlai, songay) {
   let data = {
     id: id,
     ngaytinhlai: ngaytinhlai.format('x'),
-    ngayhethan: ngaytinhlai.add(Number(songay) + 1, 'days').format('x'),
+    ngayhethan: ngaytinhlai.add(Number(songay), 'days').format('x'),
     tienlai: tienlai
   };
   console.log(data);
