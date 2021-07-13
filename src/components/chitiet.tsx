@@ -352,7 +352,7 @@ function ChiTiet(props: propsType) {
           </Form.Item>
         </Form.Item>
         <Form.Item label="Tủ đồ" name="tudo">
-          <Input />
+          <Input allowClear/>
         </Form.Item>
         <Form.Item hidden label="Giá nhập" name="gianhap" >
           <Input disabled={quetphieu} />
