@@ -314,12 +314,8 @@ const labelRender = ({ value, row }) => {
   var end = moment(c.ngayhethan).format('X');
   var now = moment().format('X');
   const han = (end - now) / (60 * 60 * 24);
-  if (han > 0) {
-    text = 'Còn hạn';
-    color = '#c9ffb2'
-  }
-  if (han <= 0) {
-    text = 'Quá hạn';
+  if (c.ngaychuoc <= 0) {
+    text = 'Chưa chuộc';
     color = '#ffc7b2'
   }
   if (c.ngaychuoc > 0) {
@@ -534,31 +530,46 @@ function trangThaiFilter(props) {
   return (
     <select className="selectFilter" value={filterValue} onChange={e => setFilter(e.target.value || undefined)}>
       <option key="all">Tất cả</option>
-      <option key="conhan">Còn hạn</option>
-      <option key="quahan">Quá hạn</option>
+      <option key="chuachuoc">Chưa chuộc</option>
       <option key="dachuoc">Đã chuộc</option>
     </select>
   )
 }
 
+// function filterTrangThai(rows, id, filterValue) {
+//   if (filterValue === 'Tất cả') return rows;
+//   if (filterValue === 'Đã chuộc') {
+//     return rows.filter(row => {
+//       console.log(row.values['ngaychuoc']);
+//       return row.values['ngaychuoc'] > 0
+//     })
+//   } else if (filterValue === 'Còn hạn') {
+//     return rows.filter(row => {
+//       var end = moment(row.values['ngayhethan']).format('X');
+//       var now = moment().format('X');
+//       return (now < end && row.values.ngaychuoc <= 0)
+//     })
+//   } else if (filterValue === 'Quá hạn') {
+//     return rows.filter(row => {
+//       var end = moment(row.values['ngayhethan']).format('X');
+//       var now = moment().format('X');
+//       return (end <= now && row.values['ngaychuoc'] <= 0)
+//     })
+//   }
+//   else {
+//     return []
+//   }
+// }
+
 function filterTrangThai(rows, id, filterValue) {
   if (filterValue === 'Tất cả') return rows;
   if (filterValue === 'Đã chuộc') {
     return rows.filter(row => {
-      console.log(row.values['ngaychuoc']);
       return row.values['ngaychuoc'] > 0
     })
-  } else if (filterValue === 'Còn hạn') {
+  } else if (filterValue === 'Chưa chuộc') {
     return rows.filter(row => {
-      var end = moment(row.values['ngayhethan']).format('X');
-      var now = moment().format('X');
-      return (now < end && row.values.ngaychuoc <= 0)
-    })
-  } else if (filterValue === 'Quá hạn') {
-    return rows.filter(row => {
-      var end = moment(row.values['ngayhethan']).format('X');
-      var now = moment().format('X');
-      return (end <= now && row.values['ngaychuoc'] <= 0)
+      return row.values['ngaychuoc'] <= 0
     })
   }
   else {
@@ -730,7 +741,7 @@ function BangThongKe(props) {
         Cell: dateHourCell,
         Filter: dateRangFilter,
         filter: filterDateRange,
-        width: 110
+        width: 120
       },
       {
         Header: 'Ngày tính lãi',
@@ -738,7 +749,7 @@ function BangThongKe(props) {
         Filter: dateRangFilter,
         filter: filterDateRange,
         Cell: dateHourCell,
-        width: 110
+        width: 100
       },
       {
         Header: 'Ngày hết hạn',
@@ -806,21 +817,21 @@ function BangThongKe(props) {
         Cell: dateHourCell,
         Filter: dateRangFilter,
         filter: filterDateRange,
-        width: 125
+        width: 150
       },
       {
         Header: 'Tủ đồ',
         accessor: 'tudo',
         width: 60
       },
-      // {
-      //   Header: 'Trạng thái',
-      //   accessor: 'trangthai',
-      //   Cell: labelRender,
-      //   Filter: trangThaiFilter,
-      //   filter: filterTrangThai,
-      //   width: 100,
-      // },
+      {
+        Header: 'Trạng thái',
+        accessor: 'trangthai',
+        Cell: labelRender,
+        Filter: trangThaiFilter,
+        filter: filterTrangThai,
+        width: 100,
+      },
     ],
     []
   )
