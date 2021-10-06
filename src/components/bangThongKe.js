@@ -683,11 +683,11 @@ function BangThongKe(props) {
 
   const columns = React.useMemo(
     () => [
-      // {
-      //   Header: 'id',
-      //   accessor: 'id',
-      //   width: 80
-      // },
+      {
+        Header: 'id',
+        accessor: 'id',
+        width: 5
+      },
       {
         Header: 'Số phiếu',
         accessor: 'sophieu',
