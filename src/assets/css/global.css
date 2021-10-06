@@ -452,7 +452,7 @@ span {
   cursor          : pointer
 }
 
-.selectFilter {}
+/* .selectFilter {} */
 
 .pagination {
   margin-top: 5px;
@@ -495,7 +495,7 @@ span {
   /* width   : 85px !important; */
   margin  : 0 !important;
   border  : 0px;
-  top     : 0px !important;
+  top     : -2px !important;
   height  : 22px;
 }
 

@@ -38,7 +38,7 @@ overflow: auto;
 .table {
   border-spacing: 0;
   border: 1px solid #bfbfbf;
-
+  font-size: 14px;
   .thead {
     ${'' /* These styles are required for a scrollable body to align with the header properly */}
     overflow-y: auto;
@@ -59,6 +59,13 @@ overflow: auto;
       }
     }
     border-bottom: 1px solid #bfbfbf;
+  }
+  .thp {
+    height: 56px;
+  }
+
+  .filter-box {
+    margin-top: 5px;
   }
 
   .th,
@@ -425,7 +432,7 @@ function Table({ columns, data, onRowClicked }) {
                         : (<SortAscendingOutlined />)
                       : (<MinusCircleOutlined />)}
                   </span>
-                  <div>{column.canFilter ? column.render('Filter') : null}</div>
+                  <div className="filter-box">{column.canFilter ? column.render('Filter') : null}</div>
                   {/* Use column.getResizerProps to hook up the events correctly */}
                   {/* {column.canResize && (
                   <div
@@ -548,7 +555,6 @@ function filterTrangThai(rows, id, filterValue) {
       return (now < end && row.values.ngaychuoc <= 0)
     })
   } else if (filterValue === 'Quá hạn') {
-    console.log('OK');
     return rows.filter(row => {
       var end = moment(row.values['ngayhethan']).format('X');
       var now = moment().format('X');
@@ -666,11 +672,11 @@ function BangThongKe(props) {
 
   const columns = React.useMemo(
     () => [
-      {
-        Header: 'id',
-        accessor: 'id',
-        width: 80
-      },
+      // {
+      //   Header: 'id',
+      //   accessor: 'id',
+      //   width: 80
+      // },
       {
         Header: 'Số phiếu',
         accessor: 'sophieu',
@@ -807,14 +813,14 @@ function BangThongKe(props) {
         accessor: 'tudo',
         width: 60
       },
-      {
-        Header: 'Trạng thái',
-        accessor: 'trangthai',
-        Cell: labelRender,
-        Filter: trangThaiFilter,
-        filter: filterTrangThai,
-        width: 100,
-      },
+      // {
+      //   Header: 'Trạng thái',
+      //   accessor: 'trangthai',
+      //   Cell: labelRender,
+      //   Filter: trangThaiFilter,
+      //   filter: filterTrangThai,
+      //   width: 100,
+      // },
     ],
     []
   )

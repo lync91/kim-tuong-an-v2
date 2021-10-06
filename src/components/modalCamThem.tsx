@@ -43,7 +43,7 @@ export default function ModalCamThem(props: any) {
                     keyboardRef={(r: any) => (keyboard.current = r)}
                     className="numKeyboard"
                     layout={{
-                        default: ["1 2 3", "4 5 6", "7 8 9", "000 0 {bksp}"]
+                        default: ["1 2 3", "4 5 6", "7 8 9", "000 0 {bksp}", "-"]
                     }}
                     theme="hg-theme-default hg-layout-numeric numeric-theme"
                     onChange={keyBoardChange}
