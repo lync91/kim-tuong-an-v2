@@ -26,6 +26,7 @@ import {
 } from "@ant-design/icons";
 import moment from "moment";
 import { round } from "mathjs";
+import { ipcRenderer } from "electron";
 const { RangePicker } = DatePicker;
 const dateFormat = "DD/MM/YYYY";
 const Styles = styled.div`
@@ -417,6 +418,11 @@ function Table({ columns, data, onRowClicked }) {
     dt.map(e => console.log(e.trongluongthuc + e.trongluonghot, e.tongtrongluong))
   }
 
+  const exportExcel = () => {
+    ipcRenderer.invoke('excelExport').then((result) => {
+      console.log(result);
+    })
+  }
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
   // const firstPageRows = rows.slice(10)
@@ -564,6 +570,9 @@ function Table({ columns, data, onRowClicked }) {
         </Button>
         <Button style={{marginLeft: 5}} type="warning" size="small" onClick={fixKhoiLuong}>
           Fix khối lượng
+        </Button>
+        <Button style={{marginLeft: 5}} type="success" size="small" onClick={exportExcel}>
+          Xuất Excel
         </Button>
       </div>
     </div>
