@@ -10,8 +10,10 @@ function ThongKe() {
   const [curRow, setCurRow] = useState({ id: '' });
   const [visible, setVisible] = useState(false);
   const getData = (key: string) => {
+    let dt = [];
     ipcRenderer.invoke('getdata').then((result) => {
-      updateTable(result)
+      dt = result;
+      updateTable(dt.filter((e: any) => e.dahuy !== 1 && e.tenkhach !== ""))
     })
   }
   useEffect(() => {
