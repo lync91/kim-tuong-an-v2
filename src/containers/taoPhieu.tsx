@@ -185,7 +185,7 @@ function TaoPhieu() {
             <Tag key="6" className="tag-gia" color="gold" onClick={showDrawer}>Vàng 9999: <b>{`${settingData.gia9999}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
             <Button key="3" hidden onClick={save} ><SaveTwoTone />Lưu</Button>,
             <Button key="2" hidden onClick={print}><PrinterTwoTone /> In </Button>,
-            <Button key="1" type="primary" onClick={saveAndPrint} ><ProjectOutlined />Lưu và in</Button>,
+            <Button key="1" type="primary" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} onClick={saveAndPrint} ><ProjectOutlined />Lưu và in</Button>,
           ]
         }
       />

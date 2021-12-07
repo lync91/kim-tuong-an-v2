@@ -26,7 +26,7 @@ import {
 } from "@ant-design/icons";
 import moment from "moment";
 import { round } from "mathjs";
-import { ipcRenderer } from "electron";
+import { ipcRenderer, remote } from "electron";
 const { RangePicker } = DatePicker;
 const dateFormat = "DD/MM/YYYY";
 const Styles = styled.div`
@@ -412,17 +412,55 @@ function Table({ columns, data, onRowClicked }) {
     useResizeColumns
   );
 
+  const checkData = () => {
+
+  }
+
   const fixKhoiLuong = () => {
-    const dt = data.filter((e) => round(Number(e.trongluongthuc | 0), 2) + round(Number(e.trongluonghot | 0), 2) !== round(Number(e.tongtrongluong | 0), 2));
+    const dt = data.filter(
+      (e) =>
+        round(Number(e.trongluongthuc | 0), 2) +
+          round(Number(e.trongluonghot | 0), 2) !==
+        round(Number(e.tongtrongluong | 0), 2)
+    );
     console.log(dt);
-    dt.map(e => console.log(e.trongluongthuc + e.trongluonghot, e.tongtrongluong))
+    dt.map((e) =>
+      console.log(e.trongluongthuc + e.trongluonghot, e.tongtrongluong)
+    );
+  };
+
+  const backupData = () => {
+    ipcRenderer.invoke("backupData", data).then((res) => {
+      console.log('OK');
+    })
   }
 
   const exportExcel = () => {
-    ipcRenderer.invoke('excelExport').then((result) => {
-      console.log(result);
-    })
-  }
+    var dialog = remote.dialog;
+
+    var browserWindow = remote.getCurrentWindow();
+    var options = {
+      title: "Xuất dữ liệu.",
+      defaultPath: "/path/to/data.xlsx",
+      filters: [
+        {
+          name: "Excel 2007 trở lên",
+          extensions: ["xlsx"],
+        },
+      ],
+    };
+
+    let saveDialog = dialog.showSaveDialog(browserWindow, options);
+    saveDialog.then(function (saveTo) {
+      console.log(saveTo.filePath);
+      //>> /path/to/new_file.jsx
+      ipcRenderer.invoke("excelExport", saveTo.filePath, data).then((result) => {
+        console.log(result);
+      });
+    });
+
+    
+  };
   // We don't want to render all of the rows for this example, so cap
   // it for this use case
   // const firstPageRows = rows.slice(10)
@@ -568,10 +606,36 @@ function Table({ columns, data, onRowClicked }) {
         <Button type="info" size="small" onClick={() => setAllFilters([])}>
           Xóa lọc
         </Button>
-        <Button style={{marginLeft: 5}} type="warning" size="small" onClick={fixKhoiLuong}>
+        <Button
+          style={{ marginLeft: 5 }}
+          type="warning"
+          size="small"
+          onClick={checkData}
+        >
+          Kiểm tra
+        </Button>
+        <Button
+          style={{ marginLeft: 5 }}
+          type="warning"
+          size="small"
+          onClick={fixKhoiLuong}
+        >
           Fix khối lượng
         </Button>
-        <Button style={{marginLeft: 5}} type="success" size="small" onClick={exportExcel}>
+        <Button
+          style={{ marginLeft: 5 }}
+          type="warning"
+          size="small"
+          onClick={backupData}
+        >
+          Sao lưu
+        </Button>
+        <Button
+          style={{ marginLeft: 5 }}
+          type="success"
+          size="small"
+          onClick={exportExcel}
+        >
           Xuất Excel
         </Button>
       </div>
@@ -797,7 +861,7 @@ function BangThongKe(props) {
             [info.rows]
           );
 
-          return <>{`${Math.round(total*100)/100}`}</>;
+          return <>{`${Math.round(total * 100) / 100}`}</>;
         },
         width: 80,
       },
@@ -819,7 +883,7 @@ function BangThongKe(props) {
               ),
             [info.rows]
           );
-          return <>{`${Math.round(total*100)/100}`}</>;
+          return <>{`${Math.round(total * 100) / 100}`}</>;
         },
         width: 80,
       },
@@ -842,7 +906,7 @@ function BangThongKe(props) {
             [info.rows]
           );
 
-          return <>{`${Math.round(total*100)/100}`}</>;
+          return <>{`${Math.round(total * 100) / 100}`}</>;
         },
         Cell: roundCell,
         width: 80,

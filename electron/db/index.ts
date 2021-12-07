@@ -2,10 +2,12 @@ import * as isDev from 'electron-is-dev';
 import * as path from 'path';
 import knex from "./connect";
 import { ipcMain } from "electron";
-import * as ExcelJS from "exceljs"
+import * as ExcelJS from "exceljs";
+import * as moment from "moment";
+import * as fs from "fs";
+import {filePath} from "./connect"
 
 ipcMain.handle('getdataPath', async(e) => {
-	const filePath = isDev ? path.join(__dirname, '..', '..', '..', 'data/database.sqlite') : path.join(__dirname, '..', '..', '..', '..', '/data/database.sqlite');
 	return filePath
 })
 ipcMain.handle('getLastId', async (event) => {
@@ -59,29 +61,92 @@ ipcMain.handle('insertCamdo', async (event, data) => {
 	const result = await knex('camdo').insert(data).then();
 	return result;
 });
-ipcMain.handle('excelExport', async (event, data) => {
-	console.log('OK');
+ipcMain.handle('backupData', async (event, data) => {
+	const fileData = path.parse(filePath);
+	fs.copyFile(filePath, path.join(fileData.dir, `backup-${new Date().getTime()}${fileData.ext}`), (err) => {
+		if (err) throw err;
+		console.log('source.txt was copied to destination.txt');
+	});
+});
+ipcMain.handle('excelExport', async (event, filePath, data) => {
+	console.log(data);
+	const tableData = data.map((e: any) => [
+		e.id, 
+		e.sophieu, 
+		e.tenkhach, 
+		e.monhang, 
+		e.loaivang,
+		e.tongtrongluong, 
+		e.trongluonghot, 
+		e.trongluongthuc,
+		e.gianhap,
+		e.tiencam,
+		e.laisuat,
+		e.tienlai,
+		e.tienchuoc,
+		e.ngaycam ? new Date(moment(e.ngaycam).format('YYYY-MM-DD')) : "",
+		e.ngaycam ? moment(e.ngaycam).format('HH:mm') : "",
+		e.ngayhethan ? new Date(moment(e.ngayhethan).format('YYYY-MM-DD')) : "",
+		e.ngaytinhlai ? new Date(moment(e.ngaytinhlai).format('YYYY-MM-DD')) : "",
+		e.ngaytinhlai ? moment(e.ngaytinhlai).format('HH:mm') : "",
+		e.ngaychuoc ? new Date(moment(e.ngaychuoc).format('YYYY-MM-DD')) : "",
+		e.ngaychuoc ? moment(e.ngaychuoc).format('HH:mm') : "",
+		e.dachuoc,
+		e.tudo,
+		e.dahuy
+	])
 	
 	const workbook = new ExcelJS.Workbook();
 	const ws = workbook.addWorksheet('data');
+	ws.getColumn(9).numFmt = '#,##0';
+	ws.getColumn(10).numFmt = '#,##0';
+	ws.getColumn(12).numFmt = '#,##0';
+	ws.getColumn(13).numFmt = '#,##0';
+	ws.getColumn(2).width = 11;
+	ws.getColumn(4).width = 11;
+	ws.getColumn(9).width = 11;
+	ws.getColumn(10).width = 11;
+	ws.getColumn(12).width = 11;
+	ws.getColumn(13).width = 11;
+	ws.getColumn(14).width = 11;
+	ws.getColumn(16).width = 11;
+	ws.getColumn(17).width = 11;
+	ws.getColumn(19).width = 11;
 	ws.addTable({
-		name: 'MyTable',
+		name: 'Data',
 		ref: 'A1',
 		headerRow: true,
 		totalsRow: true,
 		style: {
-			theme: 'TableStyleDark3',
+			theme: 'TableStyleLight16',
 			showRowStripes: true,
 		},
 		columns: [
-			{name: 'Date', totalsRowLabel: 'Totals:', filterButton: true},
-			{name: 'Amount', totalsRowFunction: 'sum', filterButton: false},
+			{name: 'ID', totalsRowLabel: 'Tổng:', filterButton: true},
+			{name: 'Số phiếu', totalsRowFunction: 'count', filterButton: true},
+			{name: 'Tên khác', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Món hàng', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Loại vàng', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Tổng', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Hột', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Thực', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Giá nhập', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Tiền cầm', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Lãi suất', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Tiền lãi', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Tiền chuộc', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Ngày cầm', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Giờ cầm', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Ngày hết hạn', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Ngày tính lãi', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Giờ tính lãi', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Ngày chuộc', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Giờ chuộc', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Đã chuộc', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Tủ đồ', totalsRowFunction: 'sum', filterButton: true},
+			{name: 'Đã hủy', totalsRowFunction: 'sum', filterButton: true},
 		],
-		rows: [
-			[new Date('2019-07-20'), 70.10],
-			[new Date('2019-07-21'), 70.60],
-			[new Date('2019-07-22'), 70.10],
-		],
+		rows: tableData,
 	});
-	await workbook.xlsx.writeFile("test.xlsx");
+	await workbook.xlsx.writeFile(filePath);
 })
