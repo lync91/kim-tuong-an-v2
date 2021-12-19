@@ -367,12 +367,12 @@ tbody tr:hover {
 }
 
 .table .thp {
-  padding-right   : 17px !important;
+  /* padding-right   : 17px !important; */
   background-color: #d7e6f3;
 }
 
 .table .tft {
-  padding-right   : 17px !important;
+  /* padding-right   : 17px !important; */
   background-color: #f3e5d7;
 }
 
