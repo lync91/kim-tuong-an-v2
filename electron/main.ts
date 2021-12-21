@@ -6,10 +6,10 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 import './db/index'
 // import * as db from './db'
 
-const CLIENT_ID = '1044766700247-rfe3l68b7qemqldun17q5qrq1evi5pai.apps.googleusercontent.com'
+// const CLIENT_ID = '1044766700247-rfe3l68b7qemqldun17q5qrq1evi5pai.apps.googleusercontent.com'
 
 //client secret
-const CLIENT_SECRET = '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';
+// const CLIENT_SECRET = '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';
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -34,7 +34,7 @@ function createWindow() {
     } else {
       // webContents.setZoomFactor(1)
     }
-    webContents.setVisualZoomLevelLimits(1, 1)
+    // webContents.setVisualZoomLevelLimits(1, 1)
   })
   if (isDev) {
     win.loadURL('http://localhost:3000/index.html');
