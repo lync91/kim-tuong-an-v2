@@ -2,10 +2,14 @@ import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as isDev from 'electron-is-dev';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
-
+// import * as google from 'googleapis';
+import './db/index'
 // import * as db from './db'
 
-import './db/index'
+const CLIENT_ID = '1044766700247-rfe3l68b7qemqldun17q5qrq1evi5pai.apps.googleusercontent.com'
+
+//client secret
+const CLIENT_SECRET = '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';
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -22,7 +26,7 @@ function createWindow() {
   })
   win.setMenuBarVisibility(false)
   win.maximize()
-  win.setTitle('Kim Tường An');
+  // win.setTitle('Kim Tường An');
   let webContents = win.webContents
   webContents.on('did-finish-load', () => {
     if (isDev) {
@@ -69,6 +73,8 @@ app.whenReady().then(() => {
 
   createWindow();
 
+  
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       // createWindow();
@@ -81,3 +87,5 @@ app.whenReady().then(() => {
     }
   });
 });
+
+
