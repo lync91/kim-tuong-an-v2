@@ -697,11 +697,11 @@ function filterTrangThai(rows, id, filterValue) {
   if (filterValue === "Tất cả") return rows;
   if (filterValue === "Đã chuộc") {
     return rows.filter((row) => {
-      return row.values["ngaychuoc"] > 0;
+      return row.original["dachuoc"] === 1;
     });
   } else if (filterValue === "Chưa chuộc") {
     return rows.filter((row) => {
-      return row.values["ngaychuoc"] <= 0;
+      return row.original["dachuoc"] < 1 ||  row.original["dachuoc"] === null;
     });
   } else {
     return [];
@@ -816,6 +816,7 @@ function BangThongKe(props) {
         Header: "id",
         accessor: "id",
         width: 5,
+        Cell: instance => instance?.cell?.value || '',
       },
       {
         Header: "Số phiếu",
@@ -839,8 +840,8 @@ function BangThongKe(props) {
         Header: "Loại vàng",
         accessor: "loaivang",
         Filter: SelectColumnFilter,
-        filter: "includes",
         width: 75,
+        // Cell: instance => instance?.cell?.value || '',
       },
       {
         Header: "Tổng",
