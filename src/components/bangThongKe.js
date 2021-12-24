@@ -323,11 +323,11 @@ const labelRender = ({ value, row }) => {
   var end = moment(c.ngayhethan).format("X");
   var now = moment().format("X");
   const han = (end - now) / (60 * 60 * 24);
-  if (c.ngaychuoc <= 0) {
+  if (c.ngaychuoc <= 0 || c.dachuoc < 1) {
     text = "Chưa chuộc";
     color = "#ffc7b2";
   }
-  if (c.ngaychuoc > 0) {
+  if (c.ngaychuoc > 0 || c.dachuoc === 1) {
     text = "Đã chuộc";
     color = "#a7d7ff";
   }
