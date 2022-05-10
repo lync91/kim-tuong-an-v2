@@ -53,7 +53,8 @@
     "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
     "electron:build": "yarn build && tsc -p electron && electron-builder",
     "electron:build-all": "yarn build && tsc -p electron && electron-builder -mw",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "eject1": "craco eject"
   },
   "build": {
     "extends": null,
