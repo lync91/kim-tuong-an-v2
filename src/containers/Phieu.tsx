@@ -39,9 +39,9 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
               </div>
             </Row>
           </Col>
-          <Col className="phieu-tam" span="16">
+          <Col className="phieu-tam" span={hideCuong ? "24" : "16"}>
             <Row className="phieu-header-row">
-              <Col span="12">
+              {/* <Col span="12">
                 <Row>
                   <div className="center">
                     CÔNG TY TNHH MTV<br />
@@ -51,8 +51,8 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
                     </div>
                   </div>
                 </Row>
-              </Col>
-              <Col span="12">
+              </Col> */}
+              <Col span="24">
                 <Row>
                   <div className="center">
                     CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br />
@@ -72,16 +72,16 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
             </Row>
             <Row>
               <div className="center phieu-title">
-                BIÊN LAI CẦM ĐỒ
+                HỢP ĐỒNG CẦM CỐ TÀI SẢN
               </div>
             </Row>
             <Row>
               <div className="phieu-content">
-                Ông bà: <b>{formData.tenkhach}</b><br />
-                ĐT: <b>{formData.dienthoai}</b><br />
-                Món hàng: <b>{`${formData.monhang} (${formData.loaivang}) - Trọng lượng: ${formData.trongluongthuc}`}</b><br />
+                Tên khách hàng: <b>{formData.tenkhach}</b><br />
+                {/* ĐT: <b>{formData.dienthoai}</b><br /> */}
+                Món hàng cầm: <b>{`${formData.monhang} (${formData.loaivang}) - Trọng lượng: ${formData.trongluongthuc}`}</b><br />
                 Số tiền cầm: <b>{`${formData.tiencam}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b><br />
-                Viết bằng chữ: <div className="bangchu"><i>{docso(formData.tiencam)} đồng</i></div>
+                Bằng chữ: <div className="bangchu"><i>{docso(formData.tiencam)} đồng</i></div>
                 <Row>
                   <Col span={12}>
                     Ngày cầm: <b>{formData.ngayCamChuoc[0] ? formData.ngayCamChuoc[0].format('DD/MM/YYYY') : ''}</b><br />

@@ -29,6 +29,11 @@ import { printPreview } from '../utils/print'
 import KeyBoard1 from '../components/keyBoard'
 import Phieu from './Phieu';
 import GiaVang from '../components/giaVang';
+
+import BangThongKe from '../components/bangThongKe';
+import { ipcRenderer } from 'electron';
+import ChiTiet from '../components/chitiet';
+
 const { RangePicker } = DatePicker;
 
 const dateFormat = 'DD/MM/YYYY, h:mm:ss A';
@@ -308,7 +313,7 @@ function TaoPhieu() {
             <Phieu formData={formData} hideCuong={false} />
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <KeyBoard1
         inputName={inputName}
         onChangeAll={onChangeAll}
@@ -316,6 +321,9 @@ function TaoPhieu() {
         input={input}
         rowId={rowID}
       />
+        </Row> */}
+        <Row>
+
         </Row>
       </Layout>
     </div>
