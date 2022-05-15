@@ -34,6 +34,8 @@ import BangThongKe from '../components/bangThongKe';
 import { ipcRenderer } from 'electron';
 import ChiTiet from '../components/chitiet';
 
+import { AutoComplete } from 'antd';
+
 const { RangePicker } = DatePicker;
 
 const dateFormat = 'DD/MM/YYYY, h:mm:ss A';
@@ -233,9 +235,9 @@ function TaoPhieu() {
                   onFocus={(e: any) => _setinputName('tenkhach')}
                   ref={(r: any) => inputRef.current = r} />
               </Form.Item>
-              <Form.Item label="Điện thoại" name="dienthoai" >
+              {/* <Form.Item label="Điện thoại" name="dienthoai" >
                 <Input className={inputName === 'dienthoai' ? 'input-focused' : ''} onFocus={() => _setinputName('dienthoai')} />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item label="Món hàng" name="monhang">
                 <Input className={inputName === 'monhang' ? 'input-focused' : ''} onFocus={() => _setinputName('monhang')} />
               </Form.Item>

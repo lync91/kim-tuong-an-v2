@@ -26,6 +26,9 @@ export const html = `<!DOCTYPE html>
 .bangchu:first-letter {
   text-transform: uppercase;
 }
+p {
+  margin-bottom: 0;
+}
 </style>
 </head>
 <html>

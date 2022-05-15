@@ -99,7 +99,7 @@
 }
 
 .phieu-title {
-  font-size  : 20pt;
+  font-size  : 18pt;
   color      : red;
   font-weight: bold;
 }
@@ -107,9 +107,9 @@
 .qr-code {
   padding  : 10px;
   position : absolute;
-  top      : 100px;
+  top      : 0px;
   right    : 0;
-  font-size: 18px;
+  font-size: 12px;
 }
 
 .phieu-content {
