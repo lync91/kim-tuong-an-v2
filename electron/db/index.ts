@@ -14,6 +14,9 @@ ipcMain.handle('getLastId', async (event) => {
 	const result = await knex('camdo').max({ a: 'id' });
 	return result[0];
 });
+ipcMain.handle('resetData', async (event) => {
+	
+});
 ipcMain.handle('getSettings', async (event) => {
 	const result = await knex('settings').where('id', 1);
 	return result[0];

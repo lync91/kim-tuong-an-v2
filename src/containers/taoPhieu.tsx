@@ -46,9 +46,9 @@ const settings: settingsTypes = {
   gia18K: 2500000,
   gia23K: 4200000,
   gia9999: 4500000,
-  lai10: 3,
-  lai20: 3,
-  lai30: 3,
+  lai10: 2,
+  lai20: 2,
+  lai30: 2,
   tienToiThieu: 5000
 }
 
