@@ -32,6 +32,8 @@ function ChiTiet(props: propsType) {
     color: ''
   })
 
+  const [camdoData, setCamdoData] = useState(new Camdo());
+
   // const [dataLaiSuat, setDataLaiSuat] = useState({ lai10: 3, lai20: 3, lai30: 3 });
   const [modalCamThem, setModalCamThem] = useState(false);
   const inputRef = React.useRef(null);
@@ -41,11 +43,9 @@ function ChiTiet(props: propsType) {
     form.setFieldsValue({ trongluongthuc: trongluongthuc });
   };
   useEffect(() => {
-    console.log(data);
-    form.setFieldsValue(new Camdo(data));
-    return () => {
-
-    };
+    const _camdoData = new Camdo(data);
+    form.setFieldsValue(_camdoData);
+    setCamdoData(_camdoData)
   }, [data]);
   const _onValuesChange = (value: string, vs: any) => {
     calc();
@@ -250,10 +250,10 @@ function ChiTiet(props: propsType) {
         onOK={giaHanOK}
         onCancel={(e: any) => setModalGiaHan(false)}
         ngayTinhLai={data.ngaytinhlai}
-        tiencam={form.getFieldValue('tiencam')}
-        songay={form.getFieldValue('songay')}
-        laisuat={form.getFieldValue('laisuat')}
-        tienlaidukien={form.getFieldValue('tienlaidukien')}
+        tiencam={camdoData.tiencam}
+        songay={camdoData.songay}
+        laisuat={camdoData.laisuat}
+        tienlaidukien={camdoData.tienlaidukien}
         change={moment().format('x')}
         rowId={data.id}
       />
@@ -261,7 +261,7 @@ function ChiTiet(props: propsType) {
         visible={modalCamThem}
         onSubmit={camthemSubmit}
         onCancel={(e: any) => setModalCamThem(false)}
-        songay={form.getFieldValue('songay')}
+        songay={camdoData.songay}
         laisuat={form.getFieldValue('laisuat')}
         tiencam={form.getFieldValue('tiencam')}
         tienlaidukien={form.getFieldValue('tienlaidukien')}
@@ -306,13 +306,13 @@ function ChiTiet(props: propsType) {
         <Form.Item label="Tình trạng" >
           <Tag color={trangthai.color} >{trangthai.text}</Tag>
         </Form.Item>
-        <Form.Item label="Id" name="id" >
+        <Form.Item hidden label="Id" name="id" >
           <Input disabled />
         </Form.Item>
         <Form.Item label="Tên khách hàng" name="tenkhach" >
           <Input ref={inputRef} disabled={quetphieu} />
         </Form.Item>
-        <Form.Item label="Điện thoại" name="dienthoai" >
+        <Form.Item hidden label="Điện thoại" name="dienthoai" >
           <Input disabled={quetphieu} />
         </Form.Item>
         <Form.Item label="Món hàng" name="monhang">

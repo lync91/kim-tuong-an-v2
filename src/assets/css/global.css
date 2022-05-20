@@ -155,11 +155,30 @@
 }
 
 .form-chi-tiet .ant-input[disabled] {
-  color: black !important;
+  color: red !important;
+  font-size: 12pt;
+}
+.form-chi-tiet .ant-input {
+  color: red !important;
+  font-size: 12pt;
+}
+.form-chi-tiet input {
+  color: red !important;
+  font-size: 12pt;
 }
 
 .form-tao-phieu .ant-input[disabled] {
-  color: black !important;
+  color: red !important;
+  font-size: 12pt;
+}
+.form-tao-phieu .ant-input {
+  color: red !important;
+  font-size: 12pt;
+}
+.ant-form-item-control .ant-select-selection-item {
+  color: red !important;
+  font-size: 12pt;
+  font-weight: bold;
 }
 
 .hg-theme-default {
@@ -712,4 +731,27 @@ select {
 
 #root .simple-keyboard.myTheme1 + .simple-keyboard-preview {
   background: #1c4995;
+}
+input {
+  font-weight: bold;
+  color: red !important;
+}
+
+.chitiet-button {
+  padding: 10px 20px 20px 50px;
+}
+.chitiet-button button {
+  margin-right: 5px;
+}
+.ant-modal-content p {
+  font-size: 13pt;
+}
+.ant-modal-content label {
+  font-size: 13pt !important;
+}
+.ant-modal-content input {
+  font-size: 13pt !important;
+}
+.ant-modal-content p b {
+  color: red;
 }

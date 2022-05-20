@@ -39,7 +39,7 @@ function Phieu(props: { formData: any, hideCuong: boolean }) {
               </div>
             </Row>
           </Col>
-          <Col className="phieu-tam" span="16">
+          <Col className="phieu-tam" span={hideCuong ? "24" : "16"}>
             <Row className="phieu-header-row">
               <Col span="12">
                 <Row>

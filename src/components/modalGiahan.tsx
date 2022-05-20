@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useMemo } from "react";
 import { Form, InputNumber, Input, Modal, Switch } from 'antd';
 import { Camdo } from "../types/camdo";
 import NumPad from "./numpad";
-import { round } from "mathjs";
+import { isNumeric, round } from "mathjs";
 import moment from "moment";
 
 const defInput = {
@@ -22,13 +22,15 @@ export default function ModalGiaHan(props: any) {
     useMemo(() => {
         // setInputName('ngayTinhLai');
         // console.log('OKKKKKK');
-        form.setFieldsValue({tienlaidukien: tiencam * 3 * 30 / (100 * 30)});
+        // form.setFieldsValue({tienlaidukien: tiencam * 3 * 30 / (100 * 30)});
         // setInput(defInput);
     }, [tienlaidukien])
     useEffect(() => {
         // const _ngaytinhlai = `${ngayTinhLai ? round((Number(moment().format('X')) - ngayTinhLai.format('X')) / (60 * 60     * 24)) + 1 : 0}`;
-        const _ngaytinhlai = '30';
-        form.setFieldsValue({...defInput,...{ngayTinhLai: _ngaytinhlai, tienlaidukien: tiencam * 3 * 30 / (100 * 30)}});
+        const _ngaytinhlai = Math.round(Number(songay)/30)*30;
+        console.log(songay);
+        const inputObj = {...defInput,...{ngayTinhLai: `${_ngaytinhlai}`, tienlaidukien: `${tiencam * 3 * _ngaytinhlai / (100 * 30)}`}}
+        form.setFieldsValue(inputObj);
         setCurInput('');
         setInputName('')
     }, [rowId]);
@@ -55,6 +57,12 @@ export default function ModalGiaHan(props: any) {
         const data = form.getFieldsValue();
         onOK(data);
     }
+    const onFormChange = () => {
+        const songaytinhlai = form.getFieldValue("ngayTinhLai");
+        console.log(songaytinhlai);
+        form.setFieldsValue({tienlaidukien: tiencam * 3 * songaytinhlai / (100 * 30) > 0 ? tiencam * 3 * songaytinhlai / (100 * 30) : 0})
+        setInput(form.getFieldsValue())
+    }
     return (
         <>
             <Modal title="Gia hạn phiếu chuộc"
@@ -67,7 +75,7 @@ export default function ModalGiaHan(props: any) {
                 <p>Số ngày cầm: <b>{songay}</b></p>
                 <p>lãi suất: <b>{laisuat}%</b></p>
                 <p>Tiền cầm: <b>{`${tiencam}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
-                <Form form={form} initialValues={defInput}>
+                <Form form={form} initialValues={defInput} onChange={onFormChange}>
                     <Form.Item hidden label="Tính lãi theo" name="tinhlaiTheoThang" >
                         <Switch checkedChildren="Tháng" unCheckedChildren="Ngày" onChange={(e: boolean) => setTinhLaiTheoThang(e)}></Switch>
                     </Form.Item>
