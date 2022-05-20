@@ -19,8 +19,6 @@ const options = {
   pagesPerSheet: 1,
   collate: false,
   copies: 1,
-  header: 'Header of the Page',
-  footer: 'Footer of the Page'
 }
 export function printPreview(data, preview) {
   console.log(data);
@@ -34,8 +32,8 @@ export function printPreview(data, preview) {
   const barOptions = {
     bcid: 'code128',       // Barcode type
     text: data.sophieu,    // Text to encode
-    scale: 2,               // 3x scaling factor
-    height: 20,              // Bar height, in millimeters
+    scale: 1,               // 3x scaling factor
+    height: 16,              // Bar height, in millimeters
     includetext: false,            // Show human-readable text
     textxalign: 'center',        // Always good to set this f
   }
