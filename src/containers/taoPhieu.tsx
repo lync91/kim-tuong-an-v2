@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   PageHeader,
   Layout,
@@ -11,6 +11,7 @@ import {
   Tag,
   Drawer,
   message,
+  InputNumber,
 } from 'antd';
 import Button from 'antd-button-color';
 import moment from 'moment';
@@ -151,10 +152,6 @@ function TaoPhieu() {
     })
   }
   const onChangeAll = async (inputObj: any) => {
-    console.log(inputObj);
-    
-    // setInput(inputObj);
-    // const calc = defData.update({...form.getFieldsValue(), ...inputObj}).calc();
     const _data = await form.getFieldsValue();
     const data = defData.update(inputObj);
     const calc = data.calc().calcObj();
@@ -277,7 +274,12 @@ function TaoPhieu() {
                 <Input disabled onFocus={() => _setinputName('giatoida')} className={inputName === 'giatoida' ? 'input-focused' : ''} />
               </Form.Item>
               <Form.Item label="Tiền cầm" name="tiencam">
-                <Input onFocus={() => _setinputName('tiencam')} className={inputName === 'tiencam' ? 'input-focused' : ''} />
+                <InputNumber 
+                onFocus={() => _setinputName('tiencam')}
+                className={inputName === 'tiencam' ? 'input-focused' : ''}
+                style={{ width: 306 }} 
+                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                parser={(value:any) => value.replace(/\$\s?|(,*)/g, '')}/>
               </Form.Item>
               <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc" >
                 <RangePicker

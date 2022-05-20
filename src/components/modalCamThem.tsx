@@ -3,7 +3,8 @@ import { Form, InputNumber, Modal } from 'antd';
 import Keyboard from 'react-simple-keyboard';
 import { camThemTien } from '../utils/db';
 export default function ModalCamThem(props: any) {
-    const { songay, laisuat, tiencam, tienlaidukien, change, onChange, visible, onSubmit, onCancel } = props
+    const { camdoData, change, onChange, visible, onSubmit, onCancel } = props;
+    const {songay, laisuat, tiencam, tienlaidukien} = camdoData;
     const [formCamThem] = Form.useForm();
     const keyboard: any = useRef();
     useEffect(() => {
@@ -36,7 +37,10 @@ export default function ModalCamThem(props: any) {
                 Số tiền cầm thêm: <b></b>
                 <Form form={formCamThem} onChange={formChange}>
                     <Form.Item name="tiencamthem">
-                        <InputNumber style={{ width: 300 }} />
+                        <InputNumber 
+                            style={{ width: 300 }} 
+                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                            parser={(value:any) => value.replace(/\$\s?|(,*)/g, '')} />
                     </Form.Item>
                 </Form>
                 <Keyboard

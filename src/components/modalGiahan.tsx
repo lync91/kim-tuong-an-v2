@@ -12,38 +12,31 @@ const defInput = {
 }
 
 export default function ModalGiaHan(props: any) {
-    const { songay, laisuat, tiencam, tienlaidukien, ngayTinhLai, rowId, visible, onCancel, onOK } = props;
+    const { camdoData, rowId, visible, onCancel, onOK } = props;
     const [form] = Form.useForm();
     const [tinhlaiTheoThang, setTinhLaiTheoThang] = useState(false);
     const [inputName, setInputName] = useState("");
     const [input, setInput] = useState(defInput);
     const [curInput, setCurInput] = useState("")
-    // const [rowID, setRowID] = useState(0);
-    useMemo(() => {
-        // setInputName('ngayTinhLai');
-        // console.log('OKKKKKK');
-        // form.setFieldsValue({tienlaidukien: tiencam * 3 * 30 / (100 * 30)});
-        // setInput(defInput);
-    }, [tienlaidukien])
+    const { songay, tiencam, laisuat, tienlaidukien } = camdoData;
     useEffect(() => {
-        // const _ngaytinhlai = `${ngayTinhLai ? round((Number(moment().format('X')) - ngayTinhLai.format('X')) / (60 * 60     * 24)) + 1 : 0}`;
+        const {songay, tiencam} = camdoData;
         const _ngaytinhlai = Math.round(Number(songay)/30)*30;
         console.log(songay);
         const inputObj = {...defInput,...{ngayTinhLai: `${_ngaytinhlai}`, tienlaidukien: `${tiencam * 3 * _ngaytinhlai / (100 * 30)}`}}
         form.setFieldsValue(inputObj);
         setCurInput('');
         setInputName('')
-    }, [rowId]);
+    }, [camdoData]);
 
     const onChangeAll = (inputObj: any) => {
+        const {tiencam} = camdoData;
         setInput({ ...inputObj });
         if (inputName === 'ngayTinhLai') inputObj.tienlaidukien = tiencam * 3 * inputObj.ngayTinhLai / (100 * 30) > 0 ? tiencam * 3 * inputObj.ngayTinhLai / (100 * 30) : 0
         form.setFieldsValue(inputObj);
     }
 
     const _setInput = (e: any) => {
-        console.log({...input, [e.target.id]: form.getFieldValue(e.target.id)});
-        
         setInput({...input, [e.target.id]: form.getFieldValue(e.target.id)})
         setInputName(e.target.id);
         setCurInput(form.getFieldValue(e.target.id));
@@ -58,6 +51,7 @@ export default function ModalGiaHan(props: any) {
         onOK(data);
     }
     const onFormChange = () => {
+        const {tiencam} = camdoData;
         const songaytinhlai = form.getFieldValue("ngayTinhLai");
         console.log(songaytinhlai);
         form.setFieldsValue({tienlaidukien: tiencam * 3 * songaytinhlai / (100 * 30) > 0 ? tiencam * 3 * songaytinhlai / (100 * 30) : 0})

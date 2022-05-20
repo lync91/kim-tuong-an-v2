@@ -44,8 +44,8 @@ function ChiTiet(props: propsType) {
   };
   useEffect(() => {
     const _camdoData = new Camdo(data);
-    form.setFieldsValue(_camdoData);
     setCamdoData(_camdoData)
+    form.setFieldsValue(_camdoData);
   }, [data]);
   const _onValuesChange = (value: string, vs: any) => {
     calc();
@@ -71,14 +71,9 @@ function ChiTiet(props: propsType) {
   };
   const save = () => {
     const values = form.getFieldsValue();
-    const { ngayCamChuoc } = form.getFieldsValue()
-    console.log(ngayCamChuoc);
-
-    console.log(values);
-
+    const { ngayCamChuoc } = form.getFieldsValue();
     const data = new Camdo(values)
     console.log('values', data);
-    // data.dachuoc <= 0 ? delete values.tienchuoc : '';
     updateCamDo(data.toData()).then((res: any) => {
       close(true);
     });
@@ -249,11 +244,7 @@ function ChiTiet(props: propsType) {
         visible={modalGiaHan}
         onOK={giaHanOK}
         onCancel={(e: any) => setModalGiaHan(false)}
-        ngayTinhLai={data.ngaytinhlai}
-        tiencam={camdoData.tiencam}
-        songay={camdoData.songay}
-        laisuat={camdoData.laisuat}
-        tienlaidukien={camdoData.tienlaidukien}
+        camdoData={camdoData}
         change={moment().format('x')}
         rowId={data.id}
       />
@@ -261,10 +252,7 @@ function ChiTiet(props: propsType) {
         visible={modalCamThem}
         onSubmit={camthemSubmit}
         onCancel={(e: any) => setModalCamThem(false)}
-        songay={camdoData.songay}
-        laisuat={form.getFieldValue('laisuat')}
-        tiencam={form.getFieldValue('tiencam')}
-        tienlaidukien={form.getFieldValue('tienlaidukien')}
+        camdoData={camdoData}
         onChange={(e: string) => form.setFieldsValue({ tiencamthem: e })}
         change={moment().format('x')} />
       <Modal

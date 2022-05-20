@@ -71,7 +71,7 @@ const defData = {
   ngaychuoc: moment(),
   ngaycam: moment(),
   ngayhethan: moment().add(30, 'days'),
-  laisuat: 5,
+  laisuat: 3,
   tudo: '',
   tienlai: 0,
   tienchuoc: 0,
