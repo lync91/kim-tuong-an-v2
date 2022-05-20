@@ -124,6 +124,11 @@ export function createSettings() {
   //       .then(e => db.initdb.createSettingsDetails())
   //   })
 }
+
+export function resetData() {
+  return ipcRenderer.invoke('resetData');
+}
+
 export function getSettings() {
   return ipcRenderer.invoke('getSettings')
 }

@@ -61,15 +61,15 @@ const initdb = {
     //     console.log(res);
     //   })
   },
-  dropTable: () => {
-    // const prom = new Promise((res, rej) => {
-    //   knex.schema.dropTable(table)
-    //     .then((r) => {
-    //       res(r)
-    //     })
-    //     .catch(e => rej(e))
-    // })
-    // return prom
+  dropTable: (table: any) => {
+    const prom = new Promise((res, rej) => {
+      knex.schema.dropTable(table)
+        .then((r: any) => {
+          res(r)
+        })
+        .catch((e: any) => rej(e))
+    })
+    return prom
   },
   createSettings: () => {
     // const a = new Promise((res, rej) => {

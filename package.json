@@ -51,9 +51,9 @@
     "build": "craco build",
     "test": "craco test",
     "postinstall": "electron-builder install-app-deps",
-    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
-    "electron:build": "yarn build && tsc -p electron && electron-builder",
-    "electron:build-all": "yarn build && tsc -p electron && electron-builder -mw",
+    "electron:dev": "concurrently \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:build": "npm run build && tsc -p electron && electron-builder",
+    "electron:build-all": "npm run build && tsc -p electron && electron-builder -mw",
     "eject": "craco eject",
     "eject1": "craco eject"
   },

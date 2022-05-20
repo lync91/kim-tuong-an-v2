@@ -35,20 +35,20 @@ export function TemplatePhieu(props) {
           <img src={data.src} style={{ width: '120px' }} />
           <p style={{fontSize: 18, textAlign:'center', lineHeight: 0.3, paddingTop: "5px", margin: 0}}><b>{data.sophieu}</b></p>
         </div>
-        <p style={{marginTop: 22, paddingLeft: 22}}><b>{data.tenkhach}</b></p>
-        <p style={{marginTop: 12, paddingLeft: 22}}><b>{`${data.monhang} (${data.loaivang})`}</b> </p>
-        <p style={{marginTop: 12, paddingLeft: 22}}> <b>{data.trongluongthuc} chỉ</b></p>
-        <p style={{paddingLeft: 20, fontSize: 20, marginTop: 12, marginBottom: 0}}>
-          <div style={{position: 'absolute', left: 320, fontSize: 18}}><b>{``}{`${data.tiencam}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Đ</b></div>
-          <div style={{position: 'absolute', paddingLeft: 28, right: 50, fontSize: 18}} className="bangchu"><b><i>{`    ${docso(data.tiencam)}`} đồng</i></b></div>
+        <p style={{marginTop: 22, paddingLeft: 30, fontSize: 20}}><b>{data.tenkhach}</b></p>
+        <p style={{marginTop: 3, paddingLeft: 30, fontSize: 20}}><b>{`${data.monhang} (${data.loaivang})`}</b> </p>
+        <p style={{marginTop: 3, paddingLeft: 30, fontSize: 20}}> <b>{data.trongluongthuc} chỉ</b></p>
+        <p style={{paddingLeft: 20, fontSize: 20, marginTop: 3, fontSize: 20}}>
+          <div style={{position: 'absolute', left: 320, fontSize: 20}}><b>{``}{`${data.tiencam}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Đ</b></div>
+          <div style={{position: 'absolute', paddingLeft: 28, right: 10, fontSize: 18}} className="bangchu"><b><i>{`    ${docso(data.tiencam)}`}</i></b></div>
           </p>
         
         <p style={{marginTop: 100}}>
-          <div style={{position: 'absolute', left: 320}}>
+          <div style={{position: 'absolute', left: 320, fontSize: 20}}>
             <b>{data.ngaytinhlai.format('DD/MM/YYYY')}</b>
             {/* <p style={{margin: 2}} hidden={data.ngaycam.format('DD/MM/YYYY') === moment(data.ngaytinhlai).format('DD/MM/YYYY') ? true : false} ><b>({moment(data.ngaytinhlai).format('DD/MM/YYYY')})</b></p> */}
           </div>
-          <div style={{position: 'absolute', right: 150}}>
+          <div style={{position: 'absolute', right: 150, fontSize: 20}}>
           <b>{data.ngayhethan.format('DD/MM/YYYY')}</b>
           </div>
           </p>
