@@ -4,7 +4,7 @@ import Button from 'antd-button-color';
 import moment from 'moment';
 import { round, evaluate } from 'mathjs';
 import { SmileOutlined, CloseCircleOutlined, CheckCircleOutlined, SaveOutlined, PrinterOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { updateCamDo, huyPhieuCam, timPhieubyID, giahanCamDo, chuocDo, camThemTien } from '../utils/db';
+import { updateCamDo, huyPhieuCam, timPhieubyID, giahanCamDo, chuocDo, camThemTien, timPhieubySoPhieu } from '../utils/db';
 import { printPreview } from '../utils/print';
 import { Camdo } from '../types/camdo';
 import ModalCamThem from './modalCamThem';
@@ -189,13 +189,22 @@ function ChiTiet(props: propsType) {
     const id = Number(e);
     timPhieubyID(id).then((res: any) => {
       if (!res) {
-        notification.open({
-          message: 'Không tìm thấy phiếu trong cơ sở dữ liệu',
-          description:
-            'Hãy cẩn trọng kiểm tra một lần nữa',
-          icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-        });
-        return;
+        timPhieubySoPhieu(e).then((res: any) => {
+          if (!res) {
+            notification.open({
+              message: 'Không tìm thấy phiếu trong cơ sở dữ liệu',
+              description:
+                'Hãy cẩn trọng kiểm tra một lần nữa',
+              icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+            });
+            return;
+          } else {
+            const data = new Camdo(res)
+            onSearched(data);
+            setTrangthai(data.trangthai)
+          }
+        })
+        
       }
       else {
         const data = new Camdo(res)

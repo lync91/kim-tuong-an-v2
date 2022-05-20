@@ -99,7 +99,10 @@ export function timPhieu(sophieu, fn) {
   //   .then(res => fn(res));
 }
 export function timPhieubyID(id) {
-  return ipcRenderer.invoke('phieubyId', id)
+  return ipcRenderer.invoke('phieubyId', id);
+}
+export function timPhieubySoPhieu(sophieu) {
+  return ipcRenderer.invoke('phieubySoPhieu', sophieu);
 }
 export function timKiem(text, fn) {
   // const dateNumber = moment(text, 'DD/MM/YYYY').format('X').toString().substring(0, 5);

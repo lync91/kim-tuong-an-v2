@@ -1,9 +1,6 @@
-import React, { useRef, useEffect, useState, useMemo } from "react";
-import { Form, InputNumber, Input, Modal, Switch } from 'antd';
-import { Camdo } from "../types/camdo";
-import NumPad from "./numpad";
-import { isNumeric, round } from "mathjs";
-import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { Form, InputNumber, Modal, Switch } from 'antd';
+import { round } from "mathjs";
 
 const defInput = {
     ngayTinhLai: "30",
@@ -20,21 +17,19 @@ export default function ModalGiaHan(props: any) {
     const [curInput, setCurInput] = useState("")
     const { songay, tiencam, laisuat, tienlaidukien } = camdoData;
     useEffect(() => {
-        const {songay, tiencam} = camdoData;
         const _ngaytinhlai = Math.round(Number(songay)/30)*30;
-        console.log(songay);
-        const inputObj = {...defInput,...{ngayTinhLai: `${_ngaytinhlai}`, tienlaidukien: `${tiencam * 3 * _ngaytinhlai / (100 * 30)}`}}
+        console.log("laisuat", laisuat);
+        const inputObj = {...defInput,...{ngayTinhLai: `${_ngaytinhlai}`, tienlaidukien: `${tiencam * laisuat * _ngaytinhlai / (100 * 30)}`}}
         form.setFieldsValue(inputObj);
         setCurInput('');
         setInputName('')
     }, [camdoData]);
 
-    const onChangeAll = (inputObj: any) => {
-        const {tiencam} = camdoData;
-        setInput({ ...inputObj });
-        if (inputName === 'ngayTinhLai') inputObj.tienlaidukien = tiencam * 3 * inputObj.ngayTinhLai / (100 * 30) > 0 ? tiencam * 3 * inputObj.ngayTinhLai / (100 * 30) : 0
-        form.setFieldsValue(inputObj);
-    }
+    // const onChangeAll = (inputObj: any) => {
+    //     setInput({ ...inputObj });
+    //     if (inputName === 'ngayTinhLai') inputObj.tienlaidukien = tiencam * laisuat * inputObj.ngayTinhLai / (100 * 30) > 0 ? tiencam * laisuat * inputObj.ngayTinhLai / (100 * 30) : 0
+    //     form.setFieldsValue(inputObj);
+    // }
 
     const _setInput = (e: any) => {
         setInput({...input, [e.target.id]: form.getFieldValue(e.target.id)})
@@ -51,10 +46,9 @@ export default function ModalGiaHan(props: any) {
         onOK(data);
     }
     const onFormChange = () => {
-        const {tiencam} = camdoData;
         const songaytinhlai = form.getFieldValue("ngayTinhLai");
         console.log(songaytinhlai);
-        form.setFieldsValue({tienlaidukien: tiencam * 3 * songaytinhlai / (100 * 30) > 0 ? tiencam * 3 * songaytinhlai / (100 * 30) : 0})
+        form.setFieldsValue({tienlaidukien: round(tiencam * laisuat * songaytinhlai / (100 * 30) > 0 ? tiencam * laisuat * songaytinhlai / (100 * 30) : 0)})
         setInput(form.getFieldsValue())
     }
     return (
@@ -87,14 +81,14 @@ export default function ModalGiaHan(props: any) {
                     </Form.Item>
                 </Form>
                 <div>
-                    <NumPad
+                    {/* <NumPad
                         inputName={inputName}
                         onChangeAll={onChangeAll}
                         onKeyPress={onKeyPress}
                         input={input}
                         rowId={rowId}
                         curInput={curInput}
-                    ></NumPad>
+                    ></NumPad> */}
                 </div>
             </Modal>
         </>

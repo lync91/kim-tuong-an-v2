@@ -177,9 +177,9 @@ function TaoPhieu() {
         extra={
           [
             <Tag key="7" className="tag-gia" color="volcano" onClick={showDrawer}>Lãi suất: <b>{`${settingData.lai10}%`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Tag key="4" className="tag-gia" color="volcano" onClick={showDrawer}>Vàng 18K: <b>{`${settingData.gia18K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Tag key="5" className="tag-gia" color="orange" onClick={showDrawer}>Vàng 23K: <b>{`${settingData.gia23K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Tag key="6" className="tag-gia" color="gold" onClick={showDrawer}>Vàng 9999: <b>{`${settingData.gia9999}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
+            <Tag hidden key="4" className="tag-gia" color="volcano" onClick={showDrawer}>Vàng 18K: <b>{`${settingData.gia18K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
+            <Tag hidden key="5" className="tag-gia" color="orange" onClick={showDrawer}>Vàng 23K: <b>{`${settingData.gia23K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
+            <Tag hidden key="6" className="tag-gia" color="gold" onClick={showDrawer}>Vàng 9999: <b>{`${settingData.gia9999}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
             <Button key="3" hidden onClick={save} ><SaveTwoTone />Lưu</Button>,
             <Button key="2" hidden onClick={print}><PrinterTwoTone /> In </Button>,
             <Button key="1" type="primary" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} onClick={saveAndPrint} ><ProjectOutlined />Lưu và in</Button>,
@@ -225,7 +225,7 @@ function TaoPhieu() {
                   onFocus={(e: any) => _setinputName('tenkhach')}
                   ref={(r: any) => inputRef.current = r} />
               </Form.Item>
-              <Form.Item label="Điện thoại" name="dienthoai" >
+              <Form.Item hidden label="Điện thoại" name="dienthoai" >
                 <Input className={inputName === 'dienthoai' ? 'input-focused' : ''} onFocus={() => _setinputName('dienthoai')} />
               </Form.Item>
               <Form.Item label="Món hàng" name="monhang">
@@ -267,10 +267,10 @@ function TaoPhieu() {
                   <Input placeholder="Thực" disabled onFocus={() => _setinputName('trongluongthuc')} />
                 </Form.Item>
               </Form.Item>
-              <Form.Item label="Giá nhập" name="gianhap">
+              <Form.Item hidden label="Giá nhập" name="gianhap">
                 <Input disabled className={inputName === 'gianhap' ? 'input-focused' : ''} />
               </Form.Item>
-              <Form.Item label="Giá tối đa" name="giatoida">
+              <Form.Item hidden label="Giá tối đa" name="giatoida">
                 <Input disabled onFocus={() => _setinputName('giatoida')} className={inputName === 'giatoida' ? 'input-focused' : ''} />
               </Form.Item>
               <Form.Item label="Tiền cầm" name="tiencam">
@@ -278,7 +278,7 @@ function TaoPhieu() {
                 onFocus={() => _setinputName('tiencam')}
                 className={inputName === 'tiencam' ? 'input-focused' : ''}
                 style={{ width: 306 }} 
-                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 parser={(value:any) => value.replace(/\$\s?|(,*)/g, '')}/>
               </Form.Item>
               <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc" >
@@ -310,7 +310,7 @@ function TaoPhieu() {
             <Phieu formData={formData} hideCuong={false} />
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <KeyBoard1
         inputName={inputName}
         onChangeAll={onChangeAll}
@@ -318,7 +318,7 @@ function TaoPhieu() {
         input={input}
         rowId={rowID}
       />
-        </Row>
+        </Row> */}
       </Layout>
     </div>
   );

@@ -39,6 +39,11 @@ ipcMain.handle('phieubyId', async (event, id) => {
 		.where('id', '=', id)
 	return result[0];
 });
+ipcMain.handle('phieubySoPhieu', async (event, sophieu) => {
+	const result = await knex('camdo')
+		.where('sophieu', '=', sophieu)
+	return result[0];
+});
 ipcMain.handle('updateCamdo', async (event, data) => {
 	const result = await knex('camdo')
 	  .where('id', '=', data.id)
