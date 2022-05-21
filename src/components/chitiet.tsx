@@ -138,7 +138,7 @@ function ChiTiet(props: propsType) {
     console.log(ngayTinhLai);
     
     const { ngaytinhlai } = form.getFieldsValue();
-    giahanCamDo(id, tienlaidukien + tienlai, ngaytinhlai.add(Number(ngayTinhLai) + 1, 'days'), songay).then(() => {
+    giahanCamDo(id, tienlaidukien + tienlai, ngaytinhlai.add(Number(ngayTinhLai) - 1, 'days'), songay).then(() => {
       onSearched(new Camdo({id: 0})) //Tạm thời dùng để reset form
       timPhieubyID(data.id).then((res: any) => {
         const data = new Camdo(res)
