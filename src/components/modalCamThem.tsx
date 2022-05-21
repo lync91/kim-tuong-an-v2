@@ -39,7 +39,7 @@ export default function ModalCamThem(props: any) {
                     <Form.Item name="tiencamthem">
                         <InputNumber 
                             style={{ width: 300 }} 
-                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             parser={(value:any) => value.replace(/\$\s?|(,*)/g, '')} />
                     </Form.Item>
                 </Form>

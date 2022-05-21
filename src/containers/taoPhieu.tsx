@@ -278,7 +278,7 @@ function TaoPhieu() {
                 onFocus={() => _setinputName('tiencam')}
                 className={inputName === 'tiencam' ? 'input-focused' : ''}
                 style={{ width: 306 }} 
-                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 parser={(value:any) => value.replace(/\$\s?|(,*)/g, '')}/>
               </Form.Item>
               <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc" >
