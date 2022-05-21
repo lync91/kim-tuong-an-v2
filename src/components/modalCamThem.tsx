@@ -43,7 +43,7 @@ export default function ModalCamThem(props: any) {
                             parser={(value:any) => value.replace(/\$\s?|(,*)/g, '')} />
                     </Form.Item>
                 </Form>
-                {/* <Keyboard
+                <Keyboard
                     keyboardRef={(r: any) => (keyboard.current = r)}
                     className="numKeyboard"
                     layout={{
@@ -51,7 +51,7 @@ export default function ModalCamThem(props: any) {
                     }}
                     theme="hg-theme-default hg-layout-numeric numeric-theme"
                     onChange={keyBoardChange}
-                /> */}
+                />
             </Modal>
         </>
     )

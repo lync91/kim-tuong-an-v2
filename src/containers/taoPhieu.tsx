@@ -231,7 +231,7 @@ function TaoPhieu() {
               <Form.Item label="Món hàng" name="monhang">
                 <Input className={inputName === 'monhang' ? 'input-focused' : ''} onFocus={() => _setinputName('monhang')} />
               </Form.Item>
-              <Form.Item label="Loại vàng" name="loaivang" >
+              <Form.Item hidden label="Loại vàng" name="loaivang" >
                 <Select onChange={_selectGia}>
                   <Select.Option value="18K" >18K</Select.Option>
                   <Select.Option value="23K" >23K</Select.Option>
@@ -310,7 +310,7 @@ function TaoPhieu() {
             <Phieu formData={formData} hideCuong={false} />
           </Col>
         </Row>
-        {/* <Row>
+        <Row>
           <KeyBoard1
         inputName={inputName}
         onChangeAll={onChangeAll}
@@ -318,7 +318,7 @@ function TaoPhieu() {
         input={input}
         rowId={rowID}
       />
-        </Row> */}
+        </Row>
       </Layout>
     </div>
   );

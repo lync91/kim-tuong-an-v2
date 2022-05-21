@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, InputNumber, Modal, Switch } from 'antd';
 import { round } from "mathjs";
+import NumPad from "./numpad";
 
 const defInput = {
     ngayTinhLai: "30",
@@ -25,11 +26,11 @@ export default function ModalGiaHan(props: any) {
         setInputName('')
     }, [camdoData]);
 
-    // const onChangeAll = (inputObj: any) => {
-    //     setInput({ ...inputObj });
-    //     if (inputName === 'ngayTinhLai') inputObj.tienlaidukien = tiencam * laisuat * inputObj.ngayTinhLai / (100 * 30) > 0 ? tiencam * laisuat * inputObj.ngayTinhLai / (100 * 30) : 0
-    //     form.setFieldsValue(inputObj);
-    // }
+    const onChangeAll = (inputObj: any) => {
+        setInput({ ...inputObj });
+        if (inputName === 'ngayTinhLai') inputObj.tienlaidukien = tiencam * laisuat * inputObj.ngayTinhLai / (100 * 30) > 0 ? tiencam * laisuat * inputObj.ngayTinhLai / (100 * 30) : 0
+        form.setFieldsValue(inputObj);
+    }
 
     const _setInput = (e: any) => {
         setInput({...input, [e.target.id]: form.getFieldValue(e.target.id)})
@@ -81,14 +82,14 @@ export default function ModalGiaHan(props: any) {
                     </Form.Item>
                 </Form>
                 <div>
-                    {/* <NumPad
+                    <NumPad
                         inputName={inputName}
                         onChangeAll={onChangeAll}
                         onKeyPress={onKeyPress}
                         input={input}
                         rowId={rowId}
                         curInput={curInput}
-                    ></NumPad> */}
+                    ></NumPad>
                 </div>
             </Modal>
         </>
