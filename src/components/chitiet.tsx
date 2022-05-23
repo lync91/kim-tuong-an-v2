@@ -199,17 +199,17 @@ function ChiTiet(props: propsType) {
             });
             return;
           } else {
-            const data = new Camdo(res)
+            const data = new Camdo(res);
             onSearched(data);
-            setTrangthai(data.trangthai)
+            setTrangthai(data.trangthai);
           }
         })
         
       }
       else {
-        const data = new Camdo(res)
+        const data = new Camdo(res);
         onSearched(data);
-        setTrangthai(data.trangthai)
+        setTrangthai(data.trangthai);
       }
     });
   }

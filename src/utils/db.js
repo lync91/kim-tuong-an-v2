@@ -5,6 +5,9 @@ import { round } from 'mathjs';
 export function getLastId() {
   return ipcRenderer.invoke('getLastId')
 }
+export async function getListTenKhach() {
+  return await ipcRenderer.invoke('getListTenKhach');
+}
 export function insertCamdo(data) {
   return ipcRenderer.invoke('insertCamdo', data);
 }

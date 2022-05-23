@@ -10,6 +10,10 @@ import {filePath} from "./connect"
 ipcMain.handle('getdataPath', async(e) => {
 	return filePath
 })
+ipcMain.handle('getListTenKhach', async (event) => {
+	const result = await knex('camdo').distinct('tenkhach');
+	return result;
+});
 ipcMain.handle('getLastId', async (event) => {
 	const result = await knex('camdo').max({ a: 'id' });
 	return result[0];
