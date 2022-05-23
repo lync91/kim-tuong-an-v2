@@ -39,6 +39,7 @@ function ChiTiet(props: propsType) {
   const inputRef = React.useRef(null);
   const calc = () => {
     const values = form.getFieldsValue();
+    
     const trongluongthuc = round(values.tongtrongluong - values.trongluonghot, 3);
     form.setFieldsValue({ trongluongthuc: trongluongthuc });
   };
@@ -47,8 +48,15 @@ function ChiTiet(props: propsType) {
     setCamdoData(_camdoData)
     form.setFieldsValue(_camdoData);
   }, [data]);
-  const _onValuesChange = (value: string, vs: any) => {
+  const _onValuesChange = (value: any, vs: any) => {
+    const { laisuat, songay } = vs;
+    console.log(vs);
     calc();
+    if (laisuat === "" || songay === "") return;
+    let _camdoData = new Camdo({...camdoData, ...vs})
+      setCamdoData(_camdoData)
+      form.setFieldsValue(_camdoData)
+    
   };
   const onGiaUpdate = (data: any) => {
     calc();
@@ -230,6 +238,7 @@ function ChiTiet(props: propsType) {
     console.log(e);
     form.setFieldsValue({ tiencamthem: e })
   }
+  
   return (
     <div>
       <BarCodeEvent
@@ -248,6 +257,11 @@ function ChiTiet(props: propsType) {
         <p>Tiền cầm: <b>{`${form.getFieldValue('tiencam')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
         <p>Tiền lãi: <b>{`${form.getFieldValue('tienlaidukien')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
         <p>Tiền chuộc: <b>{`${form.getFieldValue('tienchuocdukien')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
+        <Form hidden form={form}>
+                    <Form.Item label="Số ngày tính lãi" name="songay">
+                        <InputNumber style={{ width: 160 }}/>
+                    </Form.Item>
+                </Form>
       </Modal>
       <ModalGiaHan
         visible={modalGiaHan}
@@ -387,7 +401,7 @@ function ChiTiet(props: propsType) {
           <Input />
         </Form.Item>
         <Form.Item label="Số ngày" name="songay">
-          <Input disabled />
+          <Input />
         </Form.Item>
         <Form.Item label="Lãi suất" name="laisuat">
           <Input />

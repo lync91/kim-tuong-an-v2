@@ -836,13 +836,13 @@ function BangThongKe(props) {
         accessor: "monhang",
         width: 150,
       },
-      {
-        Header: "Loại vàng",
-        accessor: "loaivang",
-        Filter: SelectColumnFilter,
-        width: 75,
-        // Cell: instance => instance?.cell?.value || '',
-      },
+      // {
+      //   Header: "Loại vàng",
+      //   accessor: "loaivang",
+      //   Filter: SelectColumnFilter,
+      //   width: 75,
+      //   // Cell: instance => instance?.cell?.value || '',
+      // },
       {
         Header: "Tổng",
         accessor: "tongtrongluong",
@@ -1014,11 +1014,11 @@ function BangThongKe(props) {
         filter: filterDateRange,
         width: 150,
       },
-      {
-        Header: "Tủ đồ",
-        accessor: "tudo",
-        width: 60,
-      },
+      // {
+      //   Header: "Tủ đồ",
+      //   accessor: "tudo",
+      //   width: 60,
+      // },
       {
         Header: "Trạng thái",
         accessor: "trangthai",
