@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Drawer } from 'antd';
 // import { SaveTwoTone, PrinterTwoTone, ProjectOutlined } from '@ant-design/icons';
-import BangThongKe from '../components/bangThongKe';
 import { ipcRenderer } from 'electron';
 import ChiTiet from '../components/chitiet';
+import SheetThongKe from "../components/sheetThongKe";
+
 
 function ThongKe() {
   const [table, updateTable] = useState([]);
@@ -45,8 +46,9 @@ function ThongKe() {
       >
         <ChiTiet data={curRow} close={onClose} quetphieu={false} onSearched={onSearched} />
       </Drawer>
-      <Layout className="layout-thongke" style={{ padding: 5 }}>
-        <BangThongKe data={table} onSelectRow={_selectRow} />
+      <Layout className="" style={{ padding: 5 }}>
+        {/* <BangThongKe data={table} onSelectRow={_selectRow} /> */}
+        <SheetThongKe rows={table} />
       </Layout>
     </div>
   );

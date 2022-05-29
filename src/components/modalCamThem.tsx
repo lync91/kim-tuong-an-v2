@@ -35,7 +35,7 @@ export default function ModalCamThem(props: any) {
                 <p>Tiền lãi: <b>{`${tienlaidukien}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
                 {/* <p>Tiền chuộc: <b>{`${form.getFieldValue('tienchuoc')}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p> */}
                 Số tiền cầm thêm: <b></b>
-                <Form form={formCamThem} onChange={formChange}>
+                <Form className="form-camthem" form={formCamThem} onChange={formChange}>
                     <Form.Item name="tiencamthem">
                         <InputNumber 
                             style={{ width: 300 }} 

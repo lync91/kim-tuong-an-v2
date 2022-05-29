@@ -732,7 +732,19 @@ select {
 #root .simple-keyboard.myTheme1 + .simple-keyboard-preview {
   background: #1c4995;
 }
-input {
+.form-tao-phieu input {
+  font-weight: bold;
+  color: red !important;
+}
+.form-chi-tiet input {
+  font-weight: bold;
+  color: red !important;
+}
+.form-giahan input {
+  font-weight: bold;
+  color: red !important;
+}
+.form-camthem input {
   font-weight: bold;
   color: red !important;
 }

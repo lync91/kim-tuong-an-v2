@@ -69,7 +69,7 @@ export default function ModalGiaHan(props: any) {
                 <p>Số ngày cầm: <b>{songay}</b></p>
                 <p>lãi suất: <b>{laisuat}%</b></p>
                 <p>Tiền cầm: <b>{`${tiencam}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} đ</b></p>
-                <Form form={form} initialValues={defInput} onChange={onFormChange}>
+                <Form className="form-giahan" form={form} initialValues={defInput} onChange={onFormChange}>
                     <Form.Item hidden label="Tính lãi theo" name="tinhlaiTheoThang" >
                         <Switch checkedChildren="Tháng" unCheckedChildren="Ngày" onChange={(e: boolean) => setTinhLaiTheoThang(e)}></Switch>
                     </Form.Item>
