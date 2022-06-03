@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Col, Row, Form, PageHeader } from 'antd';
 import { ipcRenderer } from 'electron'
 ipcRenderer.invoke('getdataPath').then((res:string) => console.log(res));
@@ -8,6 +8,18 @@ function Home() {
   // const onKeyChange = () => {
 
   // }
+
+  const groupByTenKhach = () => {
+    ipcRenderer.invoke('groupByTenKhach').then((result) => {
+      console.log('result', result);
+      
+    })
+  }
+
+  useEffect(() => {
+    groupByTenKhach();
+  }, [])
+
   return (
     <div>
       <PageHeader className="site-page-header"

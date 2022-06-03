@@ -14,6 +14,13 @@ ipcMain.handle('getListTenKhach', async (event) => {
 	const result = await knex('camdo').distinct('tenkhach');
 	return result;
 });
+ipcMain.handle('groupByTenKhach', async (event) => {
+	const result = await knex('camdo')
+	.select('*')
+	.sum({ totaltiencam: 'tiencam', totaltienlai: 'tienlai', totaltienchuoc: 'tienchuoc' })
+	.groupBy('tenkhach');
+	return result;
+});
 ipcMain.handle('getLastId', async (event) => {
 	const result = await knex('camdo').max({ a: 'id' });
 	return result[0];
