@@ -10,6 +10,7 @@ const bwipjs = remote.require('bwip-js');
 
 const options = {
   silent: true,
+  deviceName: "Canon LBP2900",
   printBackground: true,
   color: false,
   margin: {

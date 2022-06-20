@@ -13481,6 +13481,11 @@ symbol-tree@^3.2.4:
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
+sync-exec@>=0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/sync-exec/-/sync-exec-0.6.2.tgz#717d22cc53f0ce1def5594362f3a89a2ebb91105"
+  integrity sha512-FHup6L3hMWn+2asiIC/7kj/3CaMM8aAAKPx62DRk42hQkz4H2yBADR0OnnY8Eh5Bxrzb371aPUfnW4WzAUYItQ==
+
 table@^6.0.9:
   version "6.7.5"
   resolved "https://registry.yarnpkg.com/table/-/table-6.7.5.tgz#f04478c351ef3d8c7904f0e8be90a1b62417d238"
@@ -15003,3 +15008,10 @@ zip-stream@^4.1.0:
     archiver-utils "^2.1.0"
     compress-commons "^4.1.0"
     readable-stream "^3.6.0"
+
+zuzel-printer@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/zuzel-printer/-/zuzel-printer-1.0.4.tgz#148af4fa954cc24f61446735f2d3a658ea8e0f3b"
+  integrity sha512-RY3z7biUs8TfKaOorWfEPuv5gozoKMOYa5NavEPwd+Baso/v423rR52+fGZTjsoOyJDdqnJ7+H5ByC7394nhsg==
+  dependencies:
+    sync-exec ">=0.6.2"

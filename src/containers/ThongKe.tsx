@@ -4,6 +4,7 @@ import { Layout, Drawer } from 'antd';
 import { ipcRenderer } from 'electron';
 import ChiTiet from '../components/chitiet';
 import SheetThongKe from "../components/sheetThongKe";
+import BangThongKe from '../components/bangThongKe';
 
 
 function ThongKe() {
@@ -47,8 +48,8 @@ function ThongKe() {
         <ChiTiet data={curRow} close={onClose} quetphieu={false} onSearched={onSearched} />
       </Drawer>
       <Layout className="" style={{ padding: 5 }}>
-        {/* <BangThongKe data={table} onSelectRow={_selectRow} /> */}
-        <SheetThongKe rows={table} />
+        <BangThongKe data={table} onSelectRow={_selectRow} />
+        {/* <SheetThongKe rows={table} /> */}
       </Layout>
     </div>
   );
