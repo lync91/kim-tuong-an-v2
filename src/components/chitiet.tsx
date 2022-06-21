@@ -94,7 +94,7 @@ function ChiTiet(props: propsType) {
 
   const camthemSubmit = (e: string) => {
     const data = form.getFieldsValue();
-    camThemTien(data.id, round(data.tienlai + data.tienlaidukien), data.tiencam + e)
+    camThemTien(data.id, round(Number(data.tienlai) + data.tienlaidukien), data.tiencam + e, e)
       .then((res: any) => {
         timPhieubyID(data.id).then((res: any) => {
           const data = new Camdo(res)
@@ -129,23 +129,26 @@ function ChiTiet(props: propsType) {
   const handleCancel = () => {
     setModalChuoc(false);
   };
-  const giaHanCancel = () => {
-    setModalGiaHan(false);
-    // setInputXacNhan('');
-  };
-  const giaHanOK = ({ ngayTinhLai, tienlaidukien, songay, thangTinhLai}: any) => {
+  // const giaHanCancel = () => {
+  //   setModalGiaHan(false);
+  //   // setInputXacNhan('');
+  // };
+  const giaHanOK = async ({ ngayTinhLai, tienlaidukien, songay, thangTinhLai}: any) => {
     const {id, tienlai} = form.getFieldsValue();
     console.log(ngayTinhLai);
     
     const { ngaytinhlai } = form.getFieldsValue();
-    giahanCamDo(id, tienlaidukien + tienlai, ngaytinhlai.add(Number(ngayTinhLai) - 1, 'days'), songay).then(() => {
+    const _data = await giahanCamDo(id, round(Number(tienlaidukien) + Number(tienlai)), ngaytinhlai.add(Number(ngayTinhLai) - 1, 'days'), songay);
+    if (_data) {
+      console.log(_data);
+      
       onSearched(new Camdo({id: 0})) //Tạm thời dùng để reset form
       timPhieubyID(data.id).then((res: any) => {
         const data = new Camdo(res)
         onSearched(data);
         setTrangthai(data.trangthai)
       })
-    })
+    }
     setModalGiaHan(false);
     // setInputXacNhan('');
   };
@@ -267,16 +270,6 @@ function ChiTiet(props: propsType) {
       </Modal>
       <Form
         form={form}
-        labelCol={
-          {
-            span: 8,
-          }
-        }
-        wrapperCol={
-          {
-            span: 14,
-          }
-        }
         layout="horizontal"
         onValuesChange={(v: any, vs: any) => _onValuesChange(v, vs)}
         className="form-chi-tiet"
@@ -400,8 +393,6 @@ function ChiTiet(props: propsType) {
         <Form.Item label="Tiền chuộc" name="tienchuoc">
           <InputNumber
             style={{ width: 200 }}
-            // formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-            // parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
             disabled={quetphieu} />
         </Form.Item>
         <Form.Item hidden label="Tiền chuộc dự kiến" name="tienchuocdukien">

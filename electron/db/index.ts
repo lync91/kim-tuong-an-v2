@@ -14,6 +14,10 @@ ipcMain.handle('getLastId', async (event) => {
 	const result = await knex('camdo').max({ a: 'id' });
 	return result[0];
 });
+ipcMain.handle('getNhatky', async (event, id) => {
+	const result = await knex('nhatky').where('phieu', id);
+	return result;
+});
 ipcMain.handle('getSettings', async (event) => {
 	const result = await knex('settings').where('id', 1);
 	return result[0];
@@ -48,13 +52,26 @@ ipcMain.handle('updateCamdo', async (event, data) => {
 ipcMain.handle('giahanCamDo', async (event, data) => {
 	const result = await knex('camdo')
 	  .where('id', '=', data.id)
-	  .update(data)
-	return result;
+	  .update(data);
+	const res =  await knex('nhatky').insert({
+		phieu: data.id,
+		hoatdong: 'Đóng lãi',
+		thoigian: data.ngaytinhlai,
+		noidung: `Tiền lãi: ${data.tienlai}`
+	}).then();
+	return res;
 });
-ipcMain.handle('camThemTien', async (event, data) => {
+ipcMain.handle('camThemTien', async (event, data, tiencamthem) => {
 	const result = await knex('camdo')
     .where('id', '=', data.id)
     .update(data);
+		// tiencamthem
+		await knex('nhatky').insert({
+			phieu: data.id,
+			hoatdong: 'Cầm thêm',
+			thoigian: data.ngaytinhlai,
+			noidung: `Tiền cầm thêm: ${tiencamthem}; Tiền lãi: ${data.tienlai}`
+		}).then();
 	return result;
 });
 ipcMain.handle('insertCamdo', async (event, data) => {
@@ -151,6 +168,20 @@ ipcMain.handle('excelExport', async (event, filePath, data) => {
 	await workbook.xlsx.writeFile(filePath);
 })
 
+ipcMain.handle('createNhatKy', async () => {
+	    knex.schema
+      .createTable('nhatky', (table: any) => {
+        table.increments('id');
+        table.integer('phieu');
+				table.integer('thoigian')
+        table.integer('hoatdong');
+        table.integer('noidung');
+        table.timestamps();
+      }).then((rows: any) => {
+        console.log(rows);
+      });
+})
+
 function test() {
 	const { exec } = require('child_process');
 	exec('wmic printer list brief', (err: any, stdout: any, stderr: any) => {
@@ -178,4 +209,3 @@ function test() {
 	console.log(stderr);
   });
 }
-(test)

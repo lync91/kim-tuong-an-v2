@@ -767,3 +767,27 @@ select {
 .ant-modal-content p b {
   color: red;
 }
+
+.form-chi-tiet .ant-form-item-label {
+  width: 150px;
+}
+
+.chitiet-container {
+  width: 570px !important;
+}
+
+.chitiet-btn div {
+  margin-left: 10px !important;
+  max-width: 100% !important;
+}
+
+.phieu-container {
+  width: 640px;
+}
+
+.timeline-container {
+  width: 470px;
+  margin-left: 16px;
+  padding: 16px;
+  background-color: white;
+}

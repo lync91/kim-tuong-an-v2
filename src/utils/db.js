@@ -32,15 +32,16 @@ export function giahanCamDo(id, tienlai, ngaytinhlai, songay) {
   //   })
   //   .then((res) => console.log(res));
 }
-export function camThemTien(id, tienlai, tiencam) {
+export function camThemTien(id, tienlai, tiencam, tiencamthem) {
   let data = {
     id: id,
     tienlai: tienlai,
     tiencam: tiencam,
     ngaytinhlai: moment().format('x'),
-    ngayhethan: moment().add(30, 'days').format('x')
+    ngayhethan: moment().add(30, 'days').format('x'),
+    
   };
-  return ipcRenderer.invoke('camThemTien', data);
+  return ipcRenderer.invoke('camThemTien', data, tiencamthem);
 }
 export function chuocDo(id, tienlai, tienchuoc, ngaychuoc) {
   let data = {
@@ -124,9 +125,17 @@ export function createSettings() {
   //       .then(e => db.initdb.createSettingsDetails())
   //   })
 }
+export function createNhatKy() {
+  return ipcRenderer.invoke('createNhatKy')
+}
 export function getSettings() {
   return ipcRenderer.invoke('getSettings')
 }
 export function setSettings(values) {
   return ipcRenderer.invoke('setSettings', values)
+}
+
+export function getNhatky(id) {
+  if (!id) return [];
+  return ipcRenderer.invoke('getNhatky', id)
 }

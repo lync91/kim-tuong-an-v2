@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { PageHeader, Form, Row, Col, Input, message } from 'antd';
 import Button from 'antd-button-color';
 import { resetData } from '../utils/init';
-import { createSettings, getSettings, setSettings } from '../utils/db';
+import { createNhatKy, createSettings, getSettings, setSettings } from '../utils/db';
 
 function ThietLap() {
   const [form] = Form.useForm();
@@ -73,6 +73,9 @@ function ThietLap() {
             </Form.Item>
             <Form.Item label="Khác" name='createThietLap'>
               <Button onClick={onClickcreateSettings}>Tạo lại dữ liệu thiết lập</Button>
+            </Form.Item>
+            <Form.Item label=" " name='createThietLap'>
+              <Button onClick={() => createNhatKy()}>Tạo lại dữ liệu nhật ký</Button>
             </Form.Item>
           </Form>
         </Col>
