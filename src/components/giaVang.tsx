@@ -24,10 +24,10 @@ function GiaVang(props: { data: settingsTypes, onUpdate: any }) {
                 }
                 initialValues={data}
                 layout="horizontal" >
-                <Form.Item name="gia18K" label="18K" rules={[{ required: true }]}>
+                <Form.Item name="gia610" label="610" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="gia23K" label="23K" rules={[{ required: true }]}>
+                <Form.Item name="gia980" label="980" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="gia9999" label="9999" rules={[{ required: true }]}>

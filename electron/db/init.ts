@@ -1,5 +1,5 @@
 // const { fn } = require('moment');
-const knex = require('./connect');
+import knex from './connect';
 const initdb = {
   createTable: () => {
     // knex.schema
@@ -104,6 +104,25 @@ const initdb = {
     //     .catch(e => rej(e))
     // })
     // return a;
+  },
+  createDotu: () => {
+    
+    knex.schema
+      .createTable('dotu', (table: any) => {
+        table.increments('id');
+        table.integer('ngaynhap');
+        table.string('ma');
+        table.string('kyhieu');
+        table.string('ten');
+        table.string('loaivang');
+        table.float('ncc');
+        table.float('trongluong');
+        table.float('tiencong');
+        table.integer('ngayban');
+        table.timestamps();
+      }).then((rows: any) => {
+        console.log(rows);
+      });
   }
 };
-module.exports = initdb;
+export default initdb;
