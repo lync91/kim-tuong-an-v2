@@ -5,40 +5,50 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
 import "./db/index";
-import { GlobalKeyboardListener } from "node-global-key-listener";
-const v = new GlobalKeyboardListener();
 
-let code = "";
-let reading = false;
+const ioHook = require('iohook');
+ioHook.on("keypress", (event: any) => {
+  console.log(event);
+  // {keychar: 'f', keycode: 19, rawcode: 15, type: 'keypress'}
+});
+ioHook.start();
 
-//Log every key that's pressed.
-const calledOnce = function (e: any, down: any) {
-  console.log(e.name, down);
+// import { GlobalKeyboardListener } from "node-global-key-listener";
+// const v = new GlobalKeyboardListener();
+
+// let code = "";
+// let reading = false;
+
+// //Log every key that's pressed.
+// const calledOnce = function (e: any, down: any) {
+//   console.log(e.name, JSON.stringify(down));
   
-  if (e.state !== "DOWN") return;
-  // console.log(`${JSON.stringify(e)}`);
-  //usually scanners throw an 'Enter' key at the end of read
-  if (e.name === "RETURN") {
-    if (code.length > 10) {
-      console.log(code);
-      /// code ready to use
-      code = "";
-    }
-  } else {
-    code += e.name; //while this is not an 'enter' it stores the every key
-  }
+//   if (e.state !== "DOWN") return;
+//   // console.log(`${JSON.stringify(e)}`);
+//   //usually scanners throw an 'Enter' key at the end of read
+//   if (e.name === "RETURN") {
+//     if (code.length > 10) {
+//       console.log(code);
+//       /// code ready to use
+//       code = "";
+//     }
+//     v.removeListener(calledOnce);
+//     v.addListener(calledOnce);
+//   } else {
+//     code += e.name; //while this is not an 'enter' it stores the every key
+//   }
 
-  //run a timeout of 200ms at the first read and clear everything
-  if (!reading) {
-    reading = true;
-    setTimeout(() => {
-      code = "";
-      reading = false;
-    }, 200); //200 works fine for me but you can adjust it
-  }
-  // v.removeListener(calledOnce);
-  return true;
-};
+//   //run a timeout of 200ms at the first read and clear everything
+//   if (!reading) {
+//     reading = true;
+//     setTimeout(() => {
+//       code = "";
+//       reading = false;
+//     }, 200); //200 works fine for me but you can adjust it
+//   }
+//   // v.removeListener(calledOnce);
+//   // return true;
+// };
 
 
 // import * as google from 'googleapis';
@@ -112,7 +122,7 @@ app.whenReady().then(() => {
     .catch((err) => console.log("An error occurred: ", err));
 
   createWindow();
-  v.addListener(calledOnce);
+  // v.addListener(calledOnce);
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
