@@ -1,5 +1,5 @@
 // const { fn } = require('moment');
-import knex from './connect';
+import knex from "./connect";
 const initdb = {
   createTable: () => {
     // knex.schema
@@ -72,21 +72,18 @@ const initdb = {
     // return prom
   },
   createSettings: () => {
-    // const a = new Promise((res, rej) => {
-    //   knex.schema
-    //     .createTable('settings', (table) => {
-    //       table.increments('id');
-    //       table.integer('gia18K')
-    //       table.integer('gia23K')
-    //       table.integer('gia9999')
-    //       table.integer('lai10')
-    //       table.integer('lai20')
-    //       table.integer('lai30')
-    //       table.integer('tienToiThieu')
-    //     }).then(r => res(r))
-    //     .catch(e => rej(e))
-    // })
-    // return a;
+    knex.schema.dropTable('settings').then((res: any) => {
+      knex.schema.createTable("settings", (table: any) => {
+        table.increments("id");
+        table.integer("gia6100");
+        table.integer("gia980");
+        table.integer("gia9999");
+        table.integer("lai10");
+        table.integer("lai20");
+        table.integer("lai30");
+        table.integer("tienToiThieu");
+      });
+    })
   },
   createSettingsDetails: () => {
     // const a = new Promise((res, rej) => {
@@ -106,23 +103,23 @@ const initdb = {
     // return a;
   },
   createDotu: () => {
-    
     knex.schema
-      .createTable('dotu', (table: any) => {
-        table.increments('id');
-        table.integer('ngaynhap');
-        table.string('ma');
-        table.string('kyhieu');
-        table.string('ten');
-        table.string('loaivang');
-        table.float('ncc');
-        table.float('trongluong');
-        table.float('tiencong');
-        table.integer('ngayban');
+      .createTable("dotu", (table: any) => {
+        table.increments("id");
+        table.integer("ngaynhap");
+        table.string("ma");
+        table.string("kyhieu");
+        table.string("ten");
+        table.string("loaivang");
+        table.float("ncc");
+        table.float("trongluong");
+        table.float("tiencong");
+        table.integer("ngayban");
         table.timestamps();
-      }).then((rows: any) => {
+      })
+      .then((rows: any) => {
         console.log(rows);
       });
-  }
+  },
 };
 export default initdb;

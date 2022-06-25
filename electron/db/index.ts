@@ -8,6 +8,7 @@ import * as fs from "fs";
 import { filePath } from "./connect";
 import { map } from "async";
 import initdb from "./init";
+import * as settings from 'electron-settings';
 const readXlsxFile = require("read-excel-file/node");
 
 ipcMain.handle("getdataPath", async (e) => {
@@ -187,6 +188,18 @@ ipcMain.on("importData", async (event, data: any[]) => {
 	})
 });
 
+ipcMain.handle('spByMa', async (event, ma) => {
+  const sp: any[] = await knex('dotu').where({ma}).select();
+  return sp[0];
+})
+
+ipcMain.handle('setGia', async (event, data) => {
+  return await settings.set('gia', data);
+})
+ipcMain.handle('getGia', async (event, data) => {
+  return await settings.get('gia');
+})
+
 function test() {
   const { exec } = require("child_process");
   exec("wmic printer list brief", (err: any, stdout: any, stderr: any) => {
@@ -214,3 +227,4 @@ function test() {
 }
 
 // initdb.createDotu();
+// initdb.createSettings();

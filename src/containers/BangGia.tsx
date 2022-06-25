@@ -32,23 +32,51 @@ import {
 
 import { printPreview } from "../utils/print";
 import GiaVang from "../components/giaVang";
+import { ipcRenderer } from "electron";
+import { floor, number } from "mathjs";
+
+import { chi } from "../utils/tools";
 
 const { TabPane } = Tabs;
 
 const { Search } = Input;
 
 const settings: any = {
-  610: 2500,
-  980: 4200,
-  999: 4500,
+  610: 0,
+  980: 0,
+  9999: 0,
 };
+
+const defBangGia: any = {
+  id: 0,
+  ngaynhap: 0,
+  ma: "-",
+  kyhieu: "-",
+  ten: "-",
+  loaivang: "-",
+  ncc: "-",
+  dongia: 0,
+  trongluong: 0,
+  tiencong: 0,
+  ngayban: 0,
+  thanhtien: 0
+}
 
 export default function BangGia() {
   const [form] = Form.useForm();
   const inputRef = React.useRef(null);
   const [settingData, setSettingData] = useState(settings);
   const [visible, setVisible] = useState(false);
-  useEffect(() => {}, []);
+  const [bangGia, setBangGia] = useState(defBangGia);
+  const [gia, setGia] = useState(settings);
+  useEffect(() => {
+    const getGia = async () => {
+      const gia = await ipcRenderer.invoke('getGia');
+      console.log(gia);
+      setGia(gia);
+    }
+    getGia();
+  }, []);
 
   const showDrawer = () => {
     setVisible(true);
@@ -57,20 +85,24 @@ export default function BangGia() {
   const onClose = () => {
     setVisible(false);
   };
-  const onGiaUpdate = (data: any) => {
-    setSettings(data).then((e) => {
-      message.success("Lưu giá vàng thành công");
-      setVisible(false);
-      getSettings().then(async (res) => {
-        setSettingData(res);
-      });
-    });
+  const onGiaUpdate = async (data: any) => {
+    const res = await ipcRenderer.invoke('setGia', data);
+    setGia(data);
+    setVisible(false);
   };
   const print = () => {
     printPreview(form.getFieldsValue(), false);
   };
 
-  const onSearch = (value: string) => console.log(value);
+  const onSearch = async (value: string) => {
+    console.log(value);
+    const sp = await ipcRenderer.invoke('spByMa', value);
+    if (sp) {
+      const { trongluong, tiencong, loaivang } = sp;
+      const thanhtien = floor(trongluong/10 * gia[loaivang] /10 + tiencong/1000);
+      setBangGia({...sp, ...{thanhtien, dongia: gia[loaivang]}});
+    }
+  };
   return (
     <>
       <PageHeader
@@ -79,19 +111,19 @@ export default function BangGia() {
           <Tag key="4" className="tag-gia" color="volcano" onClick={showDrawer}>
             Vàng 610:{" "}
             <b>
-              {`${settingData["610"]}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+              {`${gia["610"]}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
             </b>
           </Tag>,
           <Tag key="5" className="tag-gia" color="orange" onClick={showDrawer}>
             Vàng 980:{" "}
             <b>
-              {`${settingData["980"]}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+              {`${gia["980"]}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
             </b>
           </Tag>,
           <Tag key="6" className="tag-gia" color="gold" onClick={showDrawer}>
             Vàng 9999:{" "}
             <b>
-              {`${settingData["999"]}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+              {`${gia["9999"]}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
             </b>
           </Tag>,
           <Button key="2" hidden onClick={print}>
@@ -119,7 +151,7 @@ export default function BangGia() {
           onClose={onClose}
           visible={visible}
         >
-          <GiaVang data={settingData} onUpdate={onGiaUpdate} />
+          <GiaVang data={gia} onUpdate={onGiaUpdate} />
         </Drawer>
         <Row>
           <div className="search-container">
@@ -137,19 +169,21 @@ export default function BangGia() {
               <table className="bang-gia">
                 <tr>
                   <th>Mã số</th>
+                  <th>Tên sản phẩm</th>
                   <th>Loại vàng</th>
                   <th>Trọng lượng</th>
-                  <th>Giá bán</th>
+                  <th>Đơn giá</th>
                   <th>Tiền công</th>
-                  <th>Cộng</th>
+                  <th>Thành tiền</th>
                 </tr>
                 <tr>
-                  <td>N12346</td>
-                  <td>610</td>
-                  <td>1c32</td>
-                  <td>3520</td>
-                  <td>250</td>
-                  <td>4200</td>
+                  <td>{bangGia.ma}</td>
+                  <td>{bangGia.ten}</td>
+                  <td>{bangGia.loaivang}</td>
+                  <td>{chi(bangGia.trongluong)}</td>
+                  <td>{`${bangGia.dongia}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</td>
+                  <td>{`${bangGia.tiencong/1000}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</td>
+                  <td>{`${bangGia.thanhtien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</td>
                 </tr>
               </table>
             </div>

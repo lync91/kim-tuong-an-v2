@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, InputNumber } from 'antd';
 import { settingsTypes } from '../types/camdo';
 
-function GiaVang(props: { data: settingsTypes, onUpdate: any }) {
+function GiaVang(props: { data: any, onUpdate: any }) {
     const [form] = Form.useForm();
     const { data, onUpdate } = props;
     const _Click = () => {
@@ -24,14 +24,14 @@ function GiaVang(props: { data: settingsTypes, onUpdate: any }) {
                 }
                 initialValues={data}
                 layout="horizontal" >
-                <Form.Item name="gia610" label="610" rules={[{ required: true }]}>
-                    <Input />
+                <Form.Item name="610" label="610" rules={[{ required: true }]}>
+                    <InputNumber />
                 </Form.Item>
-                <Form.Item name="gia980" label="980" rules={[{ required: true }]}>
-                    <Input />
+                <Form.Item name="980" label="980" rules={[{ required: true }]}>
+                    <InputNumber />
                 </Form.Item>
-                <Form.Item name="gia9999" label="9999" rules={[{ required: true }]}>
-                    <Input />
+                <Form.Item name="9999" label="9999" rules={[{ required: true }]}>
+                    <InputNumber />
                 </Form.Item>
                 <Form.Item wrapperCol={{ offset: 16, span: 8 }}>
                     <Button type="primary" htmlType="submit" onClick={_Click} >Lưu</Button>
