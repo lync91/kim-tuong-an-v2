@@ -6,12 +6,23 @@ import installExtension, {
 } from "electron-devtools-installer";
 import "./db/index";
 
-const ioHook = require('iohook');
-ioHook.on("keypress", (event: any) => {
-  console.log(event);
-  // {keychar: 'f', keycode: 19, rawcode: 15, type: 'keypress'}
-});
-ioHook.start();
+var _timeoutHandler: any = 0,
+  _inputString = "";
+// _onKeypress = function (e: any) {
+//   if (_timeoutHandler) {
+//     clearTimeout(_timeoutHandler);
+//   }
+//   _inputString += e.key;
+
+//   _timeoutHandler = setTimeout(function () {
+//     if (_inputString.length <= 3) {
+//       _inputString = "";
+//       return;
+//     }
+//     // $(e.target).trigger('altdeviceinput', _inputString);
+//     _inputString = "";
+//   }, 20);
+// };
 
 // import { GlobalKeyboardListener } from "node-global-key-listener";
 // const v = new GlobalKeyboardListener();
@@ -22,7 +33,7 @@ ioHook.start();
 // //Log every key that's pressed.
 // const calledOnce = function (e: any, down: any) {
 //   console.log(e.name, JSON.stringify(down));
-  
+
 //   if (e.state !== "DOWN") return;
 //   // console.log(`${JSON.stringify(e)}`);
 //   //usually scanners throw an 'Enter' key at the end of read
@@ -49,7 +60,6 @@ ioHook.start();
 //   // v.removeListener(calledOnce);
 //   // return true;
 // };
-
 
 // import * as google from 'googleapis';
 // import * as db from './db'
@@ -111,6 +121,34 @@ function createWindow() {
   if (isDev) {
     win.webContents.openDevTools();
   }
+
+  const ioHook = require("iohook");
+  ioHook.on("keypress", (event: any) => {
+    console.log(JSON.stringify(event));
+    // {keychar: 'f', keycode: 19, rawcode: 15, type: 'keypress'}
+    if (_timeoutHandler) {
+      clearTimeout(_timeoutHandler);
+    }
+    const key = event.keychar;
+    _inputString += String.fromCharCode(
+      96 <= key && key <= 105 ? key - 48 : key
+    );
+
+    _timeoutHandler = setTimeout(function () {
+      if (_inputString.length <= 3) {
+        _inputString = "";
+        return;
+      }
+      // $(e.target).trigger('altdeviceinput', _inputString);
+      _inputString = "";
+    }, 20);
+    if (event.keychar === 13) {
+      // console.log(_inputString);
+      win.webContents.send('codeScanned', _inputString);
+    }
+  });
+
+  ioHook.start();
 }
 
 app.commandLine.appendSwitch("disable-pinch");

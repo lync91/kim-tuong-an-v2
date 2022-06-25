@@ -70,6 +70,10 @@ export default function BangGia() {
   const [bangGia, setBangGia] = useState(defBangGia);
   const [gia, setGia] = useState(settings);
   useEffect(() => {
+    ipcRenderer.on('codeScanned', (event, data) => {
+      console.log(data);
+      
+    })
     const getGia = async () => {
       const gia = await ipcRenderer.invoke('getGia');
       console.log(gia);
