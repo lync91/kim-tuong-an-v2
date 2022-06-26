@@ -37,6 +37,8 @@ import { floor, number } from "mathjs";
 
 import { chi } from "../utils/tools";
 
+// const ioHook = window.require('iohook');
+
 const { TabPane } = Tabs;
 
 const { Search } = Input;
@@ -46,6 +48,7 @@ const settings: any = {
   980: 0,
   9999: 0,
 };
+
 
 const defBangGia: any = {
   id: 0,
@@ -62,6 +65,9 @@ const defBangGia: any = {
   thanhtien: 0
 }
 
+var _timeoutHandler: any = 0,
+  _inputString = "";
+
 export default function BangGia() {
   const [form] = Form.useForm();
   const inputRef = React.useRef(null);
@@ -69,11 +75,50 @@ export default function BangGia() {
   const [visible, setVisible] = useState(false);
   const [bangGia, setBangGia] = useState(defBangGia);
   const [gia, setGia] = useState(settings);
+
+  const search = async (value: string) => {
+    console.log(value);
+    const sp = await ipcRenderer.invoke('spByMa', value);
+    if (sp) {
+      const { trongluong, tiencong, loaivang } = sp;
+      const thanhtien = floor(trongluong/10 * gia[loaivang] /10 + tiencong/1000);
+      setBangGia({...sp, ...{thanhtien, dongia: gia[loaivang]}});
+    }
+  }
+
   useEffect(() => {
-    ipcRenderer.on('codeScanned', (event, data) => {
-      console.log(data);
-      
-    })
+    // ipcRenderer.on('codeScanned', (event, data) => {
+    //   console.log(data);
+    //   search(data)
+    // })
+
+  //   ioHook.on("keypress", (event: any) => {
+  //   // console.log(JSON.stringify(event));
+  //   // {keychar: 'f', keycode: 19, rawcode: 15, type: 'keypress'}
+  //   if (_timeoutHandler) {
+  //     clearTimeout(_timeoutHandler);
+  //   }
+  //   const key = event.keychar;
+  //   _inputString += String.fromCharCode(
+  //     96 <= key && key <= 105 ? key - 48 : key
+  //   );
+
+  //   _timeoutHandler = setTimeout(function () {
+  //     if (_inputString.length <= 3) {
+  //       _inputString = "";
+  //       return;
+  //     }
+  //     // $(e.target).trigger('altdeviceinput', _inputString);
+  //     _inputString = "";
+  //   }, 20);
+  //   if (event.keychar === 13) {
+  //     console.log(_inputString);
+  //     // win.webContents.send("codeScanned", _inputString);
+  //   }
+  // });
+
+  // ioHook.start();
+
     const getGia = async () => {
       const gia = await ipcRenderer.invoke('getGia');
       console.log(gia);
@@ -99,13 +144,7 @@ export default function BangGia() {
   };
 
   const onSearch = async (value: string) => {
-    console.log(value);
-    const sp = await ipcRenderer.invoke('spByMa', value);
-    if (sp) {
-      const { trongluong, tiencong, loaivang } = sp;
-      const thanhtien = floor(trongluong/10 * gia[loaivang] /10 + tiencong/1000);
-      setBangGia({...sp, ...{thanhtien, dongia: gia[loaivang]}});
-    }
+    search(value);
   };
   return (
     <>

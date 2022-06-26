@@ -5,6 +5,13 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from "electron-devtools-installer";
 import "./db/index";
+// const ioHook = require("iohook");
+
+import * as keylogger from "keylogger.js";
+// or
+// const keylogger = require("keylogger.js");
+
+
 
 var _timeoutHandler: any = 0,
   _inputString = "";
@@ -122,37 +129,40 @@ function createWindow() {
     win.webContents.openDevTools();
   }
 
-  const ioHook = require("iohook");
-  ioHook.on("keypress", (event: any) => {
-    console.log(JSON.stringify(event));
-    // {keychar: 'f', keycode: 19, rawcode: 15, type: 'keypress'}
-    if (_timeoutHandler) {
-      clearTimeout(_timeoutHandler);
-    }
-    const key = event.keychar;
-    _inputString += String.fromCharCode(
-      96 <= key && key <= 105 ? key - 48 : key
-    );
+  // ioHook.on("keypress", (event: any) => {
+  //   console.log(JSON.stringify(event));
+  //   // {keychar: 'f', keycode: 19, rawcode: 15, type: 'keypress'}
+  //   if (_timeoutHandler) {
+  //     clearTimeout(_timeoutHandler);
+  //   }
+  //   const key = event.keychar;
+  //   _inputString += String.fromCharCode(
+  //     96 <= key && key <= 105 ? key - 48 : key
+  //   );
 
-    _timeoutHandler = setTimeout(function () {
-      if (_inputString.length <= 3) {
-        _inputString = "";
-        return;
-      }
-      // $(e.target).trigger('altdeviceinput', _inputString);
-      _inputString = "";
-    }, 20);
-    if (event.keychar === 13) {
-      // console.log(_inputString);
-      win.webContents.send('codeScanned', _inputString);
-    }
+  //   _timeoutHandler = setTimeout(function () {
+  //     if (_inputString.length <= 3) {
+  //       _inputString = "";
+  //       return;
+  //     }
+  //     // $(e.target).trigger('altdeviceinput', _inputString);
+  //     _inputString = "";
+  //   }, 20);
+  //   if (event.keychar === 13) {
+  //     // console.log(_inputString);
+  //     win.webContents.send("codeScanned", _inputString);
+  //   }
+  // });
+
+  // ioHook.start();
+
+  keylogger.start((key, isKeyUp, keyCode) => {
+    if (isKeyUp) console.log("keyboard event", key, isKeyUp, keyCode);
   });
-
-  ioHook.start();
 }
 
 app.commandLine.appendSwitch("disable-pinch");
-
+app.allowRendererProcessReuse = false;
 app.whenReady().then(() => {
   // DevTools
   installExtension(REACT_DEVELOPER_TOOLS)
@@ -170,6 +180,7 @@ app.whenReady().then(() => {
 
   app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
+      // ioHook.stop();
       app.quit();
     }
   });
