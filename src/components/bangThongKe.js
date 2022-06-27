@@ -830,6 +830,7 @@ function BangThongKe(props) {
       {
         Header: "Tên khách",
         accessor: "tenkhach",
+        width: 100,
       },
       {
         Header: "Món hàng",
@@ -889,6 +890,28 @@ function BangThongKe(props) {
         width: 80,
       },
       {
+        Header: "Dơ",
+        accessor: "do",
+        Filter: trongLuonFilter,
+        filter: filterTrongLuong,
+        Footer: (info) => {
+          // Only calculate total visits if rows change
+          const total = React.useMemo(
+            () =>
+              info.rows.reduce(
+                (sum, row) =>
+                  row.values.do
+                    ? parseFloat(row.values.do) + sum
+                    : sum,
+                0
+              ),
+            [info.rows]
+          );
+          return <>{`${Math.round(total * 100) / 100}`}</>;
+        },
+        width: 80,
+      },
+      {
         Header: "Thực",
         accessor: "trongluongthuc",
         Filter: trongLuonFilter,
@@ -918,7 +941,7 @@ function BangThongKe(props) {
         Cell: dateHourCell,
         Filter: dateRangFilter,
         filter: filterDateRange,
-        width: 120,
+        width: 130,
       },
       {
         Header: "Ngày tính lãi",
@@ -928,12 +951,12 @@ function BangThongKe(props) {
         Cell: dateHourCell,
         width: 100,
       },
-      {
-        Header: "Ngày hết hạn",
-        accessor: "ngayhethan",
-        Cell: dateCell,
-        width: 90,
-      },
+      // {
+      //   Header: "Ngày hết hạn",
+      //   accessor: "ngayhethan",
+      //   Cell: dateCell,
+      //   width: 90,
+      // },
       {
         Header: "Tiền cầm",
         accessor: "tiencam",
@@ -1012,7 +1035,7 @@ function BangThongKe(props) {
         Cell: dateHourCell,
         Filter: dateRangFilter,
         filter: filterDateRange,
-        width: 150,
+        width: 130,
       },
       {
         Header: "Tủ đồ",

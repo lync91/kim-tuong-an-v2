@@ -1,6 +1,5 @@
-import React from 'react';
-import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom';
-
+import React, {useState} from 'react';
+import { HashRouter as Router, Switch, Route, Link,  } from 'react-router-dom';
 import {
   Layout,
   Button,
@@ -8,6 +7,7 @@ import {
 } from 'antd';
 
 import Home from './Home';
+import BangGiaMain from "./BangGiaMain";
 import TaoPhieu from './taoPhieu';
 import ThongKe from './ThongKe';
 import QuetPhieu from './quetPhieu';
@@ -18,12 +18,26 @@ import {
   ScanOutlined,
   DatabaseOutlined
 } from '@ant-design/icons';
+import BarCodeEvent from "../components/barCodeEvent";
+
 
 import '../assets/css/App.css'
+import { ipcRenderer } from 'electron';
 
 const { Header, Footer, Sider, Content } = Layout;
 
 function App() {
+  const [hideSide, setHideSide] = useState(false);
+  const handleScan = (data: string) => {
+    console.log(data);
+    if (data.length > 6) {
+    } else {
+      ipcRenderer.invoke('doScanned', data);
+    }
+  };
+  const handleError = (err: any) => {
+    console.error(err);
+  };
   return (
     <Router>
       <Layout>
@@ -36,14 +50,16 @@ function App() {
           </Menu>
         </Header>
         <Layout>
-          <Sider className="p-5">
+          <Sider hidden={hideSide ? true : false} className="p-5">
             <Link to="/"><Button type="primary" className="m-t-10" size="large" block><PieChartOutlined />Báo cáo</Button></Link>
             <Link to="/taophieu"><Button type="primary" className="m-t-10" size="large" block><FormatPainterOutlined />Tạo phiếu cầm</Button></Link>
             <Link to="/quetphieu"><Button type="primary" className="m-t-10" size="large" block><ScanOutlined />Quét phiếu cầm</Button></Link>
             <Link to="/thongKe"><Button type="primary" className="m-t-10" size="large" block><DatabaseOutlined />Quản lý dữ liệu</Button></Link>
+            <Link to="/banggia/false"><Button type="primary" className="m-t-10" size="large" block><DatabaseOutlined />Bảng giá</Button></Link>
             <Link to="/thietlap"><Button type="primary" className="m-t-10" size="large" block><DatabaseOutlined />Cài đặt</Button></Link>
           </Sider>
-          <Content>
+          <Content style={hideSide ? {marginLeft: 0} : {}}>
+          <BarCodeEvent handleError={handleError} handleScan={handleScan} />
             <Switch>
               <Route exact path="/">
                 <Home />
@@ -62,6 +78,9 @@ function App() {
               </Route>
               <Route path="/thietlap">
                 <ThietLap />
+              </Route>
+              <Route path="/banggia/:iswindow">
+                <BangGiaMain onHideSide={(hide: boolean) => setHideSide(hide)} />
               </Route>
             </Switch>
           </Content>

@@ -1,11 +1,16 @@
 import * as isDev from 'electron-is-dev';
 import * as path from 'path';
 import knex from "./connect";
-import { ipcMain } from "electron";
+import { ipcMain, dialog } from "electron";
 import * as ExcelJS from "exceljs";
 import * as moment from "moment";
 import * as fs from "fs";
-import {filePath} from "./connect"
+import {filePath} from "./connect";
+import { map } from "async";
+
+import * as settings from 'electron-settings';
+import initdb from './init';
+const readXlsxFile = require("read-excel-file/node");
 
 ipcMain.handle('getdataPath', async(e) => {
 	return filePath
@@ -181,6 +186,99 @@ ipcMain.handle('createNhatKy', async () => {
         console.log(rows);
       });
 })
+
+ipcMain.handle('addColDo', async (event) => {
+	return await knex.schema.table('camdo', (table: any) => {
+		table.float('do')
+	});
+})
+
+ipcMain.handle("openExcel", async () => {
+  const dialogRes = await dialog.showOpenDialog({ properties: ["openFile"] });
+  if (dialogRes.canceled) return null;
+  if (dialogRes.filePaths.length > 0) {
+    console.log(dialogRes.filePaths[0]);
+    const sheetNames = await readXlsxFile.readSheetNames(
+      dialogRes.filePaths[0]
+    );
+    const filePath = dialogRes.filePaths[0];
+    return { sheetNames, filePath };
+  }
+});
+ipcMain.handle("readExcel", async (event, path, sheet) => {
+  return await readXlsxFile(path, { sheet });
+});
+
+const convertDateNum = (value: any) => {
+  if (!value) return null;
+  if (value === "null") return null;
+  if (/(([0-9]{2}\/){2}[0-9]{4})/g.test(value))
+    return moment(value, "DD/MM/YYYY").isValid() ? moment(value, "DD/MM/YYYY").format("x") : null;
+  return moment(value).isValid() ? moment(value).format("x") : null;
+};
+
+
+
+ipcMain.on("importData", async (event, data: any[]) => {
+  // sheetname: "DO TU",
+  // ngaynhap: "A",
+  // ma: "B",
+  // kyhieu: "C",
+  // ten: "D",
+  // loaivang: "E",
+  // ncc: "F",
+  // trongluong: "H",
+  // tiencong: "K",
+  // ngayban: "L",
+  // startRow: "2",
+  // return await data.map(async (e: any, i: number) => {
+    
+  // });
+
+	let hientai = 1;
+
+
+	const _importData = async (e: any, cb: any) => {
+		hientai += 1;
+		const ngaynhap = convertDateNum(e.ngaynhap) || null;
+			const ngayban = convertDateNum(e.ngayban) || null;
+			// if (i === data.length - 1) event.reply('importComplate')
+			const rows: any[] = await knex("dotu").where("ma", e.ma);
+			if (rows.length > 0) {
+				delete e.id;
+				event.reply("importProgress", { hientai, status: 'daco' });
+				const res = await knex('dotu').update({ ...e, ...{ ngayban, ngaynhap } }).where("ma", e.ma);
+				cb(res);
+			} else {
+				event.reply("importProgress", { hientai, status: 'danhap' });
+				const res = await knex("dotu").insert({ ...e, ...{ ngayban, ngaynhap } });
+				cb(res);
+			}
+	}
+
+	map(data, _importData, (err, res) => {
+		event.reply("importComplate", res);
+	})
+});
+
+ipcMain.handle('spByMa', async (event, ma) => {
+  const sp: any[] = await knex('dotu').where({ma}).select();
+  return sp[0];
+})
+
+ipcMain.handle('setGia', async (event, data) => {
+  return await settings.set('gia', data);
+})
+ipcMain.handle('getGia', async (event, data) => {
+  return await settings.get('gia');
+})
+ipcMain.handle('createDotu', async (event, data) => {
+  return await initdb.createDotu();
+})
+ipcMain.handle('getDataDotu', async (event) => {
+	return await knex('dotu').select();
+})
+
 
 function test() {
 	const { exec } = require('child_process');

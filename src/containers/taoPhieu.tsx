@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   PageHeader,
   Layout,
@@ -12,28 +12,32 @@ import {
   Drawer,
   message,
   InputNumber,
-} from 'antd';
-import Button from 'antd-button-color';
-import moment from 'moment';
-import { camdoTypes, settingsTypes, Camdo } from '../types/camdo';
-import { SaveTwoTone, PrinterTwoTone, ProjectOutlined } from '@ant-design/icons';
+} from "antd";
+import Button from "antd-button-color";
+import moment from "moment";
+import { camdoTypes, settingsTypes, Camdo } from "../types/camdo";
+import {
+  SaveTwoTone,
+  PrinterTwoTone,
+  ProjectOutlined,
+} from "@ant-design/icons";
 import {
   getLastId,
   insertCamdo,
   getSettings,
   setSettings,
-  timPhieubyID
-} from '../utils/db';
-import { padDigits } from '../utils/tools';
+  timPhieubyID,
+} from "../utils/db";
+import { padDigits } from "../utils/tools";
 
-import { printPreview } from '../utils/print'
-import KeyBoard1 from '../components/keyBoard'
-import Phieu from './Phieu';
-import GiaVang from '../components/giaVang';
+import { printPreview } from "../utils/print";
+import KeyBoard1 from "../components/keyBoard";
+import Phieu from "./Phieu";
+import GiaVang from "../components/giaVang";
 const { RangePicker } = DatePicker;
 
-const dateFormat = 'DD/MM/YYYY, h:mm:ss A';
-const dateFormat1 = 'DD/MM/YYYY';
+const dateFormat = "DD/MM/YYYY, h:mm:ss A";
+const dateFormat1 = "DD/MM/YYYY";
 let defData: any = new Camdo();
 
 const settings: settingsTypes = {
@@ -43,8 +47,8 @@ const settings: settingsTypes = {
   lai10: 3,
   lai20: 3,
   lai30: 3,
-  tienToiThieu: 5000
-}
+  tienToiThieu: 5000,
+};
 
 const defInput = {
   tenkhach: "",
@@ -53,44 +57,41 @@ const defInput = {
   loaivang: "",
   tongtrongluong: "",
   trongluonghot: "",
-  tiencam: ""
-}
+  tiencam: "",
+};
 
 function TaoPhieu() {
   const [form] = Form.useForm();
   const inputRef = React.useRef(null);
   const [formData, setFormData] = useState(defData);
-  const [settingData, setSettingData] = useState(settings)
+  const [settingData, setSettingData] = useState(settings);
   const [visible, setVisible] = useState(false);
   const [inputName, setInputName] = useState("tenkhach");
   const [input, setInput] = useState(defInput);
   const [rowID, setRowID] = useState(0);
-  const calc = () => {
-  };
+  const calc = () => {};
   const genKey = () => {
-    getLastId()
-      .then(e => {
-        const sp = padDigits(e.a + 1, 9)
-        form.setFieldsValue(defData.setSophieu(sp));
-        setFormData(defData.setSophieu(sp));
-        setRowID(0)
-      });
+    getLastId().then((e) => {
+      const sp = padDigits(e.a + 1, 9);
+      form.setFieldsValue(defData.setSophieu(sp));
+      setFormData(defData.setSophieu(sp));
+      setRowID(0);
+    });
   };
   useEffect(() => {
     defData = new Camdo();
     genKey();
-    setInput(defInput)
-    getSettings()
-      .then(res => {
-        setSettingData(res);
-        defData.getSettings();
-      });
+    setInput(defInput);
+    getSettings().then((res) => {
+      setSettingData(res);
+      defData.getSettings();
+    });
     calc();
   }, []);
   const _onValuesChange = (value: any, vs: any) => {
     const newForm = defData.update(vs).calc().calcObj();
-    setFormData({...vs, ...newForm});
-    setInput({...input, ...value});
+    setFormData({ ...vs, ...newForm });
+    setInput({ ...input, ...value });
     form.setFieldsValue(newForm);
   };
   const showDrawer = () => {
@@ -101,92 +102,130 @@ function TaoPhieu() {
     setVisible(false);
   };
   const onGiaUpdate = (data: camdoTypes) => {
-    setSettings(data)
-    .then(e => {
+    setSettings(data).then((e) => {
       console.log(e);
-      message.success('Lưu giá vàng thành công');
+      message.success("Lưu giá vàng thành công");
       setVisible(false);
-      getSettings()
-      .then(async(res) => {
+      getSettings().then(async (res) => {
         setSettingData(res);
         const giatinh = res;
-        console.log('res', res[form.getFieldValue('loaivang')]);
-        defData.getSettings()
-        form.setFieldsValue(defData.setGia(res).setGiaTinh(res[`gia${form.getFieldValue('loaivang')}`]).calc());
+        console.log("res", res[form.getFieldValue("loaivang")]);
+        defData.getSettings();
+        form.setFieldsValue(
+          defData
+            .setGia(res)
+            .setGiaTinh(res[`gia${form.getFieldValue("loaivang")}`])
+            .calc()
+        );
         // _selectGia(form.getFieldValue('loaivang'))
       });
-    })
+    });
   };
   const _selectGia = (e: string) => {
     switch (e) {
       default:
-      case '18K':
-        form.setFieldsValue(defData.setGia(settingData).setGiaTinh(settingData.gia18K).calc());
+      case "18K":
+        form.setFieldsValue(
+          defData.setGia(settingData).setGiaTinh(settingData.gia18K).calc()
+        );
         return;
-      case '23K':
-        form.setFieldsValue(defData.setGia(settingData).setGiaTinh(settingData.gia23K).calc());
+      case "23K":
+        form.setFieldsValue(
+          defData.setGia(settingData).setGiaTinh(settingData.gia23K).calc()
+        );
         return;
-      case '9999':
-        form.setFieldsValue(defData.setGia(settingData).setGiaTinh(settingData.gia9999).calc());
+      case "9999":
+        form.setFieldsValue(
+          defData.setGia(settingData).setGiaTinh(settingData.gia9999).calc()
+        );
     }
   };
   const save = () => {
-    defData.save()
-    .then((res: any) => {
+    defData.save().then((res: any) => {
       console.log(res);
-      
-    })
+    });
   };
   const print = () => {
     printPreview(form.getFieldsValue(), false);
-  }
+  };
   const saveAndPrint = () => {
-    defData.save()
-    .then((res: any) => {
+    defData.save().then((res: any) => {
       timPhieubyID(res).then((e: any) => {
-        printPreview(new Camdo(e), false)
-      })
+        printPreview(new Camdo(e), false);
+      });
       setRowID(res);
       defData = new Camdo();
       genKey();
-    })
-  }
+    });
+  };
   const onChangeAll = async (inputObj: any) => {
     const _data = await form.getFieldsValue();
     const data = defData.update(inputObj);
     const calc = data.calc().calcObj();
     console.log(calc);
-    
-    form.setFieldsValue({...inputObj, ...calc});
-    setFormData({..._data, ...inputObj,...calc});
-  }
+
+    form.setFieldsValue({ ...inputObj, ...calc });
+    setFormData({ ..._data, ...inputObj, ...calc });
+  };
   const onKeyPress = (button: any) => {
     console.log("Button pressed", button);
   };
   const _setinputName = (e: string) => {
     setInputName(e);
-    
-  }
+  };
   return (
-    <div >
-      <PageHeader className="site-page-header"
-        onBack={
-          () => null}
+    <div>
+      <PageHeader
+        className="site-page-header"
+        onBack={() => null}
         title="Tạo phiếu cầm"
         subTitle=""
-        extra={
-          [
-            <Tag key="7" className="tag-gia" color="volcano" onClick={showDrawer}>Lãi suất: <b>{`${settingData.lai10}%`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Tag key="4" className="tag-gia" color="volcano" onClick={showDrawer}>Vàng 18K: <b>{`${settingData.gia18K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Tag key="5" className="tag-gia" color="orange" onClick={showDrawer}>Vàng 23K: <b>{`${settingData.gia23K}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Tag key="6" className="tag-gia" color="gold" onClick={showDrawer}>Vàng 9999: <b>{`${settingData.gia9999}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</b></Tag>,
-            <Button key="3" hidden onClick={save} ><SaveTwoTone />Lưu</Button>,
-            <Button key="2" hidden onClick={print}><PrinterTwoTone /> In </Button>,
-            <Button key="1" type="primary" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} onClick={saveAndPrint} ><ProjectOutlined />Lưu và in</Button>,
-          ]
-        }
+        extra={[
+          <Tag key="7" className="tag-gia" color="volcano" onClick={showDrawer}>
+            Lãi suất:{" "}
+            <b>
+              {`${settingData.lai10}%`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            </b>
+          </Tag>,
+          <Tag key="4" className="tag-gia" color="volcano" onClick={showDrawer}>
+            Vàng 18K:{" "}
+            <b>
+              {`${settingData.gia18K}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            </b>
+          </Tag>,
+          <Tag key="5" className="tag-gia" color="orange" onClick={showDrawer}>
+            Vàng 23K:{" "}
+            <b>
+              {`${settingData.gia23K}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            </b>
+          </Tag>,
+          <Tag key="6" className="tag-gia" color="gold" onClick={showDrawer}>
+            Vàng 9999:{" "}
+            <b>
+              {`${settingData.gia9999}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            </b>
+          </Tag>,
+          <Button key="3" hidden onClick={save}>
+            <SaveTwoTone />
+            Lưu
+          </Button>,
+          <Button key="2" hidden onClick={print}>
+            <PrinterTwoTone /> In{" "}
+          </Button>,
+          <Button
+            key="1"
+            type="primary"
+            onKeyPress={(e) => {
+              e.key === "Enter" && e.preventDefault();
+            }}
+            onClick={saveAndPrint}
+          >
+            <ProjectOutlined />
+            Lưu và in
+          </Button>,
+        ]}
       />
-      <Layout >
+      <Layout>
         <Drawer
           title="Thiết lập giá vàng"
           placement="right"
@@ -197,93 +236,138 @@ function TaoPhieu() {
         >
           <GiaVang data={settingData} onUpdate={onGiaUpdate} />
         </Drawer>
-        <Row >
-          <Col className="panel1" >
+        <Row>
+          <Col className="panel1">
             <Form
               form={form}
-              labelCol={
-                {
-                  span: 8,
-                }
-              }
-              wrapperCol={
-                {
-                  span: 16,
-                }
-              }
+              labelCol={{
+                span: 8,
+              }}
+              wrapperCol={{
+                span: 16,
+              }}
               layout="horizontal"
               onValuesChange={(v: any, vs: any) => _onValuesChange(v, vs)}
               className="form-tao-phieu"
             >
-              <Form.Item label="Mã số phiếu" name="sophieu" >
+              <Form.Item label="Mã số phiếu" name="sophieu">
                 <Input disabled />
               </Form.Item>
-              <Form.Item label="Tên khách hàng" name="tenkhach" >
+              <Form.Item label="Tên khách hàng" name="tenkhach">
                 <Input
-                  value={input['tenkhach']}
-                  className={inputName === '' ? 'input-focused' : ''}
-                  onFocus={(e: any) => _setinputName('tenkhach')}
-                  ref={(r: any) => inputRef.current = r} />
+                  value={input["tenkhach"]}
+                  className={inputName === "" ? "input-focused" : ""}
+                  onFocus={(e: any) => _setinputName("tenkhach")}
+                  ref={(r: any) => (inputRef.current = r)}
+                />
               </Form.Item>
-              <Form.Item label="Điện thoại" name="dienthoai" >
-                <Input className={inputName === 'dienthoai' ? 'input-focused' : ''} onFocus={() => _setinputName('dienthoai')} />
+              <Form.Item label="Điện thoại" name="dienthoai">
+                <Input
+                  className={inputName === "dienthoai" ? "input-focused" : ""}
+                  onFocus={() => _setinputName("dienthoai")}
+                />
               </Form.Item>
               <Form.Item label="Món hàng" name="monhang">
-                <Input className={inputName === 'monhang' ? 'input-focused' : ''} onFocus={() => _setinputName('monhang')} />
+                <Input
+                  className={inputName === "monhang" ? "input-focused" : ""}
+                  onFocus={() => _setinputName("monhang")}
+                />
               </Form.Item>
-              <Form.Item label="Loại vàng" name="loaivang" >
+              <Form.Item label="Loại vàng" name="loaivang">
                 <Select onChange={_selectGia}>
-                  <Select.Option value="18K" >18K</Select.Option>
-                  <Select.Option value="23K" >23K</Select.Option>
-                  <Select.Option value="9999" >9999</Select.Option>
+                  <Select.Option value="18K">18K</Select.Option>
+                  <Select.Option value="23K">23K</Select.Option>
+                  <Select.Option value="9999">9999</Select.Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="Trọng lượng" >
-                <Form.Item name="tongtrongluong"
-                  rules={
-                    [{ required: true }]}
-                  style={
-                    { display: 'inline-block', width: 'calc(32% - 4px)' }}
-                  className={inputName === 'tongtrongluong' ? 'input-focused' : ''}
+              <Form.Item label="Trọng lượng">
+                <Form.Item
+                  name="tongtrongluong"
+                  rules={[{ required: true }]}
+                  style={{ display: "inline-block", width: "calc(24% - 4px)" }}
+                  className={
+                    inputName === "tongtrongluong" ? "input-focused" : ""
+                  }
                 >
-                  <Input placeholder="Tổng" onFocus={() => _setinputName('tongtrongluong')} />
+                  <Input
+                    placeholder="Tổng"
+                    onFocus={() => _setinputName("tongtrongluong")}
+                  />
                 </Form.Item>
-                <Form.Item name="trongluonghot"
-                  rules={
-                    [{ required: true }]}
-                  style={
-                    { display: 'inline-block', width: 'calc(32% - 4px)', margin: '0 4px' }}
-                  className={inputName === 'trongluonghot' ? 'input-focused' : ''}
+                <Form.Item
+                  name="trongluonghot"
+                  rules={[{ required: true }]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(24% - 4px)",
+                    margin: "0 4px",
+                  }}
+                  className={
+                    inputName === "trongluonghot" ? "input-focused" : ""
+                  }
                 >
-                  <Input placeholder="Hột" onFocus={() => _setinputName('trongluonghot')} />
+                  <Input
+                    placeholder="Hột"
+                    onFocus={() => _setinputName("trongluonghot")}
+                  />
                 </Form.Item>
-                <Form.Item name="trongluongthuc"
-                  rules={
-                    [{ required: true }]}
-                  style={
-                    { display: 'inline-block', width: 'calc(32% - 4px)', margin: '0 0px' }}
-                  className={inputName === 'truongluongthuc' ? 'input-focused' : ''}
+                <Form.Item
+                  name="do"
+                  rules={[{ required: true }]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(24% - 4px)",
+                    margin: "0 4px",
+                  }}
+                  className={inputName === "do" ? "input-focused" : ""}
                 >
-                  <Input placeholder="Thực" disabled onFocus={() => _setinputName('trongluongthuc')} />
+                  <Input placeholder="Dơ" onFocus={() => _setinputName("do")} />
+                </Form.Item>
+                <Form.Item
+                  name="trongluongthuc"
+                  rules={[{ required: true }]}
+                  style={{
+                    display: "inline-block",
+                    width: "calc(24% - 4px)",
+                    margin: "0 0px",
+                  }}
+                  className={
+                    inputName === "truongluongthuc" ? "input-focused" : ""
+                  }
+                >
+                  <Input
+                    placeholder="Thực"
+                    disabled
+                    onFocus={() => _setinputName("trongluongthuc")}
+                  />
                 </Form.Item>
               </Form.Item>
               <Form.Item label="Giá nhập" name="gianhap">
-                <Input disabled className={inputName === 'gianhap' ? 'input-focused' : ''} />
+                <Input
+                  disabled
+                  className={inputName === "gianhap" ? "input-focused" : ""}
+                />
               </Form.Item>
               <Form.Item label="Giá tối đa" name="giatoida">
-                <Input disabled onFocus={() => _setinputName('giatoida')} className={inputName === 'giatoida' ? 'input-focused' : ''} />
+                <Input
+                  disabled
+                  onFocus={() => _setinputName("giatoida")}
+                  className={inputName === "giatoida" ? "input-focused" : ""}
+                />
               </Form.Item>
               <Form.Item label="Tiền cầm" name="tiencam">
-                <InputNumber 
-                onFocus={() => _setinputName('tiencam')}
-                className={inputName === 'tiencam' ? 'input-focused' : ''}
-                style={{ width: 306 }} 
-                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={(value:any) => value.replace(/\$\s?|(,*)/g, '')}/>
+                <InputNumber
+                  onFocus={() => _setinputName("tiencam")}
+                  className={inputName === "tiencam" ? "input-focused" : ""}
+                  style={{ width: 306 }}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value: any) => value.replace(/\$\s?|(,*)/g, "")}
+                />
               </Form.Item>
-              <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc" >
-                <RangePicker
-                  format={dateFormat1} />
+              <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc">
+                <RangePicker format={dateFormat1} />
               </Form.Item>
               <Form.Item hidden name="gia18K">
                 <Input />
@@ -297,13 +381,12 @@ function TaoPhieu() {
               <Form.Item hidden name="laisuat">
                 <Input />
               </Form.Item>
-              <Form.Item hidden label="Button" >
-                <Button > Button </Button>
+              <Form.Item hidden label="Button">
+                <Button> Button </Button>
               </Form.Item>
             </Form>
-            <Row >
-              <Col className="num-pad" >
-              </Col>
+            <Row>
+              <Col className="num-pad"></Col>
             </Row>
           </Col>
           <Col className="panel2">
@@ -312,12 +395,12 @@ function TaoPhieu() {
         </Row>
         <Row>
           <KeyBoard1
-        inputName={inputName}
-        onChangeAll={onChangeAll}
-        onKeyPress={onKeyPress}
-        input={input}
-        rowId={rowID}
-      />
+            inputName={inputName}
+            onChangeAll={onChangeAll}
+            onKeyPress={onKeyPress}
+            input={input}
+            rowId={rowID}
+          />
         </Row>
       </Layout>
     </div>

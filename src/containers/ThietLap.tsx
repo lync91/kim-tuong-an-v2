@@ -4,6 +4,9 @@ import Button from 'antd-button-color';
 import { resetData } from '../utils/init';
 import { createNhatKy, createSettings, getSettings, setSettings } from '../utils/db';
 
+import { ipcRenderer } from "electron";
+
+
 function ThietLap() {
   const [form] = Form.useForm();
   useEffect(() => {
@@ -76,6 +79,12 @@ function ThietLap() {
             </Form.Item>
             <Form.Item label=" " name='createThietLap'>
               <Button onClick={() => createNhatKy()}>Tạo lại dữ liệu nhật ký</Button>
+            </Form.Item>
+            <Form.Item label=" " name='createThietLap'>
+              <Button onClick={() => ipcRenderer.invoke('addColDo')}>Bổ sung cột dơ</Button>
+            </Form.Item>
+            <Form.Item label=" " name='createDotu'>
+              <Button onClick={() => ipcRenderer.invoke('createDotu')}>Tạo bảng đồ tủ</Button>
             </Form.Item>
           </Form>
         </Col>
