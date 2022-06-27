@@ -126,7 +126,7 @@ export default function BangGia() {
       search(sp)
     })
     const getGia = async () => {
-      const gia = await ipcRenderer.invoke('getGia');
+      const gia = await ipcRenderer.invoke('getGia') || {610: 0, 980:0, 9999:0};
       console.log(gia);
       setGia(gia);
     }

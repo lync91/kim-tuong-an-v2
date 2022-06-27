@@ -66,7 +66,7 @@ ipcMain.handle('giahanCamDo', async (event, data) => {
 	}).then();
 	return res;
 });
-ipcMain.handle('camThemTien', async (event, data, tiencamthem) => {
+ipcMain.handle('camThemTien', async (event, data, tiencamthem, laidukien) => {
 	const result = await knex('camdo')
     .where('id', '=', data.id)
     .update(data);
@@ -75,7 +75,7 @@ ipcMain.handle('camThemTien', async (event, data, tiencamthem) => {
 			phieu: data.id,
 			hoatdong: 'Cầm thêm',
 			thoigian: data.ngaytinhlai,
-			noidung: `Tiền cầm thêm: ${tiencamthem}; Tiền lãi: ${data.tienlai}`
+			noidung: `Tiền cầm thêm: ${tiencamthem}; Tiền lãi: ${laidukien}`
 		}).then();
 	return result;
 });

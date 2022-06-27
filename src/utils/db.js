@@ -32,7 +32,7 @@ export function giahanCamDo(id, tienlai, ngaytinhlai, songay) {
   //   })
   //   .then((res) => console.log(res));
 }
-export function camThemTien(id, tienlai, tiencam, tiencamthem) {
+export function camThemTien(id, tienlai, tiencam, tiencamthem, laidukien) {
   let data = {
     id: id,
     tienlai: tienlai,
@@ -41,7 +41,7 @@ export function camThemTien(id, tienlai, tiencam, tiencamthem) {
     ngayhethan: moment().add(30, 'days').format('x'),
     
   };
-  return ipcRenderer.invoke('camThemTien', data, tiencamthem);
+  return ipcRenderer.invoke('camThemTien', data, tiencamthem, laidukien);
 }
 export function chuocDo(id, tienlai, tienchuoc, ngaychuoc) {
   let data = {

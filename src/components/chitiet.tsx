@@ -130,7 +130,8 @@ function ChiTiet(props: propsType) {
       data.id,
       round(Number(data.tienlai) + data.tienlaidukien),
       data.tiencam + e,
-      e
+      e,
+      data.tienlaidukien
     ).then((res: any) => {
       timPhieubyID(data.id).then((res: any) => {
         const data = new Camdo(res);
