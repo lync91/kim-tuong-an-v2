@@ -188,6 +188,7 @@ ipcMain.on("importData", async (event, data: any[]) => {
 	})
 });
 
+<<<<<<< Updated upstream
 ipcMain.handle('spByMa', async (event, ma) => {
   const sp: any[] = await knex('dotu').where({ma}).select();
   return sp[0];
@@ -198,6 +199,10 @@ ipcMain.handle('setGia', async (event, data) => {
 })
 ipcMain.handle('getGia', async (event, data) => {
   return await settings.get('gia');
+=======
+ipcMain.handle('temByMa', async (event, ma) => {
+   return await knex('dotu').where('ma', ma).select();
+>>>>>>> Stashed changes
 })
 
 function test() {

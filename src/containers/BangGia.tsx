@@ -33,11 +33,14 @@ import {
 import { printPreview } from "../utils/print";
 import GiaVang from "../components/giaVang";
 import { ipcRenderer } from "electron";
+<<<<<<< Updated upstream
 import { floor, number } from "mathjs";
 
 import { chi } from "../utils/tools";
 
 // const ioHook = window.require('iohook');
+=======
+>>>>>>> Stashed changes
 
 const { TabPane } = Tabs;
 
@@ -144,7 +147,14 @@ export default function BangGia() {
   };
 
   const onSearch = async (value: string) => {
+<<<<<<< Updated upstream
     search(value);
+=======
+    console.log(value);
+    const data = await ipcRenderer.invoke('temByMa', value);
+    console.log(data);
+    
+>>>>>>> Stashed changes
   };
   return (
     <>
@@ -212,7 +222,11 @@ export default function BangGia() {
               <table className="bang-gia">
                 <tr>
                   <th>Mã số</th>
+<<<<<<< Updated upstream
                   <th>Tên sản phẩm</th>
+=======
+                  <th>Tên hàng</th>
+>>>>>>> Stashed changes
                   <th>Loại vàng</th>
                   <th>Trọng lượng</th>
                   <th>Đơn giá</th>
@@ -220,6 +234,7 @@ export default function BangGia() {
                   <th>Thành tiền</th>
                 </tr>
                 <tr>
+<<<<<<< Updated upstream
                   <td>{bangGia.ma}</td>
                   <td>{bangGia.ten}</td>
                   <td>{bangGia.loaivang}</td>
@@ -227,6 +242,15 @@ export default function BangGia() {
                   <td>{`${bangGia.dongia}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</td>
                   <td>{`${bangGia.tiencong/1000}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</td>
                   <td>{`${bangGia.thanhtien}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</td>
+=======
+                  <td>N12346</td>
+                  <td>N Hot</td>
+                  <td>610</td>
+                  <td>1c32</td>
+                  <td>3520</td>
+                  <td>250</td>
+                  <td>14200</td>
+>>>>>>> Stashed changes
                 </tr>
               </table>
             </div>
