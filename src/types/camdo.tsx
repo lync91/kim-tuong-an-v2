@@ -132,7 +132,7 @@ export class Camdo {
     this.laisuat = data.laisuat ? data.laisuat : defData.laisuat;
     this.gianhap = data.gianhap ? data.gianhap : defData.gianhap;
     this.giatoida = data.giatoida ? data.giatoida : defData.giatoida;
-    this.songay = data.songay ? data.songay : (data.ngaytinhlai ? round((Number(moment().format('X')) - Number(moment(data.ngaytinhlai).format('X'))) / (60 * 60 * 24) + 1) : 0);
+    this.songay = data.songay ? data.songay : (data.ngaytinhlai ? round((Number(moment().format('X')) - Number(moment(data.ngaytinhlai).format('X'))) / (60 * 60 * 24)) : 0);
     this.tienlaidukien = data.tiencam ? round((data.tiencam * (this.laisuat * this.songay / 30)) / 100) > 0 ? round((data.tiencam * (this.laisuat * this.songay / 30)) / 100) : 0 : 0;
     this.tudo = data.tudo ? data.tudo : defData.tudo;
     this.tienchuocdukien = this.tiencam + this.tienlaidukien;
@@ -168,7 +168,7 @@ export class Camdo {
     this.laisuat = data.laisuat ? data.laisuat : this.laisuat;
     this.gianhap = data.gianhap ? data.gianhap : this.gianhap;
     this.giatoida = data.giatoida ? data.giatoida : this.giatoida;
-    this.songay = data.ngaytinhlai ? round((Number(moment().format('X')) - Number(moment(data.ngaytinhlai).format('X'))) / (60 * 60 * 24) + 1) : 0;
+    this.songay = data.ngaytinhlai ? round((Number(moment().format('X')) - Number(moment(data.ngaytinhlai).format('X'))) / (60 * 60 * 24)) : 0;
     this.tienlaidukien = data.tiencam ? round((data.tiencam * (3 * this.songay / 30)) / 100) : 0;
     this.tudo = data.tudo ? data.sophieu : this.sophieu;
     this.tienchuocdukien = this.tiencam + this.tienlaidukien;

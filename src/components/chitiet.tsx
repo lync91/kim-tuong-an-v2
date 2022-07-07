@@ -395,7 +395,7 @@ function ChiTiet(props: propsType) {
         <Form.Item label="Ngày cầm" name="ngaycam">
           <DatePicker format={dateFormat1} disabled={data.dachuoc ? true : false} />
         </Form.Item>
-        <Form.Item label="Ngày hết hạn" name="ngayhethan">
+        <Form.Item hidden label="Ngày hết hạn" name="ngayhethan">
           <DatePicker format={dateFormat1} disabled={data.dachuoc ? true : false} />
         </Form.Item>
         <Form.Item label="Ngày tính lãi" name="ngaytinhlai">
@@ -416,14 +416,14 @@ function ChiTiet(props: propsType) {
         <Form.Item label="Lãi suất" name="laisuat">
           <Input />
         </Form.Item>
-        <Form.Item label="Tiền lãi dự kiến" name="tienlaidukien">
+        <Form.Item label="Tiền lãi" name="tienlaidukien">
           <InputNumber
             style={{ width: 200 }}
             formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
             parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
             disabled />
         </Form.Item>
-        <Form.Item label="Tiền lãi" name="tienlai">
+        <Form.Item hidden label="Tiền lãi" name="tienlai">
           <InputNumber
             style={{ width: 200 }}
             formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
