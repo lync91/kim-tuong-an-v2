@@ -6,6 +6,9 @@ import installExtension, {
 } from "electron-devtools-installer";
 // import * as google from 'googleapis';
 import "./db/index";
+import { queue } from "async";
+import * as moment from "moment";
+import knex from "./db/connect";
 // import * as db from './db'
 
 // const CLIENT_ID = '1044766700247-rfe3l68b7qemqldun17q5qrq1evi5pai.apps.googleusercontent.com'
@@ -13,8 +16,20 @@ import "./db/index";
 //client secret
 // const CLIENT_SECRET = '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';
 
+const convertDateNum = (value: any) => {
+  if (!value) return null;
+  if (value === "null") return null;
+  if (/(([0-9]{2}\/){2}[0-9]{4})/g.test(value))
+    return moment(value, "DD/MM/YYYY").isValid()
+      ? moment(value, "DD/MM/YYYY").format("x")
+      : null;
+  return moment(value).isValid() ? moment(value).format("x") : null;
+};
+
 let win;
 let winGia: any;
+
+
 
 function createWindow() {
   win = new BrowserWindow({

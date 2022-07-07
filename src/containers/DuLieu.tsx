@@ -96,10 +96,12 @@ export default function DuLieu() {
   useEffect(() => {
     form.setFieldsValue(defColmap);
     ipcRenderer.on("importProgress", (event, data) => {
-      const { hientai ,status } = data;
-      setHientai(hientai);
-      if (status === "daco") setDaco((p) => p + 1);
-      if (status === "danhap") setDanhap((p) => p + 1);
+      console.log(data);
+      
+      // const { hientai ,status } = data;
+      // setHientai(hientai);
+      // if (status === "daco") setDaco((p) => p + 1);
+      // if (status === "danhap") setDanhap((p) => p + 1);
       // if (hientai === previewData.length) setStep(step + 1);
     });
     ipcRenderer.on("importComplate", (event) => {
@@ -141,7 +143,7 @@ export default function DuLieu() {
         .splice(Number(defColmap.startRow) - 1, data.length - 1)
         .map((e: any, i: number) => {
           return {
-            id: i,
+            // stt: i + 1,
             ngaynhap: `${e[lettersToNumber(defColmap.ngaynhap) - 1]}`,
             ma: e[lettersToNumber(defColmap.ma) - 1],
             kyhieu: e[lettersToNumber(defColmap.kyhieu) - 1],
