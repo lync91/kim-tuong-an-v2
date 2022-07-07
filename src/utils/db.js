@@ -91,6 +91,7 @@ export function deleteCamDo(id, fn) {
   //   .then(res => fn(res));
 }
 export function huyPhieuCam(id, fn) {
+  return ipcRenderer.invoke('huyPhieuCam', id);
   // knex('camdo')
   //   .where('id', id)
   //   .update({ dahuy: 1 })

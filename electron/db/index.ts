@@ -36,7 +36,7 @@ ipcMain.handle('setSettings', async (e, v) => {
 	return result;
 })
 ipcMain.handle('getdata', async (event) => {
-	const result = await knex('camdo').orderBy('id', 'desc').select();
+	const result = await knex('camdo').whereNull('dahuy').orderBy('id', 'desc').select();
 	return result;
 });
 ipcMain.handle('chuoc', async (event, data) => {
@@ -59,6 +59,12 @@ ipcMain.handle('updateCamdo', async (event, data) => {
 	const result = await knex('camdo')
 	  .where('id', '=', data.id)
 	  .update(data)
+	return result;
+});
+ipcMain.handle('huyPhieuCam', async (event, id) => {
+	const result = await knex('camdo')
+	  .where('id', '=', id)
+	  .update({dahuy: 1})
 	return result;
 });
 ipcMain.handle('giahanCamDo', async (event, data) => {

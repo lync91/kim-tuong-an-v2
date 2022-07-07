@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Form, Input, Select, DatePicker, Modal, message, Tag, notification, InputNumber, Switch } from 'antd';
 import Button from 'antd-button-color';
 import moment from 'moment';
 import { round, evaluate } from 'mathjs';
+import InputMask from 'react-input-mask';
 import { SmileOutlined, CloseCircleOutlined, CheckCircleOutlined, SaveOutlined, PrinterOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { updateCamDo, huyPhieuCam, timPhieubyID, giahanCamDo, chuocDo, camThemTien, timPhieubySoPhieu } from '../utils/db';
 import { printPreview } from '../utils/print';
@@ -36,10 +37,10 @@ function ChiTiet(props: propsType) {
 
   // const [dataLaiSuat, setDataLaiSuat] = useState({ lai10: 3, lai20: 3, lai30: 3 });
   const [modalCamThem, setModalCamThem] = useState(false);
-  const inputRef = React.useRef(null);
+  const inputRef = useRef(null);
+  const tiencamRef = useRef(null);
   const calc = () => {
     const values = form.getFieldsValue();
-    
     const trongluongthuc = round(values.tongtrongluong - values.trongluonghot, 3);
     form.setFieldsValue({ trongluongthuc: trongluongthuc });
   };
@@ -52,6 +53,8 @@ function ChiTiet(props: propsType) {
     const { laisuat, songay } = vs;
     console.log(vs);
     calc();
+    console.log(tiencamRef);
+    
     if (laisuat === "" || songay === "") return;
     let _camdoData = new Camdo({...camdoData, ...vs})
       setCamdoData(_camdoData)
@@ -77,11 +80,12 @@ function ChiTiet(props: propsType) {
   const tailLayout = {
     wrapperCol: { offset: 6, span: 18 },
   };
-  const save = () => {
-    const values = form.getFieldsValue();
+  const save = async () => {
+    const values = await form.getFieldsValue();
+    console.log(values);
+    
     const { ngayCamChuoc } = form.getFieldsValue();
-    const data = new Camdo(values)
-    console.log('values', data);
+    const data = new Camdo(values);
     updateCamDo(data.toData()).then((res: any) => {
       close(true);
     });
@@ -234,9 +238,14 @@ function ChiTiet(props: propsType) {
   const handleError = (err: any) => {
     console.error(err)
   }
-  const camthemNumpad = (e: any) => {
+  // const camthemNumpad = (e: any) => {
+  //   console.log(e);
+  //   form.setFieldsValue({ tiencamthem: e })
+  // }
+
+  const tiencamChange = (e: any) => {
     console.log(e);
-    form.setFieldsValue({ tiencamthem: e })
+    
   }
   
   return (
@@ -327,10 +336,10 @@ function ChiTiet(props: propsType) {
           <Input disabled={quetphieu} />
         </Form.Item>
         <Form.Item label="Món hàng" name="monhang">
-          <Input disabled={quetphieu} />
+          <Input />
         </Form.Item>
         <Form.Item label="Loại vàng" name="loaivang" >
-          <Select disabled onChange={_selectGia}>
+          <Select onChange={_selectGia}>
             <Select.Option value="18K" >18K</Select.Option>
             <Select.Option value="24K" >24K</Select.Option>
             <Select.Option value="9999" >9999</Select.Option>
@@ -343,7 +352,7 @@ function ChiTiet(props: propsType) {
             style={
               { display: 'inline-block', width: 'calc(32% - 4px)' }}
           >
-            <Input placeholder="Tổng" disabled={quetphieu} />
+            <Input placeholder="Tổng" />
           </Form.Item>
           <Form.Item name="trongluonghot"
             rules={
@@ -351,7 +360,7 @@ function ChiTiet(props: propsType) {
             style={
               { display: 'inline-block', width: 'calc(32% - 4px)', margin: '0 4px' }}
           >
-            <Input placeholder="Hột" disabled={quetphieu} />
+            <Input placeholder="Hột" />
           </Form.Item>
           <Form.Item name="trongluongthuc"
             rules={
@@ -362,7 +371,7 @@ function ChiTiet(props: propsType) {
             <Input placeholder="Thực" disabled />
           </Form.Item>
         </Form.Item>
-        <Form.Item label="Tủ đồ" name="tudo">
+        <Form.Item hidden label="Tủ đồ" name="tudo">
           <Input allowClear/>
         </Form.Item>
         <Form.Item hidden label="Giá nhập" name="gianhap" >
@@ -370,10 +379,11 @@ function ChiTiet(props: propsType) {
         </Form.Item>
         <Form.Item label="Tiền cầm" name="tiencam">
           <InputNumber
+            ref={tiencamRef}
             style={{ width: 200 }}
-            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
-            disabled />
+             />
         </Form.Item>
         {/* <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc" >
           <RangePicker
