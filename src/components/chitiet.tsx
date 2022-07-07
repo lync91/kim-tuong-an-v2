@@ -163,8 +163,8 @@ function ChiTiet(props: propsType) {
   };
   const handleOkHuy = () => {
     huyPhieuCam(data.id, () => {
-      setModalHuy(false);
     });
+    setModalHuy(false);
     message.success('Hủy phiếu cầm đồ thành công')
     close(true);
   };
@@ -293,7 +293,7 @@ function ChiTiet(props: propsType) {
         onOk={handleOkHuy}
         okText="Xác nhận"
         onCancel={handleCancelHuy}
-        cancelText="Hủy"
+        cancelText="Thoát"
       >
         <p>{`Phiếu cầm này sẽ chuyển sang trạng thái đã hủy`}</p>
       </Modal>
