@@ -99,7 +99,7 @@
 }
 
 .phieu-title {
-  font-size  : 18pt;
+  font-size  : 20pt;
   color      : red;
   font-weight: bold;
 }
@@ -107,9 +107,9 @@
 .qr-code {
   padding  : 10px;
   position : absolute;
-  top      : 0px;
+  top      : 100px;
   right    : 0;
-  font-size: 12px;
+  font-size: 18px;
 }
 
 .phieu-content {
@@ -155,11 +155,30 @@
 }
 
 .form-chi-tiet .ant-input[disabled] {
-  color: black !important;
+  color: red !important;
+  font-size: 12pt;
+}
+.form-chi-tiet .ant-input {
+  color: red !important;
+  font-size: 12pt;
+}
+.form-chi-tiet input {
+  color: red !important;
+  font-size: 12pt;
 }
 
 .form-tao-phieu .ant-input[disabled] {
-  color: black !important;
+  color: red !important;
+  font-size: 12pt;
+}
+.form-tao-phieu .ant-input {
+  color: red !important;
+  font-size: 12pt;
+}
+.ant-form-item-control .ant-select-selection-item {
+  color: red !important;
+  font-size: 12pt;
+  font-weight: bold;
 }
 
 .hg-theme-default {
@@ -712,4 +731,119 @@ select {
 
 #root .simple-keyboard.myTheme1 + .simple-keyboard-preview {
   background: #1c4995;
+}
+.form-tao-phieu input {
+  font-weight: bold;
+  color: red !important;
+}
+.form-chi-tiet input {
+  font-weight: bold;
+  color: red !important;
+}
+.form-giahan input {
+  font-weight: bold;
+  color: red !important;
+}
+.form-camthem input {
+  font-weight: bold;
+  color: red !important;
+}
+
+.chitiet-button {
+  padding: 10px 20px 20px 50px;
+}
+.chitiet-button button {
+  margin-right: 5px;
+}
+.ant-modal-content p {
+  font-size: 13pt;
+}
+.ant-modal-content label {
+  font-size: 13pt !important;
+}
+.ant-modal-content input {
+  font-size: 13pt !important;
+}
+.ant-modal-content p b {
+  color: red;
+}
+
+.form-chi-tiet .ant-form-item-label {
+  width: 150px;
+}
+
+.chitiet-container {
+  width: 570px !important;
+}
+
+.chitiet-btn div {
+  margin-left: 10px !important;
+  max-width: 100% !important;
+}
+
+.phieu-container {
+  width: 640px;
+}
+
+.timeline-container {
+  width: 470px;
+  margin-left: 16px;
+  padding: 16px;
+  background-color: white;
+}
+
+.p-5 {
+  padding: 5px;
+}
+
+.m-t-10 {
+  margin-bottom: 10px;
+}
+
+.m-t-5 {
+  margin-bottom: 5px;
+}
+
+table, td, th {  
+  border: 3px solid #ddd;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 15px;
+}
+
+th {
+  font-size: 20pt;
+}
+
+td {
+  font-weight: bold;
+  color: red;
+  font-size: 22pt;
+}
+
+.bang-gia-container {
+  height: 100%;
+  padding: 16px;
+}
+
+.search-container {
+  padding: 16px;
+}
+
+.ant-tabs-nav {
+  margin: 0 16px 0 16px !important;
+}
+
+.toolbar {
+  height: 40px;
+  padding: 7px 3px 3px 3px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
