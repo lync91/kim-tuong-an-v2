@@ -217,30 +217,27 @@ const convertDateNum = (value: any) => {
   return moment(value).isValid() ? moment(value).format("x") : null;
 };
 
-// create a queue object with concurrency 2
 var q = queue(async (e: any, callback) => {
-  console.log(e.ma);
   const ngaynhap = convertDateNum(e.ngaynhap) || null;
   const ngayban = convertDateNum(e.ngayban) || null;
   const rows: any[] = await knex("dotu").where("ma", e.ma);
+  const { ma, kyhieu, ten, loaivang, ncc, trongluong, tiencong } = e;
   if (rows.length > 0) {
-    delete e.id;
-    // event.reply("importProgress", { hientai, status: "daco" });
     const res = await knex("dotu")
-      .update({ ...e, ...{ ngayban, ngaynhap } })
+      .update({ ma, kyhieu, ten, loaivang, ncc, trongluong, tiencong, ngayban, ngaynhap })
       .where("ma", e.ma);
-    callback(res);
+    callback({...e, status: "daco"});
   } else {
     // event.reply("importProgress", { hientai, status: "danhap" });
-    const res = await knex("dotu").insert({ ...e, ...{ ngayban, ngaynhap } });
-    callback(res);
+    const res = await knex("dotu").insert({ ma, kyhieu, ten, loaivang, ncc, trongluong, tiencong, ngayban, ngaynhap });
+    callback({...e, status: "danhap"});
   }
   // callback();
 }, 1);
 
 ipcMain.on("importData", async (event, data: any[]) => {
-  q.push(data, function (err, res) {
-		event.reply('importProgress', res);
+  q.push(data, function (res) {
+		event.reply('importProgress', {...res, total: data.length});
   });
   // let hientai = 1;
   // const _importData = async (e: any, cb: any) => {
