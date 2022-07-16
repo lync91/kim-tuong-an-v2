@@ -182,17 +182,19 @@ function ChiTiet(props: propsType) {
   }: any) => {
     const { id, tienlai } = form.getFieldsValue();
     console.log(ngayTinhLai);
+    console.log(songay);
 
     const { ngaytinhlai } = form.getFieldsValue();
+    console.log('ngaytinhli', moment(Number(ngaytinhlai.format('x')) + ngayTinhLai * 60 * 60 * 24 * 1000).format("DD/MM/YYYY"), ngayTinhLai);
+    
     const _data = await giahanCamDo(
       id,
       round(Number(tienlaidukien) + Number(tienlai)),
-      ngaytinhlai.add(Number(ngayTinhLai)+1, "days"),
+      moment(Number(ngaytinhlai.format('x')) + ngayTinhLai * 60 * 60 * 24 * 1000),
       songay
     );
     if (_data) {
       console.log(_data);
-
       onSearched(new Camdo({ id: 0 })); //Tạm thời dùng để reset form
       timPhieubyID(data.id).then((res: any) => {
         const data = new Camdo(res);
