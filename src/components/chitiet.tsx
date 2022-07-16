@@ -187,7 +187,7 @@ function ChiTiet(props: propsType) {
     const _data = await giahanCamDo(
       id,
       round(Number(tienlaidukien) + Number(tienlai)),
-      ngaytinhlai.add(Number(ngayTinhLai) - 1, "days"),
+      ngaytinhlai.add(Number(ngayTinhLai)+1, "days"),
       songay
     );
     if (_data) {
