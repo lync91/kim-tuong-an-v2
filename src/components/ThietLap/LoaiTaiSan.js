@@ -39,7 +39,7 @@ export function LoaiTaiSan() {
   ];
   const _onChange = (v, o) => {
     setOperation(o[0]);
-    setData(v)
+    setData(v);
   }
 
   const _onActiveCellChange = ({cell}) => {
@@ -50,8 +50,7 @@ export function LoaiTaiSan() {
   const _createRow = async () => {
     const r = await ipcRenderer.invoke('addLoaiTaiSan');
     console.log(r);
-    setData(r)
-    // return r[0];
+    setData(r);
   }
   return (
     <>

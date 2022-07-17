@@ -9,8 +9,13 @@ import { filePath } from "./connect";
 import { map, queue } from "async";
 
 import * as settings from "electron-settings";
-import initdb, { createLoaiTaiSan } from "./init";
+import initdb, { createLoaiTaiSan, dropTable, createCamDo } from "./init";
 const readXlsxFile = require("read-excel-file/node");
+
+ipcMain.handle("createCamdo", async (event) => {
+  const res = await dropTable('camdo');
+  createCamDo();
+});
 
 ipcMain.handle("getdataPath", async (e) => {
   return filePath;

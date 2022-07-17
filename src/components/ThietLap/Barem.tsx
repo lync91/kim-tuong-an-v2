@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { PageHeader, Button, Row, Col } from "antd";
 import { ipcRenderer } from "electron";
-import { textColumn, keyColumn } from "react-datasheet-grid";
-import DataSheet, { vndColumn } from "../DataSheet";
 import { useWindowSize } from "../../utils/hooks";
+import { DataSheetGrid, textColumn, keyColumn, vndColumn } from "../DataSheetGrid";
 
 interface RutTien {
   hanngach: number;
@@ -17,17 +16,11 @@ interface ChuyenTien {
 }
 
 export function Barem() {
-  const [chuyentienData, setChuyenTienData] = useState<ChuyenTien>();
-  const [ruttienData, setRutTienData] = useState<RutTien>();
+  const [chuyentienData, setChuyenTienData] = useState<any>();
+  const [ruttienData, setRutTienData] = useState<any>();
   const wSize = useWindowSize();
   useEffect(() => {
-    // const getLoaiTaiSan = async () => {
-    //   const _data = await ipcRenderer.invoke("getLoaiTaiSan");
-    //   _data ? setData(_data) : setData([]);
-    // };
-    // getLoaiTaiSan();
     console.log(wSize);
-
     const init = async () => {
       const _chuyen: ChuyenTien = await ipcRenderer.invoke(
         "getBaremChuyentien"
@@ -77,7 +70,7 @@ export function Barem() {
               >
                 Rút tiền
               </div>
-              <DataSheet
+              <DataSheetGrid
                 value={ruttienData}
                 columns={rutColumns}
                 onChange={_rutChange}
@@ -88,7 +81,7 @@ export function Barem() {
               <div className="camdo-label" style={{ background: "#d7fae5" }}>
                 Chuyển tiền
               </div>
-              <DataSheet
+              <DataSheetGrid
                 value={chuyentienData}
                 columns={chuyenColumns}
                 onChange={_chuyenChange}

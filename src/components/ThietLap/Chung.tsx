@@ -66,6 +66,11 @@ export function Chung() {
             </Form.Item>
             <Form.Item label="Khác" name="createThietLap">
               <Button onClick={onClickcreateSettings}>
+                Tạo lại dữ liệu cầm đồ
+              </Button>
+            </Form.Item>
+            <Form.Item label=" " name="createCamdo">
+              <Button onClick={onClickcreateSettings}>
                 Tạo lại dữ liệu thiết lập
               </Button>
             </Form.Item>
