@@ -237,163 +237,225 @@ function TaoPhieu() {
           <GiaVang data={settingData} onUpdate={onGiaUpdate} />
         </Drawer>
         <Row>
-          <Col className="panel1">
+          <Col>
             <Form
               form={form}
               labelCol={{
-                span: 8,
+                span: 9,
               }}
               wrapperCol={{
-                span: 16,
+                span: 15,
               }}
               layout="horizontal"
               onValuesChange={(v: any, vs: any) => _onValuesChange(v, vs)}
               className="form-tao-phieu"
             >
-              <Form.Item label="Mã số phiếu" name="sophieu">
-                <Input disabled />
-              </Form.Item>
-              <Form.Item label="Tên khách hàng" name="tenkhach">
-                <Input
-                  value={input["tenkhach"]}
-                  className={inputName === "" ? "input-focused" : ""}
-                  onFocus={(e: any) => _setinputName("tenkhach")}
-                  ref={(r: any) => (inputRef.current = r)}
-                />
-              </Form.Item>
-              <Form.Item label="Điện thoại" name="dienthoai">
-                <Input
-                  className={inputName === "dienthoai" ? "input-focused" : ""}
-                  onFocus={() => _setinputName("dienthoai")}
-                />
-              </Form.Item>
-              <Form.Item label="Món hàng" name="monhang">
-                <Input
-                  className={inputName === "monhang" ? "input-focused" : ""}
-                  onFocus={() => _setinputName("monhang")}
-                />
-              </Form.Item>
-              <Form.Item label="Loại vàng" name="loaivang">
-                <Select onChange={_selectGia}>
-                  <Select.Option value="18K">18K</Select.Option>
-                  <Select.Option value="23K">23K</Select.Option>
-                  <Select.Option value="9999">9999</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item label="Trọng lượng">
-                <Form.Item
-                  name="tongtrongluong"
-                  rules={[{ required: true }]}
-                  style={{ display: "inline-block", width: "calc(24% - 4px)" }}
-                  className={
-                    inputName === "tongtrongluong" ? "input-focused" : ""
-                  }
-                >
-                  <Input
-                    placeholder="Tổng"
-                    onFocus={() => _setinputName("tongtrongluong")}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="trongluonghot"
-                  rules={[{ required: true }]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(24% - 4px)",
-                    margin: "0 4px",
-                  }}
-                  className={
-                    inputName === "trongluonghot" ? "input-focused" : ""
-                  }
-                >
-                  <Input
-                    placeholder="Hột"
-                    onFocus={() => _setinputName("trongluonghot")}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="do"
-                  rules={[{ required: true }]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(24% - 4px)",
-                    margin: "0 4px",
-                  }}
-                  className={inputName === "do" ? "input-focused" : ""}
-                >
-                  <Input placeholder="Dơ" onFocus={() => _setinputName("do")} />
-                </Form.Item>
-                <Form.Item
-                  name="trongluongthuc"
-                  rules={[{ required: true }]}
-                  style={{
-                    display: "inline-block",
-                    width: "calc(24% - 4px)",
-                    margin: "0 0px",
-                  }}
-                  className={
-                    inputName === "truongluongthuc" ? "input-focused" : ""
-                  }
-                >
-                  <Input
-                    placeholder="Thực"
-                    disabled
-                    onFocus={() => _setinputName("trongluongthuc")}
-                  />
-                </Form.Item>
-              </Form.Item>
-              <Form.Item label="Giá nhập" name="gianhap">
-                <Input
-                  disabled
-                  className={inputName === "gianhap" ? "input-focused" : ""}
-                />
-              </Form.Item>
-              <Form.Item label="Giá tối đa" name="giatoida">
-                <Input
-                  disabled
-                  onFocus={() => _setinputName("giatoida")}
-                  className={inputName === "giatoida" ? "input-focused" : ""}
-                />
-              </Form.Item>
-              <Form.Item label="Tiền cầm" name="tiencam">
-                <InputNumber
-                  onFocus={() => _setinputName("tiencam")}
-                  className={inputName === "tiencam" ? "input-focused" : ""}
-                  style={{ width: 306 }}
-                  formatter={(value) =>
-                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }
-                  parser={(value: any) => value.replace(/\$\s?|(,*)/g, "")}
-                />
-              </Form.Item>
-              <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc">
-                <RangePicker format={dateFormat1} />
-              </Form.Item>
-              <Form.Item hidden name="gia18K">
-                <Input />
-              </Form.Item>
-              <Form.Item hidden name="gia23K">
-                <Input />
-              </Form.Item>
-              <Form.Item hidden name="gia9999">
-                <Input />
-              </Form.Item>
-              <Form.Item hidden name="laisuat">
-                <Input />
-              </Form.Item>
-              <Form.Item hidden label="Button">
-                <Button> Button </Button>
-              </Form.Item>
+              <div className="camdo-label" style={{background: "antiquewhite"}}>THÔNG TIN KHÁCH HÀNG</div>
+              <Row>
+                <Col className="panel1">
+                  <Form.Item label="Mã số phiếu" name="sophieu">
+                    <Input disabled />
+                  </Form.Item>
+                  <Form.Item label="Tên khách hàng" name="tenkhach">
+                    <Input
+                      value={input["tenkhach"]}
+                      className={inputName === "" ? "input-focused" : ""}
+                      onFocus={(e: any) => _setinputName("tenkhach")}
+                      ref={(r: any) => (inputRef.current = r)}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Điện thoại" name="dienthoai">
+                    <Input
+                      className={
+                        inputName === "dienthoai" ? "input-focused" : ""
+                      }
+                      onFocus={() => _setinputName("dienthoai")}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col className="panel1">
+                  <Form.Item name="diachi" label="Địa chỉ">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="cmnd" label="Số CMND/CCCD">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="ngaycap" label="Ngày cấp">
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col className="panel1">
+                  <Form.Item name="noicap" label="Nơi cấp">
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="panel1">
+                  <div className="camdo-label" style={{background: "#7fffd485"}}>THÔNG TIN TÀI SẢN</div>
+                  <Form.Item label="Món hàng" name="monhang">
+                    <Input
+                      className={inputName === "monhang" ? "input-focused" : ""}
+                      onFocus={() => _setinputName("monhang")}
+                    />
+                  </Form.Item>
+                  {/* <Form.Item name="tendo" label="Tên tài sản">
+                    <Input />
+                  </Form.Item> */}
+                  <Form.Item label="Loại tài sản" name="loaitaisan">
+                    <Select onChange={_selectGia}>
+                      <Select.Option value="18K">18K</Select.Option>
+                      <Select.Option value="23K">23K</Select.Option>
+                      <Select.Option value="9999">9999</Select.Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item name="laisuat" label="Lãi suất">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="Tiền cầm" name="tiencam">
+                    <InputNumber
+                      onFocus={() => _setinputName("tiencam")}
+                      className={inputName === "tiencam" ? "input-focused" : ""}
+                      style={{ width: 210 }}
+                      formatter={(value) =>
+                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      }
+                      parser={(value: any) => value.replace(/\$\s?|(,*)/g, "")}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Ngày cầm - chuộc" name="ngayCamChuoc">
+                    <RangePicker format={dateFormat1} />
+                  </Form.Item>
+                </Col>
+                <Col className="panel1">
+                  <div className="camdo-label" style={{background: "#7f82ff85"}}>XE</div>
+                  <Form.Item name="nhanhieu" label="Nhãn hiệu">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="mauxe" label="Màu xe">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="somay" label="Số máy">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="sokhung" label="Số khung">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="chatluong" label="Chất lượng">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="nguoidungten" label="Người đứng tên">
+                    <Input />
+                  </Form.Item>
+                </Col>
+
+                <Col className="panel1">
+                  <div className="camdo-label" style={{background: "#f6ff7f85"}}>VÀNG</div>
+                  <Form.Item label="Loại vàng" name="loaivang">
+                    <Select onChange={_selectGia}>
+                      <Select.Option value="18K">18K</Select.Option>
+                      <Select.Option value="23K">23K</Select.Option>
+                      <Select.Option value="9999">9999</Select.Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item label="Trọng lượng">
+                    <Form.Item
+                      name="tongtrongluong"
+                      rules={[{ required: true }]}
+                      style={{
+                        display: "inline-block",
+                        width: "calc(33% - 4px)",
+                      }}
+                      className={
+                        inputName === "tongtrongluong" ? "input-focused" : ""
+                      }
+                    >
+                      <Input
+                        placeholder="Tổng"
+                        onFocus={() => _setinputName("tongtrongluong")}
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      name="trongluonghot"
+                      rules={[{ required: true }]}
+                      style={{
+                        display: "inline-block",
+                        width: "calc(33% - 4px)",
+                        margin: "0 4px",
+                      }}
+                      className={
+                        inputName === "trongluonghot" ? "input-focused" : ""
+                      }
+                    >
+                      <Input
+                        placeholder="Hột"
+                        onFocus={() => _setinputName("trongluonghot")}
+                      />
+                    </Form.Item>
+                    {/* <Form.Item
+                      name="do"
+                      rules={[{ required: true }]}
+                      style={{
+                        display: "inline-block",
+                        width: "calc(24% - 4px)",
+                        margin: "0 4px",
+                      }}
+                      className={inputName === "do" ? "input-focused" : ""}
+                    >
+                      <Input
+                        placeholder="Dơ"
+                        onFocus={() => _setinputName("do")}
+                      />
+                    </Form.Item> */}
+                    <Form.Item
+                      name="trongluongthuc"
+                      rules={[{ required: true }]}
+                      style={{
+                        display: "inline-block",
+                        width: "calc(33% - 4px)",
+                        margin: "0 0px",
+                      }}
+                      className={
+                        inputName === "truongluongthuc" ? "input-focused" : ""
+                      }
+                    >
+                      <Input
+                        placeholder="Thực"
+                        disabled
+                        onFocus={() => _setinputName("trongluongthuc")}
+                      />
+                    </Form.Item>
+                  </Form.Item>
+                  <Form.Item label="Giá nhập" name="gianhap">
+                    <Input
+                      disabled
+                      className={inputName === "gianhap" ? "input-focused" : ""}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Giá tối đa" name="giatoida">
+                    <Input
+                      disabled
+                      onFocus={() => _setinputName("giatoida")}
+                      className={
+                        inputName === "giatoida" ? "input-focused" : ""
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item hidden label="Button">
+                    <Button> Button </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
             </Form>
             <Row>
               <Col className="num-pad"></Col>
             </Row>
           </Col>
-          <Col className="panel2">
+          {/* <Col className="panel2">
             <Phieu formData={formData} hideCuong={false} />
-          </Col>
+          </Col> */}
         </Row>
-        <Row>
+        <Row hidden>
           <KeyBoard1
             inputName={inputName}
             onChangeAll={onChangeAll}

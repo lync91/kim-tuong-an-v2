@@ -1,43 +1,6 @@
 // const { fn } = require('moment');
 import knex from "./connect";
 const initdb = {
-  createTable: () => {
-    // knex.schema
-    //   .createTable('users', (table) => {
-    //     table.increments('id');
-    //     table.string('first_name', 255);
-    //     table.string('last_name', 255);
-    //   });
-  },
-  createCamDo: () => {
-    // knex.schema
-    //   .createTable('camdo', (table) => {
-    //     table.increments('id');
-    //     table.string('sophieu');
-    //     table.string('tenkhach');
-    //     table.string('dienthoai');
-    //     table.string('monhang');
-    //     table.string('loaivang');
-    //     table.float('tongtrongluong');
-    //     table.float('trongluonghot');
-    //     table.float('trongluongthuc');
-    //     table.integer('gianhap');
-    //     table.integer('tiencam');
-    //     table.integer('laisuat');
-    //     table.integer('tienlai');
-    //     table.integer('tienchuoc');
-    //     table.integer('ngaycam');
-    //     table.integer('ngayhethan');
-    //     table.integer('ngaytinhlai');
-    //     table.integer('ngaychuoc');
-    //     table.integer('dachuoc');
-    //     table.string('tudo');
-    //     table.integer('dahuy');
-    //     table.timestamps();
-    //   }).then((rows) => {
-    //     console.log(rows);
-    //   });
-  },
   dropCamDo: () => {
     // knex.schema.dropTable('camdo')
     //   .then((res) => {
@@ -123,3 +86,39 @@ const initdb = {
   },
 };
 export default initdb;
+export function createCamDo () {
+  knex.schema
+    .createTable('camdo', (table: any) => {
+      table.increments('id');
+      table.string('sophieu');
+      table.string('tenkhach');
+      table.string('dienthoai');
+      table.string('monhang');
+      table.string('loaivang');
+      table.float('tongtrongluong');
+      table.float('trongluonghot');
+      table.float('trongluongthuc');
+      table.integer('gianhap');
+      table.integer('tiencam');
+      table.integer('laisuat');
+      table.integer('tienlai');
+      table.integer('tienchuoc');
+      table.integer('ngaycam');
+      table.integer('ngayhethan');
+      table.integer('ngaytinhlai');
+      table.integer('ngaychuoc');
+      table.integer('dachuoc');
+      table.string('tudo');
+      table.integer('dahuy');
+      table.timestamps();
+    }).then((rows: any[]) => {
+      console.log(rows);
+    });
+}
+export async function createLoaiTaiSan() {
+  return await knex.schema.createTable('loaitaisan', (table: any) => {
+    table.increments('id');
+    table.string('loaitaisan');
+    table.float('laisuat');
+  })
+}

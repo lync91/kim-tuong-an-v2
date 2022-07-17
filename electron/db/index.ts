@@ -9,7 +9,7 @@ import { filePath } from "./connect";
 import { map, queue } from "async";
 
 import * as settings from "electron-settings";
-import initdb from "./init";
+import initdb, { createLoaiTaiSan } from "./init";
 const readXlsxFile = require("read-excel-file/node");
 
 ipcMain.handle("getdataPath", async (e) => {
@@ -304,3 +304,39 @@ function test() {
     console.log(stderr);
   });
 }
+
+ipcMain.handle('createLoaiTaiSan', async (event) => {
+  return await createLoaiTaiSan();
+});
+
+ipcMain.handle('getLoaiTaiSan', async (event) => {
+  return await knex('loaitaisan').select();
+})
+
+ipcMain.handle('addLoaiTaiSan', async (event) => {
+  const _id = await knex('loaitaisan').insert({
+    loaitaisan: "",
+    laisuat: 5
+  });
+  if (_id[0]) return await knex('loaitaisan').select();
+});
+
+ipcMain.handle('updateLoaiTaiSan', async (event, row) => {
+  return await knex('loaitaisan').where("id", "=", row.id).update(row);
+});
+
+ipcMain.handle('getBaremChuyentien', async (event) => {
+  return await settings.get('baremChuyenTien')
+});
+
+ipcMain.handle('setBaremChuyentien', async (event, data) => {
+  return await settings.set('baremChuyenTien', data);
+})
+
+ipcMain.handle('getBaremRuttien', async (event) => {
+  return await settings.get('baremRutTien')
+});
+
+ipcMain.handle('setBaremRuttien', async (event, data) => {
+  return await settings.set('baremRutTien', data);
+})

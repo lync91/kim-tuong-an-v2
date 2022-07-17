@@ -52,7 +52,8 @@ function App() {
         <Layout>
           <Sider hidden={hideSide ? true : false} className="p-5">
             <Link to="/"><Button type="primary" className="m-t-10" size="large" block><PieChartOutlined />Báo cáo</Button></Link>
-            <Link to="/taophieu"><Button type="primary" className="m-t-10" size="large" block><FormatPainterOutlined />Tạo phiếu cầm</Button></Link>
+            <Link to="/taophieu"><Button type="primary" className="m-t-10" size="large" block><FormatPainterOutlined />Cầm đồ</Button></Link>
+            {/* <Link to="/camdo"><Button type="primary" className="m-t-10" size="large" block><FormatPainterOutlined />Cầm đồ</Button></Link> */}
             <Link to="/quetphieu"><Button type="primary" className="m-t-10" size="large" block><ScanOutlined />Quét phiếu cầm</Button></Link>
             <Link to="/thongKe"><Button type="primary" className="m-t-10" size="large" block><DatabaseOutlined />Quản lý dữ liệu</Button></Link>
             <Link to="/banggia/false"><Button type="primary" className="m-t-10" size="large" block><DatabaseOutlined />Bảng giá</Button></Link>
@@ -71,6 +72,9 @@ function App() {
                 <QuetPhieu />
               </Route>
               <Route path="/taophieu">
+                <TaoPhieu />
+              </Route>
+              <Route path="/camdo">
                 <TaoPhieu />
               </Route>
               <Route path="/thongKe">

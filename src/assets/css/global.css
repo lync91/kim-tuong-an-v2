@@ -59,7 +59,7 @@
 }
 
 .panel1 {
-  width: 460px;
+  width: 380px;
 }
 
 .panel2 {
@@ -846,4 +846,12 @@ td {
   position: absolute;
   top: 0;
   right: 0;
+}
+.camdo-label {
+  padding: 5px;
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
 }
