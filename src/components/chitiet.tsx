@@ -185,13 +185,12 @@ function ChiTiet(props: propsType) {
     console.log(songay);
 
     const { ngaytinhlai } = form.getFieldsValue();
-    console.log('ngaytinhli', moment(Number(ngaytinhlai.format('x')) + ngayTinhLai * 60 * 60 * 24 * 1000).format("DD/MM/YYYY"), ngayTinhLai);
-    
     const _data = await giahanCamDo(
       id,
       round(Number(tienlaidukien) + Number(tienlai)),
       moment(Number(ngaytinhlai.format('x')) + ngayTinhLai * 60 * 60 * 24 * 1000),
-      songay
+      songay,
+      tienlaidukien
     );
     if (_data) {
       console.log(_data);

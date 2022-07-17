@@ -47,14 +47,14 @@ ipcMain.handle("updateCamdo", async (event, data) => {
   const result = await knex("camdo").where("id", "=", data.id).update(data);
   return result;
 });
-ipcMain.handle("giahanCamDo", async (event, data) => {
+ipcMain.handle("giahanCamDo", async (event, data, tienlaidukien) => {
   const result = await knex("camdo").where("id", "=", data.id).update(data);
   const res = await knex("nhatky")
     .insert({
       phieu: data.id,
       hoatdong: "Đóng lãi",
       thoigian: moment().format('x'),
-      noidung: `Tiền lãi: ${data.tienlai}`,
+      noidung: `Tiền lãi: ${tienlaidukien}`,
     })
     .then();
   return res;

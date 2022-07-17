@@ -11,15 +11,15 @@ export function insertCamdo(data) {
 export function updateCamDo(data) {
   return ipcRenderer.invoke('updateCamdo', data);
 }
-export function giahanCamDo(id, tienlai, ngaytinhlai, songay) {
+export function giahanCamDo(id, tienlai, ngaytinhlai, songay, tienlaidukien) {
   let data = {
     id: id,
     ngaytinhlai: ngaytinhlai.format('x'),
     ngayhethan: ngaytinhlai.add(Number(songay), 'days').format('x'),
-    tienlai: tienlai
+    tienlai: tienlai,
   };
   console.log(data);
-  return ipcRenderer.invoke('giahanCamDo', data)
+  return ipcRenderer.invoke('giahanCamDo', data, tienlaidukien)
   // knex('camdo')
   //   .where('id', '=', id)
   //   .update(data)
