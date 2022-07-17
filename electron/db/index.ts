@@ -53,7 +53,7 @@ ipcMain.handle("giahanCamDo", async (event, data) => {
     .insert({
       phieu: data.id,
       hoatdong: "Đóng lãi",
-      thoigian: data.ngaytinhlai,
+      thoigian: moment().format('x'),
       noidung: `Tiền lãi: ${data.tienlai}`,
     })
     .then();
@@ -66,7 +66,7 @@ ipcMain.handle("camThemTien", async (event, data, tiencamthem, laidukien) => {
     .insert({
       phieu: data.id,
       hoatdong: "Cầm thêm",
-      thoigian: data.ngaytinhlai,
+      thoigian: moment().format('x'),
       noidung: `Tiền cầm thêm: ${tiencamthem}; Tiền lãi: ${laidukien}`,
     })
     .then();
