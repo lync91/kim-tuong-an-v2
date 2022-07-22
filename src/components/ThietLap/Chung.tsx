@@ -64,8 +64,8 @@ export function Chung() {
             <Form.Item hidden label="" name="resetData">
               <Button onClick={onClickresetData}>Xóa dữ liệu</Button>
             </Form.Item>
-            <Form.Item label="Khác" name="createThietLap">
-              <Button onClick={onClickcreateSettings}>
+            <Form.Item label="Khác" name="createCamdo">
+              <Button onClick={() => ipcRenderer.invoke('createCamdo')}>
                 Tạo lại dữ liệu cầm đồ
               </Button>
             </Form.Item>

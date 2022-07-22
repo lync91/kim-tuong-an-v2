@@ -13,6 +13,8 @@ import initdb, { createLoaiTaiSan, dropTable, createCamDo } from "./init";
 const readXlsxFile = require("read-excel-file/node");
 
 ipcMain.handle("createCamdo", async (event) => {
+  console.log("OK");
+  
   const res = await dropTable('camdo');
   createCamDo();
 });
