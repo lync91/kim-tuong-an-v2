@@ -94,6 +94,11 @@ export function Chung() {
                 Tạo bảng loại tài sản
               </Button>
             </Form.Item>
+            <Form.Item label=" " name="createDotu">
+              <Button onClick={() => ipcRenderer.invoke("createBotData")}>
+                Tạo bảng Dữ liệu Bot
+              </Button>
+            </Form.Item>
           </Form>
         </Col>
         <Col span={4}></Col>

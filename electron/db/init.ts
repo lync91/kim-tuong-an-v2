@@ -139,3 +139,18 @@ export async function createLoaiTaiSan() {
     table.float("laisuat");
   });
 }
+
+export async function createBotData() {
+  return await knex.schema.createTable("botdata", (table: any) => {
+    table.increments("id");
+    table.integer("date");
+    table.integer("message_id");
+    table.string("from_id")
+    table.string("from_first_name")
+    table.string("from_last_name")
+    table.string("type")
+    table.string("text")
+    table.string("photo_link")
+    table.string("photo_path")
+  });
+}

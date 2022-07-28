@@ -23,6 +23,7 @@ import BarCodeEvent from "../components/barCodeEvent";
 
 import '../assets/css/App.css'
 import { ipcRenderer } from 'electron';
+import CongCuAnh from './CongCuAnh';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -53,10 +54,10 @@ function App() {
           <Sider hidden={hideSide ? true : false} className="p-5">
             <Link to="/"><Button type="primary" className="m-t-10" size="large" block><PieChartOutlined />Báo cáo</Button></Link>
             <Link to="/taophieu"><Button type="primary" className="m-t-10" size="large" block><FormatPainterOutlined />Cầm đồ</Button></Link>
-            {/* <Link to="/camdo"><Button type="primary" className="m-t-10" size="large" block><FormatPainterOutlined />Cầm đồ</Button></Link> */}
             <Link to="/quetphieu"><Button type="primary" className="m-t-10" size="large" block><ScanOutlined />Quét phiếu cầm</Button></Link>
+            <Link to="/congcuanh"><Button type="primary" className="m-t-10" size="large" block><FormatPainterOutlined />Công cụ ảnh</Button></Link>
             <Link to="/thongKe"><Button type="primary" className="m-t-10" size="large" block><DatabaseOutlined />Quản lý dữ liệu</Button></Link>
-            <Link to="/banggia/false"><Button type="primary" className="m-t-10" size="large" block><DatabaseOutlined />Bảng giá</Button></Link>
+            {/* <Link to="/banggia/false"><Button type="primary" className="m-t-10" size="large" block><DatabaseOutlined />Bảng giá</Button></Link> */}
             <Link to="/thietlap"><Button type="primary" className="m-t-10" size="large" block><DatabaseOutlined />Cài đặt</Button></Link>
           </Sider>
           <Content style={hideSide ? {marginLeft: 0} : {}}>
@@ -83,8 +84,8 @@ function App() {
               <Route path="/thietlap">
                 <ThietLap />
               </Route>
-              <Route path="/banggia/:iswindow">
-                <BangGiaMain onHideSide={(hide: boolean) => setHideSide(hide)} />
+              <Route path="/congcuanh">
+                <CongCuAnh />
               </Route>
             </Switch>
           </Content>

@@ -9,7 +9,7 @@ import { filePath } from "./connect";
 import { map, queue } from "async";
 
 import * as settings from "electron-settings";
-import initdb, { createLoaiTaiSan, dropTable, createCamDo } from "./init";
+import initdb, { createLoaiTaiSan, dropTable, createCamDo, createBotData } from "./init";
 const readXlsxFile = require("read-excel-file/node");
 
 ipcMain.handle("createCamdo", async (event) => {
@@ -347,3 +347,11 @@ ipcMain.handle('getBaremRuttien', async (event) => {
 ipcMain.handle('setBaremRuttien', async (event, data) => {
   return await settings.set('baremRutTien', data);
 })
+
+ipcMain.handle('createBotData', async () => {
+  return await createBotData();
+})
+
+ipcMain.handle('getBotData', async (event) => {
+  return await knex('botdata').where("type", "=", "photo").orderBy('id', 'desc').select();
+});
