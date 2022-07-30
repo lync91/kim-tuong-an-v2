@@ -81,6 +81,7 @@ function createWindow() {
       plugins: true,
       nodeIntegration: true,
       preload: path.join(__dirname, "preload.js"),
+      webSecurity: false
     },
   });
   win.setMenuBarVisibility(false);
@@ -238,3 +239,5 @@ app.whenReady().then(() => {
   });
   
 });
+
+

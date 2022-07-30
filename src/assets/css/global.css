@@ -887,3 +887,12 @@ td {
 .img-item.selected {
   background-color: #008cff;
 }
+
+.buttons-bar {
+  padding-bottom: 5px;
+
+}
+
+.buttons-bar button {
+  margin-right: 3px;
+}
