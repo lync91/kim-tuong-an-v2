@@ -90,6 +90,7 @@
     "extraResources": [
       "./data/database.sqlite",
       "./lang-data/**",
+      "./tmp/**",
       "./photo/**"
     ]
   },

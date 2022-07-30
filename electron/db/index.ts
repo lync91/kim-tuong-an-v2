@@ -355,3 +355,22 @@ ipcMain.handle('createBotData', async () => {
 ipcMain.handle('getBotData', async (event) => {
   return await knex('botdata').where("type", "=", "photo").orderBy('id', 'desc').select();
 });
+
+export const tmpPath = isDev
+  ? path.join(__dirname, "..", "..", "..", "tmp")
+  : path.join(__dirname, "..", "..", "..", "..", "tmp");
+
+ipcMain.handle('saveTempPdf', async (event, buff) => {
+  console.log('ok');
+  
+  const fname = moment().format('X');
+  const fpath = path.join(tmpPath, `${fname}.pdf`)
+  console.log(fpath);
+  
+  await fs.writeFileSync(fpath, buff);
+  return fpath;
+});
+
+ipcMain.handle('deleteTmp', async (event, filePath) => {
+  return await fs.unlinkSync(filePath);
+})

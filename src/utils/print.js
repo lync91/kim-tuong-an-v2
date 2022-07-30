@@ -4,9 +4,7 @@ import TemplatePhieu from "../components/template";
 import { html } from "./htmlstring";
 import { remote } from "electron";
 import CmndPage from "./Template/CmndPage";
-
-import { print } from "pdf-to-printer";
-
+import { ipcRenderer } from "electron";
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
@@ -75,7 +73,7 @@ export function printPreview(data, preview) {
 }
 
 export function printCmnd(data) {
-  const {img1, img2} = data;
+  const { img1, img2 } = data;
   console.log(data);
   console.log("OK");
   const win = new BrowserWindow({
@@ -84,50 +82,49 @@ export function printCmnd(data) {
       nodeIntegration: true,
     },
   });
-  // const htmlString = renderToString(
-  //   <CmndPage data={data} />
-  // );
-  // const finalHtml = html.replace("{body}", htmlString).replace(/\s{2,}/g, '')   // <-- Replace all consecutive spaces, 2+
-  // .replace(/%/g, '%25')     // <-- Escape %
-  // .replace(/&/g, '%26')     // <-- Escape &
-  // .replace(/#/g, '%23')     // <-- Escape #
-  // .replace(/"/g, '%22')     // <-- Escape "
-  // .replace(/'/g, '%27')
-  // console.log(finalHtml);
 
   const docDefinition = {
+    pageSize: "A5",
+
+    // by default we use portrait, you can change it to landscape if you wish
+    pageOrientation: "landscape",
     content: [
       {
-        alignment: 'justify',
+        alignment: "justify",
         columns: [
           {
-            image: img1,
-            width: 200,
+            stack: [
+              {
+                image: img1,
+                width: 200,
+              },
+            ],
           },
           {
-            image: img1,
-            width: 200,
+            stack: [
+              {
+                image: img2,
+                width: 200,
+                alignment: "right",
+              },
+            ],
           },
-        ]
+        ],
       },
-      
     ],
   };
 
   // pdfMake.createPdf(docDefinition).print(options);
   const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-  pdfDocGenerator.getDataUrl((data) => {
-    // alert(data);
-    // win.loadURL(data);
-    // win.webContents.on("did-finish-load", () => {
-    //   win.webContents.print(options, (success, failureReason) => {
-    //     if (!success) console.log(failureReason);
-    //     console.log("Print Initiated");
-    //   });
-    // });
-
-    print("data").then(console.log);
-
-
+  pdfDocGenerator.getBuffer(async (data) => {
+    const pathFile = await ipcRenderer.invoke("saveTempPdf", data);
+    win.loadFile(pathFile);
+    win.webContents.on("did-finish-load", () => {
+      win.webContents.print(options, (success, failureReason) => {
+        if (!success) console.log(failureReason);
+        console.log("Print Initiated");
+        ipcRenderer.invoke("deleteTmp", pathFile);
+      });
+    });
   });
 }
