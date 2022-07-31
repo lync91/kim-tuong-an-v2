@@ -120,36 +120,36 @@ export async function printCmnd(data) {
 
   //Option 1
 
-  // const htmlString = renderToString(<CmndPage data={data} />);
+  const htmlString = renderToString(<CmndPage data={data} />);
 
-  // const finalHtml = html.replace("{body}", htmlString);
-  // let list = win.webContents.getPrinters();
-  // console.log("All printer available are ", list);
+  const finalHtml = html.replace("{body}", htmlString);
+  let list = win.webContents.getPrinters();
+  console.log("All printer available are ", list);
 
-  // const fpath = await ipcRenderer.invoke("saveTempHtml", finalHtml);
+  const fpath = await ipcRenderer.invoke("saveTempHtml", finalHtml);
 
-  // win.loadFile(fpath);
-  // win.webContents.on("did-finish-load", () => {
-  //   win.webContents.print(options, (success, failureReason) => {
-  //     if (!success) console.log(failureReason);
-  //     console.log("Print Initiated");
-  //     ipcRenderer.invoke("deleteTmp", fpath);
-  //   });
-  // });
+  win.loadFile(fpath);
+  win.webContents.on("did-finish-load", () => {
+    win.webContents.print(options, (success, failureReason) => {
+      if (!success) console.log(failureReason);
+      console.log("Print Initiated");
+      ipcRenderer.invoke("deleteTmp", fpath);
+    });
+  });
 
   //Option 2
 
-  const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-  pdfDocGenerator.getBuffer(async (data) => {
-    const pathFile = await ipcRenderer.invoke("saveTempPdf", data);
-    // win.loadFile(pathFile);
-    // win.webContents.on("did-finish-load", () => {
-    //   win.webContents.print(options, (success, failureReason) => {
-    //     if (!success) console.log(failureReason);
-    //     console.log("Print Initiated");
-    //     ipcRenderer.invoke("deleteTmp", pathFile);
-    //   });
-    // });
-    print(pathFile).then(console.log);
-  });
+  // const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+  // pdfDocGenerator.getBuffer(async (data) => {
+  //   const pathFile = await ipcRenderer.invoke("saveTempPdf", data);
+  //   // win.loadFile(pathFile);
+  //   // win.webContents.on("did-finish-load", () => {
+  //   //   win.webContents.print(options, (success, failureReason) => {
+  //   //     if (!success) console.log(failureReason);
+  //   //     console.log("Print Initiated");
+  //   //     ipcRenderer.invoke("deleteTmp", pathFile);
+  //   //   });
+  //   // });
+  //   print(pathFile).then(console.log);
+  // });
 }
