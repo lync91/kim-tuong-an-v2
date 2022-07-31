@@ -8,6 +8,8 @@ import { ipcRenderer } from "electron";
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { print } from "pdf-to-printer";
+const PDFWindow = require("electron-pdf-window");
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const isDev = true;
@@ -72,7 +74,7 @@ export function printPreview(data, preview) {
   });
 }
 
-export function printCmnd(data) {
+export async function printCmnd(data) {
   const { img1, img2 } = data;
   console.log(data);
   console.log("OK");
@@ -115,16 +117,39 @@ export function printCmnd(data) {
   };
 
   // pdfMake.createPdf(docDefinition).print(options);
+
+  //Option 1
+
+  // const htmlString = renderToString(<CmndPage data={data} />);
+
+  // const finalHtml = html.replace("{body}", htmlString);
+  // let list = win.webContents.getPrinters();
+  // console.log("All printer available are ", list);
+
+  // const fpath = await ipcRenderer.invoke("saveTempHtml", finalHtml);
+
+  // win.loadFile(fpath);
+  // win.webContents.on("did-finish-load", () => {
+  //   win.webContents.print(options, (success, failureReason) => {
+  //     if (!success) console.log(failureReason);
+  //     console.log("Print Initiated");
+  //     ipcRenderer.invoke("deleteTmp", fpath);
+  //   });
+  // });
+
+  //Option 2
+
   const pdfDocGenerator = pdfMake.createPdf(docDefinition);
   pdfDocGenerator.getBuffer(async (data) => {
     const pathFile = await ipcRenderer.invoke("saveTempPdf", data);
-    win.loadFile(pathFile);
-    win.webContents.on("did-finish-load", () => {
-      win.webContents.print(options, (success, failureReason) => {
-        if (!success) console.log(failureReason);
-        console.log("Print Initiated");
-        ipcRenderer.invoke("deleteTmp", pathFile);
-      });
-    });
+    // win.loadFile(pathFile);
+    // win.webContents.on("did-finish-load", () => {
+    //   win.webContents.print(options, (success, failureReason) => {
+    //     if (!success) console.log(failureReason);
+    //     console.log("Print Initiated");
+    //     ipcRenderer.invoke("deleteTmp", pathFile);
+    //   });
+    // });
+    print(pathFile).then(console.log);
   });
 }

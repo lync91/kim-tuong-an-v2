@@ -371,6 +371,16 @@ ipcMain.handle('saveTempPdf', async (event, buff) => {
   return fpath;
 });
 
+ipcMain.handle('saveTempHtml', async (event, buff) => {
+
+  const fname = moment().format('X');
+  const fpath = path.join(tmpPath, `${fname}.html`);
+  console.log(fpath);
+  
+  await fs.writeFileSync(fpath, buff);
+  return fpath;
+});
+
 ipcMain.handle('deleteTmp', async (event, filePath) => {
   return await fs.unlinkSync(filePath);
 })
