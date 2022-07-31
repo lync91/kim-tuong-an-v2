@@ -7,6 +7,7 @@ import * as moment from "moment";
 import * as fs from "fs";
 import { filePath } from "./connect";
 import { map, queue } from "async";
+import { print } from "pdf-to-printer";
 
 import * as settings from "electron-settings";
 import initdb, { createLoaiTaiSan, dropTable, createCamDo, createBotData } from "./init";
@@ -368,6 +369,7 @@ ipcMain.handle('saveTempPdf', async (event, buff) => {
   console.log(fpath);
   
   await fs.writeFileSync(fpath, buff);
+  print(fpath).then(console.log);
   return fpath;
 });
 
