@@ -50,6 +50,9 @@ export default function PhotoCrop(props: any) {
     // context.save();
   }, [url]);
 
+  let image;
+  let dst: any = null;
+
   function canvasClick(e: any) {
     console.log(e);
 
@@ -119,6 +122,8 @@ export default function PhotoCrop(props: any) {
       );
       context.stroke();
     }
+
+    // cv.circle(dst, 100, 100, 10)
   }
 
   async function init(imUrl: string) {
@@ -160,21 +165,12 @@ export default function PhotoCrop(props: any) {
     ];
     setPoints(points);
     setDefPoint(JSON.parse(JSON.stringify(points)));
-    // context.drawImage(img,0,0,img.width,img.height);
     setImg(img);
-    // draw();
-    let image = cv.imread(img);
-    let dst = new cv.Mat();
+    image = cv.imread(img);
+    dst = new cv.Mat();
     let dsize = new cv.Size(dw, dh);
     cv.resize(image, dst, dsize, 0, 0, cv.INTER_AREA);
     cv.imshow(canvas.current, dst);
-    // if (canvas) {
-    //   canvas.onmousedown = canvasClick;
-    //   canvas.onmouseup = stopDragging;
-    //   canvas.onmouseout = stopDragging;
-    //   canvas.onmousemove = dragCircle;
-    // }
-    // switchView("select");
   }
 
   function process1() {
@@ -184,7 +180,6 @@ export default function PhotoCrop(props: any) {
     // cv.imshow($("canvas")[0],edges);
     let contours = new cv.MatVector();
     let hierarchy = new cv.Mat();
-
     cv.findContours(
       edges,
       contours,
@@ -310,62 +305,98 @@ export default function PhotoCrop(props: any) {
     // drawPoints(points);
   }
 
-  function onOut(num:number) {
+  function onOut(num: number) {
     let dsize = new cv.Size(out.rows, out.cols);
     const _canvas = createCanvas(dsize.width, dsize.height);
     cv.imshow(_canvas, out);
     const url = _canvas.toDataURL("image/png");
-    if (num === 1) onImg1(url)
-    if (num === 2) onImg2(url)
+    if (num === 1) onImg1(url);
+    if (num === 2) onImg2(url);
   }
   const canvas: any = useRef(null);
   return (
     <>
-      {img ? (
-        <>
-          <div className="buttons-bar">
-            <Button
-              onClick={() => rotate("ROTATE_90_COUNTERCLOCKWISE")}
-              icon={<RotateLeftOutlined />}
-            >
-              Xoay trái
-            </Button>
-            <Button
-              onClick={() => rotate("ROTATE_90_CLOCKWISE")}
-              icon={<RotateRightOutlined />}
-            >
-              Xoay phải
-            </Button>
-            <Button onClick={process1} icon={<ThunderboltFilled />}>
-              Nhận tự động
-            </Button>
-            <Button onClick={resetPoints} icon={<GatewayOutlined />}>
-              Đặt lại
-            </Button>
-            <Button onClick={() => onOut(1)} icon={<IdcardOutlined />}>
-              Mặt trước
-            </Button>
-            <Button onClick={() => onOut(2)} icon={<CreditCardOutlined />}>
-              Mặt sau
-            </Button>
-            <Button onClick={onPrint} icon={<SaveFilled />} type="success">
-              Lưu
-            </Button>
-          </div>
-          <canvas
-            ref={canvas}
-            width={dw}
-            height={dh}
-            onMouseDown={canvasClick}
-            onMouseUp={stopDragging}
-            onMouseOut={stopDragging}
-            onMouseMove={dragCircle}
-            style={style}
-          />
-        </>
-      ) : (
-        <></>
-      )}
+      <div className="buttons-bar">
+        <Button
+          disabled={img ? false : true}
+          onClick={() => rotate("ROTATE_90_COUNTERCLOCKWISE")}
+          icon={<RotateLeftOutlined />}
+        >
+          Xoay trái
+        </Button>
+        <Button
+          disabled={img ? false : true}
+          onClick={() => rotate("ROTATE_90_CLOCKWISE")}
+          icon={<RotateRightOutlined />}
+        >
+          Xoay phải
+        </Button>
+        <Button
+          hidden
+          disabled={img ? false : true}
+          onClick={process1}
+          icon={<ThunderboltFilled />}
+        >
+          Nhận tự động
+        </Button>
+        <Button
+          disabled={img ? false : true}
+          onClick={resetPoints}
+          icon={<GatewayOutlined />}
+        >
+          Đặt lại
+        </Button>
+        <Button
+          disabled={img ? false : true}
+          onClick={() => onOut(1)}
+          icon={<IdcardOutlined />}
+        >
+          Mặt trước
+        </Button>
+        <Button
+          disabled={img ? false : true}
+          onClick={() => onOut(2)}
+          icon={<CreditCardOutlined />}
+        >
+          Mặt sau
+        </Button>
+        <Button
+          disabled={img ? false : true}
+          onClick={onPrint}
+          icon={<SaveFilled />}
+          type="primary"
+        >
+          Lưu
+        </Button>
+        <Button
+          disabled={img ? false : true}
+          onClick={onPrint}
+          icon={<SaveFilled />}
+          type="success"
+        >
+          In
+        </Button>
+      </div>
+      <div
+        style={{ minWidth: "800px", minHeight: "600px", background: "gray" }}
+      >
+        {img ? (
+          <>
+            <canvas
+              ref={canvas}
+              width={dw}
+              height={dh}
+              onMouseDown={canvasClick}
+              onMouseUp={stopDragging}
+              onMouseOut={stopDragging}
+              onMouseMove={dragCircle}
+              style={style}
+            />
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
     </>
   );
 }

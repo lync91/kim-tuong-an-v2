@@ -361,15 +361,13 @@ export const tmpPath = isDev
   ? path.join(__dirname, "..", "..", "..", "tmp")
   : path.join(__dirname, "..", "..", "..", "..", "tmp");
 
-ipcMain.handle('saveTempPdf', async (event, buff) => {
-  console.log('ok');
-  
+ipcMain.handle('printPdf', async (event, buff) => {
   const fname = moment().format('X');
-  const fpath = path.join(tmpPath, `${fname}.pdf`)
-  console.log(fpath);
-  
+  const fpath = path.join(tmpPath, `${fname}.pdf`);
   await fs.writeFileSync(fpath, buff);
-  print(fpath).then(console.log);
+  print(fpath).then((res) => {
+    fs.unlinkSync(fpath);
+  });
   return fpath;
 });
 

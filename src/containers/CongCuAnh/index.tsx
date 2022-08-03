@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
+import { createWorker } from "tesseract.js";
 
 import {
   PageHeader,
@@ -19,8 +20,9 @@ import {
 import Button from "antd-button-color";
 import { ipcRenderer } from "electron";
 import Sketch from "react-p5";
-import PhotoCrop from "../components/PhotoCrop";
-import { printCmnd } from "../utils/print";
+import PhotoCrop from "../../components/PhotoCrop";
+import { printCmnd } from "../../utils/print";
+import { ImageList } from "../../components/ImageList";
 
 const { TabPane } = Tabs;
 
@@ -75,39 +77,24 @@ function CongCuAnh() {
     return ctx.getImageData(0, 0, img.width, img.height);
   };
 
-  const url = "file:///Users/lync/Desktop/test/file_11.jpg";
-  const main = async () => {
-    const img = await getImageData(url);
-    const res = await scanImageData(img);
-    console.log(res[0].typeName); // ZBAR_QRCODE
-    console.log(res[0].decode()); // Hello World
-  };
+  // const url = "file:///Users/lync/Desktop/test/file_11.jpg";
+  // const main = async () => {
+  //   const img = await getImageData(url);
+  //   const res = await scanImageData(img);
+  //   console.log(res[0].typeName); // ZBAR_QRCODE
+  //   console.log(res[0].decode()); // Hello World
+  // };
 
   function print() {
-    printCmnd({img1, img2})
+    printCmnd({ img1, img2 });
   }
 
-  main();
   const canvas: any = useRef(null);
   return (
     <div>
       <Tabs defaultActiveKey="1" onChange={onChange}>
-        <TabPane tab="Công cụ ảnh" key="1">
-          <div className="img-list">
-            {list.map((e, i) => {
-              const { photo_link } = e;
-              return (
-                <img
-                  className={`img-item ${
-                    selected.index === i ? "selected" : ""
-                  }`}
-                  src={photo_link}
-                  alt="thumb"
-                  onClick={() => setSelected({ index: i, url: photo_link })}
-                />
-              );
-            })}
-          </div>
+        <TabPane tab="Cắt ảnh" key="1">
+          <ImageList {...{ list, selected, setSelected }} />
           <div style={{ display: "flex", padding: "12px" }}>
             <div>
               <PhotoCrop
@@ -118,8 +105,23 @@ function CongCuAnh() {
                 onPrint={print}
               />
             </div>
-            <div style={{ paddingLeft: "15px", paddingTop: "37px" }}>
-              <canvas ref={canvas} />
+            <div
+              style={{
+                paddingLeft: "15px",
+                paddingTop: "37px",
+                minHeight: "200px",
+              }}
+            >
+              <div
+                style={{
+                  minHeight: "200px",
+                  background: "gray",
+                  padding: "7px 7px 0 7px",
+                  marginBottom: "5px",
+                }}
+              >
+                <canvas ref={canvas} />
+              </div>
               <div>
                 <img
                   className={`img-item`}
@@ -132,6 +134,14 @@ function CongCuAnh() {
                   alt="thumb"
                 />
               </div>
+            </div>
+          </div>
+        </TabPane>
+        <TabPane tab="Đọc ảnh" key={2}>
+          <ImageList {...{ list, selected, setSelected }} />
+          <div>
+            <div>
+              <canvas></canvas>
             </div>
           </div>
         </TabPane>

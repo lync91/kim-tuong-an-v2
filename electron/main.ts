@@ -175,8 +175,8 @@ bot.on("message", async (msg: any) => {
     const e = photo[photo.length - 1];
     const photo_link = await bot.getFileLink(e.file_id);
     data = { ...data, ...{ photo_link: photo_link || null } };
-    const res = await bot.downloadFile(e.file_id, photoPath);
-    console.log(res);
+    // const res = await bot.downloadFile(e.file_id, photoPath);
+    // console.log(res);
     // await worker.load();
     // await worker.loadLanguage("vie");
     // await worker.initialize("vie");

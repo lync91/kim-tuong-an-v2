@@ -98,7 +98,7 @@ export async function printCmnd(data) {
             stack: [
               {
                 image: img1,
-                width: 200,
+                width: 240,
               },
             ],
           },
@@ -106,7 +106,7 @@ export async function printCmnd(data) {
             stack: [
               {
                 image: img2,
-                width: 200,
+                width: 240,
                 alignment: "right",
               },
             ],
@@ -140,16 +140,8 @@ export async function printCmnd(data) {
   //Option 2
 
   const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-  pdfDocGenerator.getBuffer(async (data) => {
-    const pathFile = await ipcRenderer.invoke("saveTempPdf", data);
-    // win.loadFile(pathFile);
-    // win.webContents.on("did-finish-load", () => {
-    //   win.webContents.print(options, (success, failureReason) => {
-    //     if (!success) console.log(failureReason);
-    //     console.log("Print Initiated");
-    //     ipcRenderer.invoke("deleteTmp", pathFile);
-    //   });
-    // });
-    // print(pathFile).then(console.log);
+  if (!isDev) pdfDocGenerator.getBuffer(async (data) => {
+    const pathFile = await ipcRenderer.invoke("printPdf", data);
   });
+  if (isDev) pdfDocGenerator.print()
 }
